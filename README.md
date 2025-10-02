@@ -35,24 +35,6 @@
 
 ---
 
-## Arquitetura (alto nível)
-
-```
-Browser (React + R3F/Three)
-  |  sliders/presets, render 3D
-  v
-Next.js API Routes / Edge  — cache, rate-limit, logs
-  |  NASA NEO + JPL SBDB + USGS 3DEP (elevação/sismicidade)
-  v
-Fontes oficiais (NASA/USGS)
-```
-
-* Cena 3D declarativa via R3F; Drei para controles/câmeras/loaders.
-* Dados NASA: NeoWs/JPL SBDB (parâmetros orbitais e físicos, aproximações).
-* Dados USGS: 3DEP DEM (elevação) e sismicidade (opcional para contexto).
-
----
-
 ## Plano de execução (48h)
 
 **Dia 1 — Fundações**
