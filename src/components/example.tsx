@@ -4,6 +4,7 @@ import { Canvas, useLoader, useFrame } from '@react-three/fiber';
 import { OrbitControls, Stars } from '@react-three/drei';
 import { useRef, Suspense } from 'react';
 import * as THREE from 'three';
+import { RotatingEarth } from '@/components/EarthComponent'; // Importa o componente da Terra
 
 export interface AsteroidData {
   name?: string;
@@ -23,20 +24,21 @@ export interface AsteroidData {
   displacementScale?: number;
 }
 
-// Props para o componente principal
+// Adiciona dados da Terra nas props
 interface MeteorProps {
   asteroidData?: Partial<AsteroidData>;
   showStars?: boolean;
   cameraDistance?: number;
+  showEarth?: boolean; // Nova prop para mostrar/ocultar a Terra
+  earthTextureUrl?: string;
+  earthNormalMapUrl?: string;
+  earthSpecularMapUrl?: string;
+  earthCloudsTextureUrl?: string;
 }
 
-/**
- * Componente que renderiza o asteroide em rotação com texturas detalhadas.
- */
 function RotatingAsteroid({ asteroidData }: { asteroidData: AsteroidData }) {
   const meshRef = useRef<THREE.Mesh>(null);
 
-  // Carrega as texturas com base nas URLs fornecidas nos dados do asteroide.
   const texture = asteroidData.textureUrl
     ? useLoader(THREE.TextureLoader, asteroidData.textureUrl)
     : null;
@@ -53,7 +55,6 @@ function RotatingAsteroid({ asteroidData }: { asteroidData: AsteroidData }) {
     ? useLoader(THREE.TextureLoader, asteroidData.aoMapUrl)
     : null;
 
-  // Calcula o tamanho e a velocidade de rotação com base nos dados.
   const size = asteroidData.diameter
     ? Math.log10(asteroidData.diameter + 1) * 0.5 + 0.5
     : 1.5;
@@ -65,7 +66,6 @@ function RotatingAsteroid({ asteroidData }: { asteroidData: AsteroidData }) {
       }
     : { x: 0.1, y: 0.15 };
 
-  // Define propriedades do material como fallback caso as texturas não sejam fornecidas.
   const getMaterialProps = () => {
     const composition = asteroidData.composition || 'rocky';
     switch (composition) {
@@ -75,13 +75,12 @@ function RotatingAsteroid({ asteroidData }: { asteroidData: AsteroidData }) {
         return { color: '#2C2C2C', roughness: 0.95, metalness: 0.05 };
       case 'icy':
         return { color: '#E0F0FF', roughness: 0.2, metalness: 0.4 };
-      default: // rocky
+      default:
         return { color: '#8B4513', roughness: 0.8, metalness: 0.2 };
     }
   };
   const materialProps = getMaterialProps();
 
-  // Animação de rotação do asteroide.
   useFrame((_, delta) => {
     if (meshRef.current) {
       meshRef.current.rotation.x += delta * rotationSpeed.x;
@@ -90,59 +89,75 @@ function RotatingAsteroid({ asteroidData }: { asteroidData: AsteroidData }) {
   });
 
   return (
-    <mesh ref={meshRef} castShadow receiveShadow>
+    <mesh ref={meshRef} position={[4, 0, 0]} castShadow receiveShadow> {/* Posicionado ao lado */}
       <sphereGeometry args={[size, 128, 128]} />
       <meshStandardMaterial
         map={texture}
         normalMap={normalMap}
         roughnessMap={roughnessMap}
         displacementMap={displacementMap}
-        aoMap={aoMap} // Aplica o mapa de oclusão de ambiente
-        aoMapIntensity={1} // Intensidade da oclusão
+        aoMap={aoMap}
+        aoMapIntensity={1}
         displacementScale={asteroidData.displacementScale || 0.1}
-        color={texture ? '#ffffff' : materialProps.color} // Cor branca para não tingir a textura
-        roughness={1} // A rugosidade é controlada pelo mapa, então definimos como 1
+        color={texture ? '#ffffff' : materialProps.color}
+        roughness={1}
         metalness={materialProps.metalness}
       />
     </mesh>
   );
 }
 
-/**
- * Componente que configura a cena 3D, luzes e controles.
- */
-function Scene({ asteroidData, showStars }: { asteroidData: AsteroidData; showStars: boolean }) {
+// Atualiza a Scene para incluir a Terra
+interface SceneProps {
+  asteroidData: AsteroidData;
+  showStars: boolean;
+  showEarth: boolean;
+  earthData: {
+    textureUrl?: string;
+    normalMapUrl?: string;
+    specularMapUrl?: string;
+    cloudsTextureUrl?: string;
+  };
+}
+
+function Scene({ asteroidData, showStars, showEarth, earthData }: SceneProps) {
   const dangerGlow = asteroidData.isPotentiallyHazardous ? 0.5 : 0;
 
   return (
     <>
-      <ambientLight intensity={1} />
+      <ambientLight intensity={3} />
       <pointLight position={[10, 10, 10]} intensity={4} />
-      <directionalLight position={[-10, 5, 5]} intensity={2.5} castShadow />
+      <directionalLight position={[-10, 5, 5]} intensity={3} castShadow />
 
       {asteroidData.isPotentiallyHazardous && (
         <pointLight position={[0, 0, 0]} color="#ff4400" intensity={dangerGlow} distance={10} />
       )}
 
       <Suspense fallback={null}>
+        {showEarth && (
+          <group position={[-8, 0, 0]}> {/* Terra posicionada à esquerda */}
+            <RotatingEarth earthData={earthData} />
+          </group>
+        )}
         <RotatingAsteroid asteroidData={asteroidData} />
       </Suspense>
 
       {showStars && <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />}
 
-      <OrbitControls enableZoom={true} enablePan={false} autoRotate autoRotateSpeed={0.5} />
+      <OrbitControls enableZoom={true} enablePan={true} autoRotate autoRotateSpeed={0.5} />
     </>
   );
 }
 
-/**
- * Componente principal que monta a UI e o Canvas 3D.
- * Agora ele usa as texturas fornecidas por padrão.
- */
 export function ThreeJSExample({
   asteroidData: incomingData,
   showStars = true,
-  cameraDistance = 5,
+  cameraDistance = 8, // Aumentado para ver ambos
+  showEarth = true,
+  earthTextureUrl = '/textures/earth/earth_atmos_2048.jpg',
+  earthNormalMapUrl = '/textures/earth/earth_normal_2048.jpg',
+  earthSpecularMapUrl = '/textures/earth/earth_specular_2048.jpg',
+  earthCloudsTextureUrl = '/textures/earth/earth_clouds_1024.png',
 }: MeteorProps) {
   const asteroidData: AsteroidData = {
     name: 'Asteroide Rochoso Detalhado',
@@ -151,13 +166,22 @@ export function ThreeJSExample({
     isPotentiallyHazardous: false,
     rotationPeriod: 30,
     absoluteMagnitude: 16,
-    textureUrl: './textures/meteor/Rock031_2K-JPG_Color.jpg',
-    normalMapUrl: './textures/meteor/Rock031_2K-JPG_NormalGL.jpg',
-    roughnessMapUrl: './textures/meteor/Rock031_2K-JPG_Roughness.jpg',
-    displacementMapUrl: './textures/meteor/Rock031_2K-JPG_Displacement.jpg',
-    aoMapUrl: './textures/meteor/Rock031_2K-JPG_AmbientOcclusion.jpg',
+    textureUrl: '/textures/meteor/Rock031_2K-JPG_Color.jpg',
+    normalMapUrl: '/textures/meteor/Rock031_2K-JPG_NormalGL.jpg',
+    roughnessMapUrl: '/textures/meteor/Rock031_2K-JPG_Roughness.jpg',
+    displacementMapUrl: '/textures/meteor/Rock031_2K-JPG_Displacement.jpg',
+    aoMapUrl: '/textures/meteor/Rock031_2K-JPG_AmbientOcclusion.jpg',
     displacementScale: 0.15, 
     ...incomingData,
+  };
+
+  const earthData = {
+    textureUrl: earthTextureUrl,
+    normalMapUrl: earthNormalMapUrl,
+    specularMapUrl: earthSpecularMapUrl,
+    cloudsTextureUrl: earthCloudsTextureUrl,
+    diameter: 12742,
+    rotationPeriod: 24,
   };
 
   return (
@@ -191,7 +215,12 @@ export function ThreeJSExample({
       )}
       <div className="w-full h-96 border-2 border-gray-500 rounded-lg overflow-hidden bg-black relative">
         <Canvas camera={{ position: [0, 0, cameraDistance], fov: 60 }} shadows>
-          <Scene asteroidData={asteroidData} showStars={showStars} />
+          <Scene 
+            asteroidData={asteroidData} 
+            showStars={showStars} 
+            showEarth={showEarth}
+            earthData={earthData}
+          />
         </Canvas>
         <div className="absolute bottom-2 right-2 text-xs text-gray-400 bg-black/50 px-2 py-1 rounded">
           Use o mouse para girar e dar zoom.

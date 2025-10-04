@@ -24,7 +24,7 @@ interface EarthProps {
 /**
  * Componente que renderiza a Terra em rotação com texturas.
  */
-function RotatingEarth({ earthData }: { earthData: EarthData }) {
+export function RotatingEarth({ earthData }: { earthData: EarthData }) {
   const meshRef = useRef<THREE.Mesh>(null);
   const cloudsRef = useRef<THREE.Mesh>(null);
 
@@ -43,11 +43,11 @@ function RotatingEarth({ earthData }: { earthData: EarthData }) {
     : null;
 
   // Tamanho da Terra (padrão 2 unidades)
-  const size = earthData.diameter ? earthData.diameter / 6371 : 2;
+const size = earthData.diameter ? earthData.diameter / 3000 : 4;
 
   // Velocidade de rotação baseada no período (padrão: 24 horas = rotação da Terra)
   const rotationSpeed = earthData.rotationPeriod
-    ? (24 / earthData.rotationPeriod) * 0.1
+    ? (24 / earthData.rotationPeriod) * 0.5
     : 0.1;
 
   // Animação de rotação
@@ -124,7 +124,10 @@ export function EarthComponent({
     name: 'Terra',
     diameter: 12742, // km
     rotationPeriod: 24, // horas
-    textureUrl: './textures/earth_atmos_2048.jpg', // MUDE AQUI para o caminho da sua imagem
+    textureUrl: './textures/earth_color.jpg', // MUDE AQUI para o caminho da sua imagem
+    normalMapUrl: './textures/earth_normal.jpg', // Opcional
+    specularMapUrl: './textures/earth_specular.jpg', // Opcional
+    cloudsTextureUrl: './textures/earth_clouds.jpg', // Opcional
     ...incomingData,
   };
 
@@ -158,5 +161,3 @@ export function EarthComponent({
     </div>
   );
 }
-
-export { RotatingEarth };

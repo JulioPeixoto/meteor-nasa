@@ -8,7 +8,7 @@ export default function HomePage() {
   const t = useTranslations();
   const carbonaceousAsteroid: Partial<AsteroidData> = {
     name: '1 Ceres',
-    diameter: 939,
+    diameter: 80,
     rotationPeriod: 9.07,
     absoluteMagnitude: 3.4,
     isPotentiallyHazardous: false,
