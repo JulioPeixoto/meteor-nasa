@@ -19,6 +19,7 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-8">
       <div className="max-w-6xl mx-auto">
+        
         <div className="text-center mb-8">
           <h1 className="text-6xl font-bold text-white mb-4">
             {t('app.title')}
