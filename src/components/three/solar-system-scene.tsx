@@ -44,11 +44,11 @@ function Lighting() {
 export function SolarSystemScene3D({ widthClass = 'w-full', heightClass = 'h-96', meteorTexture, meteorSize = 1.2, running = true, speed = 1, startKey }: SolarSystemSceneProps) {
   const meteorProps = useMemo(() => ({
     radius: meteorSize,
-    textureUrl: './textures/Rock031_2K-JPG_Color.jpg',
-    normalMapUrl: './textures/Rock031_2K-JPG_NormalGL.jpg',
-    roughnessMapUrl: './textures/Rock031_2K-JPG_Roughness.jpg',
-    displacementMapUrl: './textures/Rock031_2K-JPG_Displacement.jpg',
-    aoMapUrl: './textures/Rock031_2K-JPG_AmbientOcclusion.jpg',
+    textureUrl: '/textures/Rock031_2K-JPG_Color.jpg',
+    normalMapUrl: '/textures/Rock031_2K-JPG_NormalGL.jpg',
+    roughnessMapUrl: '/textures/Rock031_2K-JPG_Roughness.jpg',
+    displacementMapUrl: '/textures/Rock031_2K-JPG_Displacement.jpg',
+    aoMapUrl: '/textures/Rock031_2K-JPG_AmbientOcclusion.jpg',
     displacementScale: 0.15,
     position: [-8, 2, -3] as [number, number, number],
     velocity: [4, -0.3, 0.7] as [number, number, number],
