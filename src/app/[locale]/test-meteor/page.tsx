@@ -1,5 +1,5 @@
 'use client';
-import { ThreeJSExample } from '@/components/example'
+import { MeteorTest } from '@/components/three/meteor-test'
 import React from 'react'
 
 export default function TestAuthPage() {
@@ -53,7 +53,7 @@ export default function TestAuthPage() {
           </div>
         </div>
 
-        <ThreeJSExample
+        <MeteorTest
           size={size}
           texture="/textures/black-white-details-moon-texture-concept.jpg"
           running={running}
