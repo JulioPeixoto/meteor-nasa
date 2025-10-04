@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import { LogoutButton } from '@/components/auth/logout-button';
 
 export default function Header({ locale }: { locale: string }) {
   const pathname = usePathname();
@@ -24,8 +25,11 @@ export default function Header({ locale }: { locale: string }) {
         Meteor NASA
       </h1>
 
-      {/* Dropdown de idiomas */}
-      <div className="relative">
+      {/* Botão de logout e dropdown de idiomas */}
+      <div className="flex items-center gap-4">
+        <LogoutButton />
+        
+        <div className="relative">
         <button
           onClick={() => setOpen(!open)}
           className="flex items-center gap-2 px-3 py-2 bg-slate-700 rounded-md hover:bg-slate-600 cursor-pointer"
@@ -60,6 +64,7 @@ export default function Header({ locale }: { locale: string }) {
             ))}
           </ul>
         )}
+        </div>
       </div>
     </header>
   );
