@@ -3,17 +3,17 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'Meteor NASA',
-  description: 'Next.js App with React and Tailwind',
+  description: 'Next.js App with React, Tailwind and i18n'
 }
 
 export default function RootLayout({
-  children,
+  children
 }: {
   children: React.ReactNode
 }) {
   return (
     <html lang="en">
-      <body className="antialiased">
+      <body>
         {children}
       </body>
     </html>

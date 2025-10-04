@@ -1,0 +1,22 @@
+{
+  "app": {
+    "title": "Meteor Madness",
+    "subtitle": "NASA Near Earth Object Visualization with React Three Fiber"
+  },
+  "header": {
+    "language": "Language",
+    "english": "English",
+    "portuguese": "Portuguese",
+    "switch": "Switch to {lang}"
+  },
+  "sections": {
+    "asteroid": "3D Asteroid Visualization Test",
+    "instructions": "Use mouse to rotate, zoom and pan around the 3D scene",
+    "neoDataTitle": "NEO Data",
+    "neoDataText": "Real-time data from NASA Near Earth Object Web Service",
+    "impactTitle": "Impact Simulation",
+    "impactText": "Calculate impact zones and damage estimates",
+    "visualizationTitle": "3D Visualization",
+    "visualizationText": "Interactive 3D representation of asteroids and trajectories"
+  }
+}
