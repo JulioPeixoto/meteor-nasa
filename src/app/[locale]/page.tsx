@@ -2,9 +2,19 @@
 
 import { useTranslations } from 'next-intl';
 import { ThreeJSExample } from '@/components/example';
+import type { AsteroidData } from '@/components/example';
 
 export default function HomePage() {
   const t = useTranslations();
+  const carbonaceousAsteroid: Partial<AsteroidData> = {
+    name: '1 Ceres',
+    diameter: 939,
+    rotationPeriod: 9.07,
+    absoluteMagnitude: 3.4,
+    isPotentiallyHazardous: false,
+    composition: 'carbonaceous',
+    displacementScale: 0.15,
+  };
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-8">
@@ -22,7 +32,11 @@ export default function HomePage() {
           <h2 className="text-2xl font-semibold text-white mb-4">
             {t('sections.asteroid')}
           </h2>
-          <ThreeJSExample />
+          <ThreeJSExample
+            asteroidData={carbonaceousAsteroid}
+            showStars={true}
+            cameraDistance={4}
+          />
           <p className="text-sm text-slate-300 mt-4">
             {t('sections.instructions')}
           </p>
@@ -60,3 +74,5 @@ export default function HomePage() {
     </main>
   );
 }
+
+
