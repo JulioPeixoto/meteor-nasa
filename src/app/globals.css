@@ -29,7 +29,7 @@
   --main: oklch(66.34% 0.1806 277.2);
   --border: oklch(0% 0 0);
   --ring: oklch(100% 0 0);
-  --shadow: 0px 4px 0px 0px var(--border);
+  --shadow: 2px 4px 0px 0px var(--border);
   --chart-1: #7A83FF;
   --chart-2: #E0B700;
   --chart-3: #FF6669;
