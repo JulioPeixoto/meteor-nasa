@@ -1,8 +1,7 @@
 'use client'
 
-import { useFrame } from '@react-three/fiber'
-import { useTexture } from '@react-three/drei'
-import { useEffect, useMemo, useRef } from 'react'
+import { useFrame, useLoader } from '@react-three/fiber'
+import { useEffect, useMemo, useRef, Suspense } from 'react'
 import * as THREE from 'three'
 
 type MeteorProps = {
@@ -58,23 +57,35 @@ export function Meteor(props: MeteorProps) {
   const velocityVec = useMemo(() => new THREE.Vector3(...velocity), [velocity])
   const seed = useMemo(() => Math.random() * 10 + 1, [])
 
-  const texture = useTexture(textureUrl ?? '/textures/earth.jpg')
-  const normalMap = normalMapUrl ? useTexture(normalMapUrl) : null
-  const roughnessMap = roughnessMapUrl ? useTexture(roughnessMapUrl) : null
-  const displacementMap = displacementMapUrl ? useTexture(displacementMapUrl) : null
-  const aoMap = aoMapUrl ? useTexture(aoMapUrl) : null
+  const texture = textureUrl
+    ? useLoader(THREE.TextureLoader, textureUrl)
+    : null
+  const normalMap = normalMapUrl
+    ? useLoader(THREE.TextureLoader, normalMapUrl)
+    : null
+  const roughnessMap = roughnessMapUrl
+    ? useLoader(THREE.TextureLoader, roughnessMapUrl)
+    : null
+  const displacementMap = displacementMapUrl
+    ? useLoader(THREE.TextureLoader, displacementMapUrl)
+    : null
+  const aoMap = aoMapUrl
+    ? useLoader(THREE.TextureLoader, aoMapUrl)
+    : null
 
   const geometry = useMemo(() => {
-    const geo = new THREE.IcosahedronGeometry(radius, Math.max(1, detail))
+    const geo = new THREE.SphereGeometry(radius, 64, 64)
     const pos = geo.attributes.position as THREE.BufferAttribute
     const v = new THREE.Vector3()
+    
     for (let i = 0; i < pos.count; i++) {
       v.fromBufferAttribute(pos, i)
-      const n = pseudoNoise3(v.x, v.y, v.z, seed)
-      const r = radius * (1 + irregularity * n)
-      v.normalize().multiplyScalar(r)
+      const n = pseudoNoise3(v.x * 1.5, v.y * 1.5, v.z * 1.5, seed)
+      const displacement = irregularity * n * 0.2
+      v.normalize().multiplyScalar(radius * (1 + displacement))
       pos.setXYZ(i, v.x, v.y, v.z)
     }
+    
     pos.needsUpdate = true
     geo.computeVertexNormals()
     return geo
@@ -95,20 +106,24 @@ export function Meteor(props: MeteorProps) {
   })
 
   return (
-    <mesh ref={meshRef} geometry={geometry} position={position as any} castShadow receiveShadow>
-      <meshStandardMaterial 
-        map={texture}
-        normalMap={normalMap}
-        roughnessMap={roughnessMap}
-        displacementMap={displacementMap}
-        aoMap={aoMap}
-        aoMapIntensity={1}
-        displacementScale={displacementScale}
-        color={textureUrl ? '#ffffff' : color}
-        roughness={roughnessMap ? 1 : roughness}
-        metalness={metalness}
-      />
-    </mesh>
+    <Suspense fallback={null}>
+      <mesh ref={meshRef} geometry={geometry} position={position as any} castShadow receiveShadow>
+        <meshStandardMaterial
+          map={texture}
+          normalMap={normalMap}
+          roughnessMap={roughnessMap}
+          displacementMap={displacementMap}
+          aoMap={aoMap}
+          aoMapIntensity={1}
+          displacementScale={displacementScale}
+          color={texture ? '#ffffff' : color}
+          roughness={1}
+          metalness={metalness}
+          wireframe={false}
+          flatShading={false}
+        />
+      </mesh>
+    </Suspense>
   )
 }
 

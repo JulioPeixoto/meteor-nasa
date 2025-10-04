@@ -1,8 +1,8 @@
 'use client'
 
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Canvas, useFrame, useLoader } from '@react-three/fiber'
 import { OrbitControls, Stars } from '@react-three/drei'
-import { useMemo, useRef } from 'react'
+import { useMemo, useRef, Suspense } from 'react'
 import * as THREE from 'three'
 import { Meteor } from './meteor'
 
@@ -19,15 +19,42 @@ type SolarSystemSceneProps = {
 function Earth() {
   const meshRef = useRef<THREE.Mesh>(null)
   const radius = 0
+  
+  const dayTexture = useLoader(THREE.TextureLoader, '/textures/earth/earth_day_4096.jpg')
+  const nightTexture = useLoader(THREE.TextureLoader, '/textures/earth/earth_night_4096.jpg')
+  const normalTexture = useLoader(THREE.TextureLoader, '/textures/earth/earth_normal_2048.jpg')
+  const specularTexture = useLoader(THREE.TextureLoader, '/textures/earth/earth_specular_2048.jpg')
+  const cloudsTexture = useLoader(THREE.TextureLoader, '/textures/earth/earth_clouds_1024.png')
+  
   useFrame((_, delta) => {
     if (!meshRef.current) return
     meshRef.current.rotation.y += 0.4 * delta
   })
+  
   return (
-    <mesh ref={meshRef} position={[radius, 0, 0]}>
-      <sphereGeometry args={[1.2, 32, 32]} />
-      <meshStandardMaterial color={'#4b82f0'} roughness={1} metalness={0} />
-    </mesh>
+    <Suspense fallback={null}>
+      <group>
+        <mesh ref={meshRef} position={[radius, 0, 0]} castShadow receiveShadow>
+          <sphereGeometry args={[2.0, 64, 64]} />
+          <meshStandardMaterial
+            map={dayTexture}
+            normalMap={normalTexture}
+            roughnessMap={specularTexture}
+            roughness={0.7}
+            metalness={0.1}
+          />
+        </mesh>
+        <mesh ref={meshRef} position={[radius, 0, 0]}>
+          <sphereGeometry args={[2.01, 64, 64]} />
+          <meshStandardMaterial
+            map={cloudsTexture}
+            transparent
+            opacity={0.4}
+            alphaMap={cloudsTexture}
+          />
+        </mesh>
+      </group>
+    </Suspense>
   )
 }
 
@@ -41,14 +68,14 @@ function Lighting() {
   )
 }
 
-export function SolarSystemScene3D({ widthClass = 'w-full', heightClass = 'h-96', meteorTexture, meteorSize = 1.2, running = true, speed = 1, startKey }: SolarSystemSceneProps) {
+export function SolarSystemScene3D({ widthClass = 'w-full', heightClass = 'h-96', meteorTexture, meteorSize = 0.8, running = true, speed = 1, startKey }: SolarSystemSceneProps) {
   const meteorProps = useMemo(() => ({
     radius: meteorSize,
-    textureUrl: '/textures/Rock031_2K-JPG_Color.jpg',
-    normalMapUrl: '/textures/Rock031_2K-JPG_NormalGL.jpg',
-    roughnessMapUrl: '/textures/Rock031_2K-JPG_Roughness.jpg',
-    displacementMapUrl: '/textures/Rock031_2K-JPG_Displacement.jpg',
-    aoMapUrl: '/textures/Rock031_2K-JPG_AmbientOcclusion.jpg',
+    textureUrl: '/textures/meteor/Rock031_2K-JPG_Color.jpg',
+    normalMapUrl: '/textures/meteor/Rock031_2K-JPG_NormalGL.jpg',
+    roughnessMapUrl: '/textures/meteor/Rock031_2K-JPG_Roughness.jpg',
+    displacementMapUrl: '/textures/meteor/Rock031_2K-JPG_Displacement.jpg',
+    aoMapUrl: '/textures/meteor/Rock031_2K-JPG_AmbientOcclusion.jpg',
     displacementScale: 0.15,
     position: [-8, 2, -3] as [number, number, number],
     velocity: [4, -0.3, 0.7] as [number, number, number],
