@@ -14,24 +14,20 @@ export default async function LocaleLayout(props: {
   params: Promise<{ locale: string }>;
 }) {
   const { children, params } = props;
-  const { locale } = await params; 
+  const { locale } = await params;
 
   if (!i18n.locales.includes(locale)) notFound();
 
   const messages = (await import(`../../messages/${locale}.json`)).default;
 
   return (
-    <html lang={locale}>
-      <body>
-        <AuthProvider>
-          <NextIntlClientProvider locale={locale} messages={messages}>
-            <AuthGuard>
-              <Header locale={locale} />
-              {children}
-            </AuthGuard>
-          </NextIntlClientProvider>
-        </AuthProvider>
-      </body>
-    </html>
+    <AuthProvider>
+      <NextIntlClientProvider locale={locale} messages={messages}>
+        <AuthGuard>
+          <Header locale={locale} />
+          {children}
+        </AuthGuard>
+      </NextIntlClientProvider>
+    </AuthProvider>
   );
 }
