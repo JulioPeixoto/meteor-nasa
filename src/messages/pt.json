@@ -7,6 +7,9 @@
     "language": "Idioma",
     "english": "Inglês",
     "portuguese": "Português",
+    "spanish": "Espanhol",
+    "france": "Francês",
+    "chine": "Chinês",
     "switch": "Mudar para {lang}"
   },
   "sections": {

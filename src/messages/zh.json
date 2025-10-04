@@ -1,0 +1,25 @@
+{
+  "app": {
+    "title": "流星狂热",
+    "subtitle": "使用 React Three Fiber 可视化近地天体"
+  },
+  "header": {
+    "language": "语言",
+    "english": "英语",
+    "portuguese": "葡萄牙语",
+    "spanish": "西班牙语",
+    "france": "法语",
+    "chine": "中文",
+    "switch": "切换到 {lang}"
+  },
+  "sections": {
+    "asteroid": "小行星 3D 可视化测试",
+    "instructions": "使用鼠标旋转、缩放和移动 3D 场景",
+    "neoDataTitle": "NEO 数据",
+    "neoDataText": "来自 NASA 近地天体服务的实时数据",
+    "impactTitle": "撞击模拟",
+    "impactText": "计算撞击区域和损害估计",
+    "visualizationTitle": "3D 可视化",
+    "visualizationText": "小行星和轨迹的交互式 3D 表示"
+  }
+}

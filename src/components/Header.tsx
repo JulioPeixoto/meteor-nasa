@@ -14,7 +14,10 @@ export default function Header({ locale }: { locale: string }) {
 
   const locales = [
     { code: 'en', label: t('english'), flag: '/flags/united-states.png' },
-    { code: 'pt', label: t('portuguese'), flag: '/flags/brasil.png' }
+    { code: 'pt', label: t('portuguese'), flag: '/flags/brasil.png' },
+    { code: 'fr', label: t('france'), flag: '/flags/france.png' },
+    { code: 'zh', label: t('chine'), flag: '/flags/china.png' },
+    { code: 'es', label: t('spanish'), flag: '/flags/spain.png' },
   ];
 
   const currentLocale = locales.find(l => l.code === locale);
