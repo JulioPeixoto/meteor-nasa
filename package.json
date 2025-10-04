@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack --port 3333",
+    "dev": "next dev --port 3333",
+    "dev:turbo": "next dev --turbopack --port 3333",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -12,12 +13,11 @@
   "dependencies": {
     "@react-three/drei": "^10.7.6",
     "@react-three/fiber": "^9.3.0",
-    "class-variance-authority": "^0.7.1",
     "next": "^15.0.2",
     "next-auth": "^4.24.11",
     "next-intl": "^4.3.9",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "three": "^0.180.0"
   },
   "devDependencies": {

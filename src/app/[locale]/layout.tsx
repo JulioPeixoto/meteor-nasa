@@ -2,6 +2,8 @@ import { NextIntlClientProvider } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { i18n } from '../../../i18n/request';
 import Header from '@/components/Header';
+import { AuthProvider } from '@/components/auth/auth-provider';
+import { AuthGuard } from '@/components/auth/auth-guard';
 
 export function generateStaticParams() {
   return i18n.locales.map((locale) => ({ locale }));
@@ -19,12 +21,16 @@ export default async function LocaleLayout(props: {
   const messages = (await import(`../../messages/${locale}.json`)).default;
 
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body>
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          <Header locale={locale} />
-          {children}
-        </NextIntlClientProvider>
+        <AuthProvider>
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            <AuthGuard>
+              <Header locale={locale} />
+              {children}
+            </AuthGuard>
+          </NextIntlClientProvider>
+        </AuthProvider>
       </body>
     </html>
   );
