@@ -32,7 +32,7 @@ export default function Header({ locale }: { locale: string }) {
       <div className="flex items-center gap-4">
         <LogoutButton />
         
-        <div className="relative">
+        <div className="relative z-50">
         <button
           onClick={() => setOpen(!open)}
           className="flex items-center gap-2 px-3 py-2 bg-main border-2 border-border rounded-base shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
@@ -50,7 +50,7 @@ export default function Header({ locale }: { locale: string }) {
         </button>
 
         {open && (
-          <ul className="absolute right-0 mt-2 w-40 bg-secondary-background border-2 border-border rounded-base shadow-shadow">
+          <ul className="absolute right-0 mt-2 w-40 bg-secondary-background border-2 border-border rounded-base shadow-shadow z-50">
             {locales.map(({ code, label, flag }) => (
               <li key={code}>
                 <Link
