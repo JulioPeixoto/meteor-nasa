@@ -3,7 +3,7 @@
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 
-import { AuthPageLayout } from "@/components/custom/auth-page-layout";
+import { AuthPageLayout } from "@/components/auth/auth-page-layout";
 import { LogoGoogle, LoaderIcon } from "@/components/custom/icons";
 import { Button } from "@/components/ui/temp-button";
 
