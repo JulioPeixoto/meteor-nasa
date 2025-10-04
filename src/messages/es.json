@@ -1,0 +1,25 @@
+{
+  "app": {
+    "title": "Locura de Meteoritos",
+    "subtitle": "Visualización de Objetos Cercanos a la Tierra con React Three Fiber"
+  },
+  "header": {
+    "language": "Idioma",
+    "english": "Inglés",
+    "portuguese": "Portugués",
+    "spanish": "Español",
+    "france": "Francés",
+    "chine": "Chino",
+    "switch": "Cambiar a {lang}"
+  },
+  "sections": {
+    "asteroid": "Prueba de Visualización 3D del Asteroide",
+    "instructions": "Usa el ratón para rotar, hacer zoom y mover la escena 3D",
+    "neoDataTitle": "Datos NEO",
+    "neoDataText": "Datos en tiempo real del Servicio de Objetos Cercanos a la Tierra de la NASA",
+    "impactTitle": "Simulación de Impacto",
+    "impactText": "Calcula zonas de impacto y estimaciones de daños",
+    "visualizationTitle": "Visualización 3D",
+    "visualizationText": "Representación 3D interactiva de asteroides y trayectorias"
+  }
+}
