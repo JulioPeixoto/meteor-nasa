@@ -18,15 +18,15 @@ function LoginForm() {
   return (
     <div>
       <div className="mb-5 sm:mb-6">
-        <h1 className="text-xl sm:text-2xl font-semibold mb-2 text-gray-900">
+        <h1 className="text-xl sm:text-2xl font-heading mb-2 text-white">
           Entrar
         </h1>
       </div>
 
       <Button
         type="button"
-        variant="outline"
-        className="w-full h-11 sm:h-12 border border-gray-200 rounded-lg font-medium hover:bg-gray-50 bg-transparent text-sm sm:text-base"
+        variant="default"
+        className="w-full h-11 sm:h-12 font-base text-sm sm:text-base"
         onClick={handleGoogleLogin}
         disabled={googleLoading}
         aria-busy={googleLoading}

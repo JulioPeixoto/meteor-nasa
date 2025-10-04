@@ -17,8 +17,8 @@ export default function RootLayout({
   const locale = params?.locale ?? 'en';
 
   return (
-    <html lang={locale}>
-      <body>{children}</body>
+    <html lang={locale} className="dark">
+      <body className="bg-background text-foreground font-base">{children}</body>
     </html>
   );
 }

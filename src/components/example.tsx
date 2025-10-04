@@ -118,7 +118,7 @@ function Scene({ asteroidData, showStars }: { asteroidData: AsteroidData; showSt
     <>
       <ambientLight intensity={1} />
       <pointLight position={[10, 10, 10]} intensity={4} />
-      <directionalLight position={[-10, 5, 5]} intensity={2.5} castShadow />
+      <directionalLight position={[-10, 5, 5]} intensity={2.5} castShadow />
 
       {asteroidData.isPotentiallyHazardous && (
         <pointLight position={[0, 0, 0]} color="#ff4400" intensity={dangerGlow} distance={10} />

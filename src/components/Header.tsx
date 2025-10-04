@@ -23,8 +23,8 @@ export default function Header({ locale }: { locale: string }) {
   const currentLocale = locales.find(l => l.code === locale);
 
   return (
-    <header className="flex justify-between items-center px-6 py-4 bg-slate-900 text-white relative">
-      <h1 className="flex items-center gap-2 text-xl font-bold">
+    <header className="flex justify-between items-center px-6 py-4 bg-gradient-to-r from-slate-900 to-slate-800 text-white relative border-b-2 border-border">
+      <h1 className="flex items-center gap-2 text-xl font-heading text-white">
         Meteor NASA
       </h1>
 
@@ -35,12 +35,12 @@ export default function Header({ locale }: { locale: string }) {
         <div className="relative">
         <button
           onClick={() => setOpen(!open)}
-          className="flex items-center gap-2 px-3 py-2 bg-slate-700 rounded-md hover:bg-slate-600 cursor-pointer"
+          className="flex items-center gap-2 px-3 py-2 bg-main border-2 border-border rounded-base shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
         >
           <Image src={currentLocale?.flag || '/flags/united-states.png'} alt={currentLocale?.label || 'lang'} width={20} height={20} />
-          <span>{currentLocale?.label}</span>
+          <span className="text-main-foreground font-base">{currentLocale?.label}</span>
           <svg
-            className={`w-4 h-4 transform transition-transform ${open ? 'rotate-180' : ''}`}
+            className={`w-4 h-4 transform transition-transform text-main-foreground ${open ? 'rotate-180' : ''}`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -50,18 +50,18 @@ export default function Header({ locale }: { locale: string }) {
         </button>
 
         {open && (
-          <ul className="absolute right-0 mt-2 w-40 bg-slate-800 border border-slate-700 rounded-md shadow-lg">
+          <ul className="absolute right-0 mt-2 w-40 bg-secondary-background border-2 border-border rounded-base shadow-shadow">
             {locales.map(({ code, label, flag }) => (
               <li key={code}>
                 <Link
                   href={`/${code}${pathname.replace(`/${locale}`, '')}`}
-                  className={`flex items-center gap-2 px-3 py-2 hover:bg-slate-700 ${
-                    code === locale ? 'bg-slate-700' : ''
+                  className={`flex items-center gap-2 px-3 py-2 hover:bg-main hover:text-main-foreground transition-all ${
+                    code === locale ? 'bg-main text-main-foreground' : 'text-foreground'
                   }`}
                   onClick={() => setOpen(false)}
                 >
                   <Image src={flag} alt={label} width={20} height={20} />
-                  {label}
+                  <span className="font-base">{label}</span>
                 </Link>
               </li>
             ))}
