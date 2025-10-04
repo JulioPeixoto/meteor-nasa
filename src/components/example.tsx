@@ -39,7 +39,7 @@ function Scene() {
 
 export function ThreeJSExample() {
   return (
-    <div className="w-full h-96 border-2 border-gray-300 rounded-lg overflow-hidden">
+    <div className="w-full h-[34rem] border-2 border-gray-300 rounded-lg overflow-hidden">
       <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
         <Scene />
       </Canvas>
