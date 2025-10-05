@@ -38,7 +38,7 @@ export default function FloatingForm({ onAsteroidSelect, onDateRangeChange }: Fl
   };
 
   return (
-    <Card className="left-0">
+    <Card className="left-0 w-full">
       <CardHeader>
         <CardTitle>Choose your parameters</CardTitle>
         <CardDescription>
@@ -47,11 +47,13 @@ export default function FloatingForm({ onAsteroidSelect, onDateRangeChange }: Fl
       </CardHeader>
 
       <CardContent className="flex flex-col gap-4">
-        <div className="flex items-start mx-auto p-2">
-          <CCalendar onRangeChange={handleRangeChange} />
+        <div className="w-full overflow-x-auto">
+          <div className="min-w-fit">
+            <CCalendar onRangeChange={handleRangeChange} />
+          </div>
         </div>
 
-        <div className="flex items-start">
+        <div className="w-full">
           <CFormFields 
             onMinDiameterChange={setMinDiameter}
             onMinVelocityChange={setMinVelocity}
@@ -60,18 +62,18 @@ export default function FloatingForm({ onAsteroidSelect, onDateRangeChange }: Fl
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button disabled={!dateRange}>
+            <Button disabled={!dateRange} className="w-full">
               Search Asteroids
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-lg">
+          <DialogContent className="sm:max-w-lg max-w-[95vw]">
             <DialogHeader>
               <DialogTitle>Asteroids List</DialogTitle>
               <DialogDescription>
                 Choose the asteroid you want to see more details about
               </DialogDescription>
             </DialogHeader>
-            <div className="-mx-6 max-h-[500px] overflow-y-auto px-6 text-sm">
+            <div className="max-h-[50vh] sm:max-h-[500px] overflow-y-auto px-2">
               {dateRange && (
                 <AsteroidList 
                   startDate={dateRange.start} 
@@ -84,7 +86,7 @@ export default function FloatingForm({ onAsteroidSelect, onDateRangeChange }: Fl
             </div>
             <DialogFooter>
               <DialogClose asChild>
-                <Button>Close</Button>
+                <Button className="w-full sm:w-auto">Close</Button>
               </DialogClose>
             </DialogFooter>
           </DialogContent>
