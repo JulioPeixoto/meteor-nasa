@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useParams } from "next/navigation";
 import {
   AlertTriangle,
   Shield,
@@ -10,9 +11,11 @@ import {
   Zap,
 } from "lucide-react";
 import {
-  useImpactCalculations,
+  computeImpactPhysics,
+  buildDamageZones,
   type ImpactCalculationParams,
-} from "./use-impact-calculations";
+} from "./utils/impact-calculations";
+import { Button } from "@/components/ui/button";
 
 type SidebarProps = ImpactCalculationParams & {
   isOpen?: boolean;
@@ -30,18 +33,166 @@ export function ImpactConsequencesSidebar({
   isOpen = true,
   onClose,
 }: SidebarProps) {
-  const [activeSection, setActiveSection] = useState<"consequences">("consequences");
+  const [activeSection, setActiveSection] = useState<"consequences" | "chat">(
+    "consequences"
+  );
   const [expandedZone, setExpandedZone] = useState<number | null>(null);
 
-  const calculations = useImpactCalculations({
-    diameter,
-    speed,
-    impactAngle,
-    location,
-    density,
-    latitude,
-    longitude,
-  });
+  const results = computeImpactPhysics({ diameter, speed, impactAngle, location, density });
+  const damageZones = buildDamageZones({ diameter, speed, impactAngle, location, density, latitude, longitude }, results);
+
+  // Chat state
+  type ChatMessage = { role: "user" | "assistant"; content: string };
+  const params = useParams();
+  const locale = (params?.locale as string) || "pt";
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+  const [chatInput, setChatInput] = useState("");
+  const [sending, setSending] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(false);
+  const [chatError, setChatError] = useState<string | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatMessages, sending, isStreaming]);
+
+  // Initialize a session with current consequences once when Chat tab opens
+  useEffect(() => {
+    const initSession = async () => {
+      try {
+        const res = await fetch('/api/mitigation-chat/session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            locale,
+            consequences: buildConsequencesPayload(),
+          }),
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data?.sessionId) setSessionId(data.sessionId);
+      } catch {}
+    };
+
+    if (activeSection === 'chat' && !sessionId) {
+      initSession();
+    }
+  }, [activeSection]);
+
+  const buildConsequencesPayload = () => {
+    return (damageZones || []).map((z) => ({
+      name: z.name,
+      severity: z.severity,
+      radiusKm: z.radiusKm,
+      casualties: z.casualties,
+      description: z.description,
+    }));
+  };
+
+  const sendMessage = async () => {
+    if (!chatInput.trim() || sending) return;
+    setSending(true);
+    setChatError(null);
+
+    const userText = chatInput.trim();
+    const historyBefore = [...chatMessages];
+
+    // Add user + placeholder assistant
+    setChatMessages([
+      ...historyBefore,
+      { role: "user", content: userText },
+      { role: "assistant", content: "" },
+    ]);
+    setChatInput("");
+
+    try {
+      // cancel previous stream if any
+      abortRef.current?.abort();
+      const controller = new AbortController();
+      abortRef.current = controller;
+      setIsStreaming(true);
+
+      const res = await fetch("/api/mitigation-chat/stream", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "text/event-stream" },
+        body: JSON.stringify({
+          message: userText,
+          history: historyBefore,
+          sessionId,
+          locale,
+        }),
+        signal: controller.signal,
+      });
+
+      if (!res.ok || !res.body) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err?.error || `Erro ${res.status}`);
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let receivedAny = false;
+
+      let doneStreaming = false;
+      while (!doneStreaming) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+
+        // Process all complete SSE events in the buffer
+        let sepIndex = buffer.indexOf("\n\n");
+        while (sepIndex !== -1) {
+          const eventBlock = buffer.slice(0, sepIndex);
+          buffer = buffer.slice(sepIndex + 2);
+
+          const lines = eventBlock.split("\n");
+          const dataLine = lines.find((l) => l.startsWith("data:"));
+          if (dataLine) {
+            const data = dataLine.slice(5).trim();
+            if (data === "[DONE]") {
+              doneStreaming = true;
+              break;
+            }
+          try {
+            const token = JSON.parse(data);
+            if (typeof token === "string" && token.length > 0) {
+              setChatMessages((prev) => {
+                const copy = [...prev];
+                const last = copy[copy.length - 1];
+                if (last && last.role === "assistant") {
+                  copy[copy.length - 1] = {
+                    role: "assistant",
+                    content: last.content + token,
+                  };
+                }
+                return copy;
+              });
+              receivedAny = true;
+            }
+          } catch {
+            // Ignore non-JSON payloads
+          }
+          }
+
+          sepIndex = buffer.indexOf("\n\n");
+        }
+      }
+    } catch (e: any) {
+      setChatError(e?.message || "Falha ao enviar mensagem");
+      // rollback assistant placeholder
+      setChatMessages(historyBefore);
+    } finally {
+      setSending(false);
+      setIsStreaming(false);
+    }
+  };
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
@@ -78,7 +229,9 @@ export function ImpactConsequencesSidebar({
             </div>
             <div>
               <h2 className="text-lg font-heading text-main-foreground">
-                ANÁLISE DE IMPACTO
+                {activeSection === "consequences"
+                  ? "ANÁLISE DE IMPACTO"
+                  : "CHAT DE MITIGAÇÃO"}
               </h2>
               <p className="text-sm text-main-foreground/80">
                 Sistema de Prevenção
@@ -88,48 +241,69 @@ export function ImpactConsequencesSidebar({
         </div>
       </div>
 
-
-      {/* Impact Summary - Always visible */}
-      <div className="p-4 bg-white border-b-4 border-border">
-        <h3 className="font-heading text-black mb-3 flex items-center gap-2">
-          <Target className="w-4 h-4 text-black" />
-          PARÂMETROS DO IMPACTO
-        </h3>
-
-        <div className="grid grid-cols-2 gap-2 text-sm">
-          <div className="p-2 bg-gray-100 border-2 border-border">
-            <div className="text-xs text-gray-600">Diâmetro</div>
-            <div className="font-bold text-black">{diameter}m</div>
-          </div>
-          <div className="p-2 bg-gray-100 border-2 border-border">
-            <div className="text-xs text-gray-600">Velocidade</div>
-            <div className="font-bold text-black">{(speed/1000).toFixed(1)} km/s</div>
-          </div>
-          <div className="p-2 bg-gray-100 border-2 border-border">
-            <div className="text-xs text-gray-600">Energia</div>
-            <div className="font-bold text-black">
-              {formatNumber(calculations.yieldKT)} kt
-            </div>
-          </div>
-          <div className="p-2 bg-gray-100 border-2 border-border">
-            <div className="text-xs text-gray-600">Cratera</div>
-            <div className="font-bold text-black">
-              {Math.round(calculations.craterDiameter)}m
-            </div>
-          </div>
-        </div>
-
-        {/* Energy Comparison */}
-        <div className="mt-3 p-2 bg-yellow-100 border-2 border-yellow-600">
-          <div className="text-xs text-yellow-800 font-medium">
-            💣 Equivalente a {Math.round(calculations.yieldKT / 15)} bombas de
-            Hiroshima
-          </div>
-        </div>
+      {/* Tabs */}
+      <div className="p-2 bg-white border-b-4 border-border flex gap-2">
+        <button
+          onClick={() => setActiveSection("consequences")}
+          className={`flex-1 h-9 text-sm border-2 border-border shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all ${
+            activeSection === "consequences"
+              ? "bg-main text-main-foreground"
+              : "bg-secondary-background text-foreground hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          }`}
+        >
+          Análise
+        </button>
+        <button
+          onClick={() => setActiveSection("chat")}
+          className={`flex-1 h-9 text-sm border-2 border-border shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all ${
+            activeSection === "chat"
+              ? "bg-main text-main-foreground"
+              : "bg-secondary-background text-foreground hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          }`}
+        >
+          Chat
+        </button>
       </div>
 
+
+      {/* Impact Summary - visible only on Análise */}
+      {activeSection === "consequences" && (
+        <div className="p-4 bg-white border-b-4 border-border">
+          <h3 className="font-heading text-black mb-3 flex items-center gap-2">
+            <Target className="w-4 h-4 text-black" />
+            PARÂMETROS DO IMPACTO
+          </h3>
+
+          <div className="grid grid-cols-2 gap-2 text-sm">
+            <div className="p-2 bg-gray-100 border-2 border-border">
+              <div className="text-xs text-gray-600">Diâmetro</div>
+              <div className="font-bold text-black">{diameter}m</div>
+            </div>
+            <div className="p-2 bg-gray-100 border-2 border-border">
+              <div className="text-xs text-gray-600">Velocidade</div>
+              <div className="font-bold text-black">{(speed / 1000).toFixed(1)} km/s</div>
+            </div>
+            <div className="p-2 bg-gray-100 border-2 border-border">
+              <div className="text-xs text-gray-600">Energia</div>
+              <div className="font-bold text-black">{formatNumber(results.yieldKT)} kt</div>
+            </div>
+            <div className="p-2 bg-gray-100 border-2 border-border">
+              <div className="text-xs text-gray-600">Cratera</div>
+              <div className="font-bold text-black">{Math.round(results.craterDiameter)}m</div>
+            </div>
+          </div>
+
+          {/* Energy Comparison */}
+          <div className="mt-3 p-2 bg-yellow-100 border border-yellow-400 rounded">
+            <div className="text-xs text-yellow-800 font-medium">
+              💣 Equivalente a {Math.round(results.yieldKT / 15)} bombas de Hiroshima
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Tsunami Alert */}
-      {location === "ocean" && calculations.tsunamiHeight && (
+      {activeSection === "consequences" && location === "ocean" && results.tsunamiHeight && (
         <div className="p-4 bg-blue-500 border-b-4 border-border">
           <div className="flex items-center gap-2 text-white mb-2">
             <div className="w-6 h-6 bg-white/20 rounded flex items-center justify-center">
@@ -141,7 +315,7 @@ export function ImpactConsequencesSidebar({
             <div className="flex justify-between items-center mb-1">
               <span>Altura das ondas:</span>
               <span className="font-bold">
-                {Math.round(calculations.tsunamiHeight)}m
+                {Math.round(results.tsunamiHeight)}m
               </span>
             </div>
             <div className="p-2 bg-white/20 border-2 border-white/40 font-medium text-center">
@@ -162,7 +336,7 @@ export function ImpactConsequencesSidebar({
             </h3>
 
             <div className="space-y-3">
-              {calculations.damageZones.map((zone, index) => (
+              {damageZones.map((zone, index) => (
                 <div key={index}>
                   <button
                     onClick={() =>
@@ -217,6 +391,83 @@ export function ImpactConsequencesSidebar({
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* Chat Section */}
+        {activeSection === "chat" && (
+          <div className="p-4">
+            <h3 className="font-heading text-foreground mb-3 flex items-center gap-2">
+              <Zap className="w-5 h-5" />
+              Chat de Mitigação
+            </h3>
+
+            {/* Chat Messages Area */}
+            <div className="h-[60vh] min-h-[260px] overflow-y-auto border-2 border-border bg-white p-3 mb-3 rounded-base shadow-shadow">
+              {chatMessages.length === 0 && (
+                <div className="mb-3">
+                  <div className="text-[10px] uppercase text-gray-800 font-bold mb-1 bg-gray-300 px-2 py-1 rounded inline-block">
+                    Assistente
+                  </div>
+                  <div className="text-sm p-3 border-2 border-border rounded-base bg-secondary-background text-foreground whitespace-pre-wrap">
+                    Faça perguntas sobre estratégias de mitigação com base nas consequências acima (ex.: evacuação, abrigos, prioridades por zona).
+                  </div>
+                </div>
+              )}
+              {chatMessages.map((m, i) => (
+                <div key={i} className="mb-3">
+                  <div className={`text-[10px] uppercase font-bold mb-1 px-2 py-1 rounded inline-block ${
+                    m.role === "user" 
+                      ? "text-blue-800 bg-blue-100" 
+                      : "text-gray-800 bg-gray-100"
+                  }`}>
+                    {m.role === "user" ? "Você" : "Assistente"}
+                  </div>
+                  <div
+                    className={`text-sm p-3 border-2 border-border rounded-base whitespace-pre-wrap ${
+                      m.role === "user"
+                        ? "bg-blue-50 text-gray-900 border-blue-200"
+                        : "bg-secondary-background text-foreground"
+                    }`}
+                  >
+                    {m.content}
+                  </div>
+                </div>
+              ))}
+
+              <div ref={messagesEndRef} />
+            </div>
+
+            {/* Input Area - Corrigido espaçamento */}
+            <div className="flex gap-2">
+              <textarea
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+                placeholder="Pergunte como mitigar os efeitos..."
+                className="flex-1 min-h-[48px] max-h-32 resize-none rounded-base border-2 border-border bg-secondary-background text-foreground placeholder:text-foreground/60 px-3 py-2 text-sm font-base focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                  }
+                }}
+              />
+              <Button
+                onClick={sendMessage}
+                disabled={sending}
+                variant="default"
+                size="default"
+                className="h-12 px-4"
+              >
+                {sending ? "Enviando..." : "Enviar"}
+              </Button>
+            </div>
+
+            {chatError && (
+              <div className="mt-2 text-xs text-red-800 bg-red-100 border-2 border-red-400 p-2 rounded">
+                {chatError}
+              </div>
+            )}
           </div>
         )}
       </div>
