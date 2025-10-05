@@ -2,7 +2,6 @@
 
 import { signOut } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
-import { Button } from '@/components/ui/temp-button'
 import { ExitIcon } from '@/components/custom/icons'
 
 export function LogoutButton({ className }: { className?: string }) {

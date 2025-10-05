@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Card, CardHeader, CardDescription, CardContent, CardTitle } from "@/components/ui/card"
 import CCalendar from "@/components/c-calendar"
 import CFormFields from "@/components/c-form-fields"
@@ -22,6 +23,7 @@ interface FloatingFormProps {
 }
 
 export default function FloatingForm({ onAsteroidSelect, onDateRangeChange }: FloatingFormProps) {
+  const t = useTranslations('form');
   const [dateRange, setDateRange] = useState<{ start: string; end: string } | null>(null);
   const [minDiameter, setMinDiameter] = useState<number | undefined>()
   const [minVelocity, setMinVelocity] = useState<number | undefined>()
@@ -40,9 +42,9 @@ export default function FloatingForm({ onAsteroidSelect, onDateRangeChange }: Fl
   return (
     <Card className="left-0 w-full">
       <CardHeader>
-        <CardTitle>Choose your parameters</CardTitle>
+        <CardTitle>{t('chooseParameters')}</CardTitle>
         <CardDescription>
-          Choose your parameters to see the impact of the asteroid on the Earth.
+          {t('chooseParametersDesc')}
         </CardDescription>
       </CardHeader>
 
@@ -63,14 +65,14 @@ export default function FloatingForm({ onAsteroidSelect, onDateRangeChange }: Fl
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button disabled={!dateRange} className="w-full">
-              Search Asteroids
+              {t('searchAsteroids')}
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-lg max-w-[95vw]">
             <DialogHeader>
-              <DialogTitle>Asteroids List</DialogTitle>
+              <DialogTitle>{t('asteroidsList')}</DialogTitle>
               <DialogDescription>
-                Choose the asteroid you want to see more details about
+                {t('asteroidsListDesc')}
               </DialogDescription>
             </DialogHeader>
             <div className="max-h-[50vh] sm:max-h-[500px] overflow-y-auto px-2">
@@ -86,7 +88,7 @@ export default function FloatingForm({ onAsteroidSelect, onDateRangeChange }: Fl
             </div>
             <DialogFooter>
               <DialogClose asChild>
-                <Button className="w-full sm:w-auto">Close</Button>
+                <Button className="w-full sm:w-auto">{t('close')}</Button>
               </DialogClose>
             </DialogFooter>
           </DialogContent>

@@ -1,6 +1,5 @@
 {
   "app": {
-    "title": "Meteor Madness",
     "subtitle": "NASA Near Earth Object Visualization with React Three Fiber"
   },
   "header": {
@@ -11,7 +10,8 @@
     "france": "France",
     "chine": "Chine",
     "switch": "Switch to {lang}",
-    "logout": "Logout"
+    "logout": "Logout",
+    "italian": "Italian"
   },
   "sections": {
     "asteroid": "3D Asteroid Visualization Test",
@@ -116,7 +116,8 @@
     "typing": "Typing...",
     "inputPlaceholder": "Ask how to mitigate the effects...",
     "send": "Send",
-    "sending": "Sending..."
+    "sending": "Sending...",
+    "sendMessageFailed": "Failed to send message"
   },
   "presentation": {
     "hero": {
@@ -144,5 +145,176 @@
       "cta": "Start Simulation"
     },
     "footer": "© {year} Asteroid Impact Lab. All rights reserved."
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "close": "Close",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "search": "Search",
+    "filter": "Filter",
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page",
+    "of": "of",
+    "found": "found",
+    "foundPlural": "found",
+    "noResults": "No results found",
+    "retry": "Retry",
+    "back": "Back",
+    "continue": "Continue",
+    "finish": "Finish"
+  },
+  "auth": {
+    "welcome": "Hello, {name}",
+    "loading": "Loading...",
+    "unauthorized": "User not authenticated, redirecting to login",
+    "redirecting": "Authenticated user trying to access login, redirecting"
+  },
+  "asteroidList": {
+    "loading": "Loading...",
+    "error": "Error fetching asteroids.",
+    "noResults": "No asteroids found in this period.",
+    "noResultsFiltered": "No asteroids found with the applied filters.",
+    "errorDetails": "Error fetching asteroid details:",
+    "found": "found",
+    "foundPlural": "found",
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page",
+    "of": "of",
+    "meters": "m",
+    "kmPerSecond": "km/s"
+  },
+  "form": {
+    "chooseParameters": "Choose your parameters",
+    "chooseParametersDesc": "Choose your parameters to see the impact of the asteroid on the Earth.",
+    "searchAsteroids": "Search Asteroids",
+    "asteroidsList": "Asteroids List",
+    "asteroidsListDesc": "Choose the asteroid you want to see more details about",
+    "minimumDiameter": "Minimum Diameter (m)",
+    "minimumVelocity": "Minimum Velocity (km/s)",
+    "close": "Close"
+  },
+  "consequenceTypes": {
+    "crater": {
+      "title": "Impact Crater",
+      "description": "Formation of permanent crater at impact site",
+      "unit": "meters in diameter",
+      "measures": [
+        "Permanent exclusion zone",
+        "Continuous geological monitoring",
+        "Local population relocation"
+      ]
+    },
+    "tsunami": {
+      "title": "Tsunami",
+      "description": "Giant waves caused by oceanic impact",
+      "unit": "meters in height",
+      "measures": [
+        "Global tsunami warning system",
+        "Immediate evacuation of coastal areas",
+        "Construction of maritime barriers",
+        "Escape routes to high ground"
+      ]
+    },
+    "shockwave": {
+      "title": "Sonic Shockwave",
+      "description": "Extremely high pressure waves",
+      "unit": "decibels",
+      "measures": [
+        "Mandatory hearing protection",
+        "Soundproof shelters",
+        "Preventive evacuation within 50km radius"
+      ]
+    },
+    "wind": {
+      "title": "Destructive Winds",
+      "description": "Winds stronger than category 5 hurricanes",
+      "unit": "km/h",
+      "measures": [
+        "Anti-cyclone shelters",
+        "Securing mobile structures",
+        "Preventive power shutdown"
+      ]
+    },
+    "buildings": {
+      "title": "Building Collapse",
+      "description": "Destruction of urban structures",
+      "unit": "% destruction",
+      "measures": [
+        "Anti-seismic building codes",
+        "Structural reinforcement of critical buildings",
+        "Preventive structural inspection"
+      ]
+    },
+    "homes": {
+      "title": "Residential Damage",
+      "description": "Houses damaged or destroyed",
+      "unit": "% houses affected",
+      "measures": [
+        "Mandatory catastrophe insurance",
+        "Construction with resistant materials",
+        "Temporary relocation plans"
+      ]
+    },
+    "trees": {
+      "title": "Vegetation Destruction",
+      "description": "Trees knocked down on a large scale",
+      "unit": "% trees knocked down",
+      "measures": [
+        "Emergency reforestation programs",
+        "Protection of natural reserves",
+        "Soil erosion monitoring"
+      ]
+    },
+    "lung": {
+      "title": "Lung Damage",
+      "description": "Respiratory injuries from overpressure",
+      "unit": "% population affected",
+      "measures": [
+        "Emergency respiratory masks",
+        "Equipped field hospitals",
+        "First aid training"
+      ]
+    },
+    "ears": {
+      "title": "Eardrum Rupture",
+      "description": "Permanent hearing damage",
+      "unit": "% population affected",
+      "measures": [
+        "Distributed hearing protection",
+        "Specialized treatment centers",
+        "Visual communication equipment"
+      ]
+    },
+    "earthquake": {
+      "title": "Seismic Tremor",
+      "description": "Earthquake induced by impact",
+      "unit": "Richter magnitude",
+      "measures": [
+        "Real-time seismic monitoring",
+        "Seismic emergency protocols",
+        "Automatic shutdown of critical infrastructure"
+      ]
+    }
+  },
+  "errors": {
+    "sendMessageFailed": "Failed to send message",
+    "fetchAsteroidsFailed": "Error fetching asteroids",
+    "fetchAsteroidDetailsFailed": "Error fetching asteroid details",
+    "genericError": "An unexpected error occurred",
+    "networkError": "Connection error",
+    "timeoutError": "Timeout exceeded",
+    "unauthorizedError": "Unauthorized access"
+  },
+  "app": {
+    "title": "Meteor Mitigate",
+    "subtitle": "Asteroid Impact Visualization and Mitigation System"
   }
 }

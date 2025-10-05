@@ -42,8 +42,18 @@ export function ImpactConsequencesSidebar({
   const tImpact = useTranslations("impact");
   const tMitigationChat = useTranslations("mitigationChat");
 
+  // Wrapper function for translation with proper typing
+  const translate = (key: string, values?: Record<string, any>) => {
+    try {
+      return tImpact(key, values);
+    } catch (error) {
+      console.warn(`Translation key not found: ${key}`, error);
+      return key; // Fallback to key if translation fails
+    }
+  };
+
   const results = computeImpactPhysics({ diameter, speed, impactAngle, location, density });
-  const damageZones = buildDamageZones({ diameter, speed, impactAngle, location, density, latitude, longitude }, results);
+  const damageZones = buildDamageZones({ diameter, speed, impactAngle, location, density, latitude, longitude }, results, translate);
 
   const buildConsequencesPayload = useCallback(() => {
     return (damageZones || []).map((z) => ({
@@ -197,7 +207,7 @@ export function ImpactConsequencesSidebar({
         }
       }
     } catch (e: any) {
-      setChatError(e?.message || "Falha ao enviar mensagem");
+      setChatError(e?.message || tMitigationChat('sendMessageFailed'));
       // rollback to state before sending
       setChatMessages(historyBefore);
     } finally {
@@ -379,7 +389,7 @@ export function ImpactConsequencesSidebar({
                         )}
                       </div>
                       <h4 className="font-heading text-sm flex-1 text-left">
-                        {typeof zone.name === 'string' ? zone.name : tImpact(zone.name.key, zone.name.params)}
+                        {zone.name}
                       </h4>
                       <div className="text-current font-bold text-xs">
                         {zone.radiusKm.toFixed(1)}km
@@ -388,7 +398,7 @@ export function ImpactConsequencesSidebar({
 
                     <div className="mt-2 text-left">
                       <div className="text-xs opacity-90">
-                        {typeof zone.description === 'string' ? zone.description : tImpact(zone.description.key, zone.description.params)}
+                        {zone.description}
                       </div>
                       <div className="text-xs font-bold mt-1">
                         {(() => {
@@ -410,7 +420,7 @@ export function ImpactConsequencesSidebar({
                         {zone.preventionMeasures.map((measure, i) => (
                           <li key={i} className="flex items-start gap-2">
                             <span className="text-green-600 font-bold">•</span>
-                            {typeof measure === 'string' ? measure : tImpact(measure.key, measure.params)}
+                            {measure}
                           </li>
                         ))}
                       </ul>

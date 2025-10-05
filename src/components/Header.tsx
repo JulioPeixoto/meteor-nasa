@@ -18,6 +18,7 @@ export default function Header({ locale }: { locale: string }) {
     { code: 'fr', label: t('france'), flag: '/flags/france.png' },
     { code: 'zh', label: t('chine'), flag: '/flags/china.png' },
     { code: 'es', label: t('spanish'), flag: '/flags/spain.png' },
+    { code: 'it', label: t('italian'), flag: '/flags/italy.png' },
   ];
 
   const currentLocale = locales.find(l => l.code === locale);
@@ -25,7 +26,7 @@ export default function Header({ locale }: { locale: string }) {
   return (
     <header className="z-50 flex justify-between items-center px-6 py-4 bg-gradient-to-r from-slate-900 to-slate-800 text-white border-b-2 border-border">
       <h1 className="flex items-center gap-2 text-xl font-heading text-white">
-        Meteor Mitigate
+        NASA METEOR MITIGATE
       </h1>
 
       {/* Botão de logout e dropdown de idiomas */}

@@ -95,7 +95,8 @@ import { getPopulationByCoordinates } from '../population-estimation'
 
 export function buildDamageZones(
   params: ImpactCalculationParams,
-  results: ImpactResults
+  results: ImpactResults,
+  t: (key: string, values?: Record<string, any>) => string
 ): DamageZone[] {
   const { location, latitude, longitude } = params
   const { blastRadius, tsunamiHeight } = results
@@ -125,15 +126,15 @@ export function buildDamageZones(
   if (location === 'ocean' && tsunamiHeight) {
     zones.push(
       withPopulation({
-        name: 'Zona de Tsunami',
+        name: t('zones.tsunami.name'),
         radiusKm: Math.min(500, Math.sqrt(results.yieldKT) * 10),
         severity: 'catastrophic',
         casualties: 85,
-        description: `Ondas de ${Math.round(tsunamiHeight)}m atingindo costa`,
+        description: t('zones.tsunami.description', { height: Math.round(tsunamiHeight) }),
         preventionMeasures: [
-          'Evacuação imediata de áreas costeiras',
-          'Sistemas de alerta tsunami',
-          'Rotas para terrenos elevados',
+          t('zones.tsunami.measures.evacuation'),
+          t('zones.tsunami.measures.alerts'),
+          t('zones.tsunami.measures.routes'),
         ],
       })
     )
@@ -141,52 +142,70 @@ export function buildDamageZones(
 
   zones.push(
     withPopulation({
-      name: 'Zona de Vaporização',
+      name: t('zones.vaporization.name'),
       radiusKm: Math.max(0.05, baseRadius * 0.3),
       severity: 'catastrophic',
       casualties: 100,
-      description: 'Destruição instantânea e completa',
-      preventionMeasures: ['Evacuação obrigatória', 'Zona de exclusão permanente'],
+      description: t('zones.vaporization.description'),
+      preventionMeasures: [
+        t('zones.vaporization.measures.evacuation'),
+        t('zones.vaporization.measures.exclusion')
+      ],
     }),
     withPopulation({
-      name: 'Destruição Total',
+      name: t('zones.totalDestruction.name'),
       radiusKm: Math.max(0.1, baseRadius * 0.8),
       severity: 'catastrophic',
       casualties: 95,
-      description: 'Colapso completo de estruturas',
-      preventionMeasures: ['Evacuação completa', 'Desligamento de infraestrutura crítica'],
+      description: t('zones.totalDestruction.description'),
+      preventionMeasures: [
+        t('zones.totalDestruction.measures.evacuation'),
+        t('zones.totalDestruction.measures.infrastructure')
+      ],
     }),
     withPopulation({
-      name: 'Danos Severos',
+      name: t('zones.severeDamage.name'),
       radiusKm: Math.max(0.2, baseRadius * 1.5),
       severity: 'severe',
       casualties: 70,
-      description: 'Colapso de edifícios, ventos destrutivos',
-      preventionMeasures: ['Abrigos subterrâneos', 'Evacuação de prédios altos'],
+      description: t('zones.severeDamage.description'),
+      preventionMeasures: [
+        t('zones.severeDamage.measures.shelters'),
+        t('zones.severeDamage.measures.highBuildings')
+      ],
     }),
     withPopulation({
-      name: 'Danos Estruturais',
+      name: t('zones.structuralDamage.name'),
       radiusKm: Math.max(0.4, baseRadius * 2.5),
       severity: 'severe',
       casualties: 40,
-      description: 'Janelas quebradas, estruturas danificadas',
-      preventionMeasures: ['Proteção contra estilhaços', 'Reforço de estruturas críticas'],
+      description: t('zones.structuralDamage.description'),
+      preventionMeasures: [
+        t('zones.structuralDamage.measures.shrapnel'),
+        t('zones.structuralDamage.measures.criticalStructures')
+      ],
     }),
     withPopulation({
-      name: 'Danos Leves',
+      name: t('zones.lightDamage.name'),
       radiusKm: Math.max(0.8, baseRadius * 4.0),
       severity: 'moderate',
       casualties: 10,
-      description: 'Danos auditivos, janelas quebradas',
-      preventionMeasures: ['Proteção auditiva', 'Primeiros socorros'],
+      description: t('zones.lightDamage.description'),
+      preventionMeasures: [
+        t('zones.lightDamage.measures.hearing'),
+        t('zones.lightDamage.measures.firstAid')
+      ],
     }),
     withPopulation({
-      name: 'Área de Alerta',
+      name: t('zones.alertArea.name'),
       radiusKm: Math.max(1.5, baseRadius * 6.0),
       severity: 'light',
       casualties: 1,
-      description: 'Tremores e ruído intenso',
-      preventionMeasures: ['Alertas à população', 'Preparação para evacuação'],
+      description: t('zones.alertArea.description'),
+      preventionMeasures: [
+        t('zones.alertArea.measures.alerts'),
+        t('zones.alertArea.measures.evacuationPrep')
+      ],
     })
   )
 

@@ -120,7 +120,7 @@ export function MitigationChat({ zones, isOpen = true, className }: MitigationCh
         }
       }
     } catch (e: any) {
-      setChatError(e?.message || "Falha ao enviar mensagem");
+      setChatError(e?.message || t('mitigationChat.sendMessageFailed'));
       setChatMessages(historyBefore);
     } finally {
       setSending(false);
