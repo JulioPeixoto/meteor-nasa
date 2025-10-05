@@ -323,20 +323,7 @@ export function ThreeJSExample({
 }: MeteorProps) {
   const [isColliding, setIsColliding] = useState(false);
   
-  // Dados padrão do asteroide para sempre mostrar na página principal
   const defaultAsteroidData: AsteroidData = {
-    name: 'Asteroide Padrão',
-    estimated_diameter_min: 50,
-    estimated_diameter_max: 100,
-    absolute_magnitude_h: 22.5,
-    is_potentially_hazardous_asteroid: false,
-    relative_velocity: {
-      kilometers_per_second: '15.5',
-      kilometers_per_hour: '55800'
-    },
-    close_approach_date: '2024-12-25',
-    close_approach_date_full: '2024-Dec-25 14:30',
-    composition: 'rocky',
     textureUrl: '/textures/meteor/Rock031_2K-JPG_Color.jpg',
     normalMapUrl: '/textures/meteor/Rock031_2K-JPG_NormalGL.jpg',
     roughnessMapUrl: '/textures/meteor/Rock031_2K-JPG_Roughness.jpg',
@@ -367,50 +354,56 @@ export function ThreeJSExample({
   return (
     <div className="w-full space-y-4 text-white">
       <div className="p-4 rounded-lg border border-white/10">
-        <>
-          <h3 className="text-white text-lg font-bold mb-2">{asteroidData.name}</h3>
-          <div className="grid grid-cols-2 gap-3 text-sm">
-            {asteroidData.estimated_diameter_min && (
-              <div className="text-gray-300">
-                <span className="font-semibold text-gray-400">Diâmetro Mínimo:</span>{' '}
-                {asteroidData.estimated_diameter_min.toFixed(2)} m
-              </div>
-            )}
-            {asteroidData.estimated_diameter_max && (
-              <div className="text-gray-300">
-                <span className="font-semibold text-gray-400">Diâmetro Máximo:</span>{' '}
-                {asteroidData.estimated_diameter_max.toFixed(2)} m
-              </div>
-            )}
-            {asteroidData.composition && (
-              <div className="text-gray-300">
-                <span className="font-semibold text-gray-400">Tipo:</span> {asteroidData.composition}
-              </div>
-            )}
-            {asteroidData.absolute_magnitude_h && (
-              <div className="text-gray-300">
-                <span className="font-semibold text-gray-400">Magnitude:</span> {asteroidData.absolute_magnitude_h.toFixed(1)}
-              </div>
-            )}
-            {asteroidData.relative_velocity?.kilometers_per_second && (
-              <div className="text-gray-300">
-                <span className="font-semibold text-gray-400">Velocidade Mínima:</span>{' '}
-                {parseFloat(asteroidData.relative_velocity.kilometers_per_second).toFixed(2)} km/s
-              </div>
-            )}
-            {asteroidData.relative_velocity?.kilometers_per_second && (
-              <div className="text-gray-300">
-                <span className="font-semibold text-gray-400">Velocidade Max:</span>{' '}
-                {parseFloat(asteroidData.relative_velocity.kilometers_per_second).toLocaleString('pt-BR', { maximumFractionDigits: 0 })} km/s
-              </div>
-            )}
-            {asteroidData.close_approach_date && (
-              <div className="text-gray-300 col-span-2">
-                <span className="font-semibold text-gray-400">Data de Aproximação:</span> {asteroidData.close_approach_date}
-              </div>
-            )}
+        {asteroidData.name ? (
+          <>
+            <h3 className="text-white text-lg font-bold mb-2">{asteroidData.name}</h3>
+            <div className="grid grid-cols-2 gap-3 text-sm">
+              {asteroidData.estimated_diameter_min && (
+                <div className="text-gray-300">
+                  <span className="font-semibold text-gray-400">Diâmetro Mínimo:</span>{' '}
+                  {asteroidData.estimated_diameter_min.toFixed(2)} m
+                </div>
+              )}
+              {asteroidData.estimated_diameter_max && (
+                <div className="text-gray-300">
+                  <span className="font-semibold text-gray-400">Diâmetro Máximo:</span>{' '}
+                  {asteroidData.estimated_diameter_max.toFixed(2)} m
+                </div>
+              )}
+              {asteroidData.composition && (
+                <div className="text-gray-300">
+                  <span className="font-semibold text-gray-400">Tipo:</span> {asteroidData.composition}
+                </div>
+              )}
+              {asteroidData.absolute_magnitude_h && (
+                <div className="text-gray-300">
+                  <span className="font-semibold text-gray-400">Magnitude:</span> {asteroidData.absolute_magnitude_h.toFixed(1)}
+                </div>
+              )}
+              {asteroidData.relative_velocity?.kilometers_per_second && (
+                <div className="text-gray-300">
+                  <span className="font-semibold text-gray-400">Velocidade Mínima:</span>{' '}
+                  {parseFloat(asteroidData.relative_velocity.kilometers_per_second).toFixed(2)} km/s
+                </div>
+              )}
+              {asteroidData.relative_velocity?.kilometers_per_second && (
+                <div className="text-gray-300">
+                  <span className="font-semibold text-gray-400">Velocidade Max:</span>{' '}
+                  {parseFloat(asteroidData.relative_velocity.kilometers_per_second).toLocaleString('pt-BR', { maximumFractionDigits: 0 })} km/s
+                </div>
+              )}
+              {asteroidData.close_approach_date && (
+                <div className="text-gray-300 col-span-2">
+                  <span className="font-semibold text-gray-400">Data de Aproximação:</span> {asteroidData.close_approach_date}
+                </div>
+              )}
+            </div>
+          </>
+        ) : (
+          <div className="text-center text-gray-400 py-4">
+            <p className="text-sm">Select an asteroid to see more information</p>
           </div>
-        </>
+        )}
       </div>
       <div className="w-full h-[55vh] border-2 border-gray-500 rounded-lg overflow-hidden bg-black relative">
         <Canvas camera={{ position: [0, 0, cameraDistance], fov: 60 }} shadows>
