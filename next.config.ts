@@ -3,13 +3,10 @@ import createNextIntlPlugin from 'next-intl/plugin'
 
 const nextConfig: NextConfig = {
   experimental: {
-    turbo: {}  // isso ajuda em Next 15 com o plugin do next-intl
+    turbo: {}
   }
 }
 
-const withNextIntl = createNextIntlPlugin({
-  // se renomear ou mover o arquivo de config, especifique aqui:
-  // default: './i18n/request.ts'
-})
+const withNextIntl = createNextIntlPlugin('./i18n/request.ts')
 
 export default withNextIntl(nextConfig)

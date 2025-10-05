@@ -21,5 +21,100 @@
     "impactText": "计算撞击区域和损害估计",
     "visualizationTitle": "3D 可视化",
     "visualizationText": "小行星和轨迹的交互式 3D 表示"
+  },
+  "impact": {
+    "title": "撞击分析",
+    "subtitle": "预防系统",
+    "analysisTab": "分析",
+    "paramsTitle": "撞击参数",
+    "diameter": "直径",
+    "speed": "速度",
+    "energy": "能量",
+    "crater": "陨石坑",
+    "energyEquivalent": "相当于 {bombs} 颗广岛原子弹",
+    "tsunamiAlert": "海啸警报",
+    "waveHeight": "海浪高度：",
+    "coastalEvacuation": "立即撤离沿海地区",
+    "consequenceZones": "后果区域",
+    "zones": {
+      "tsunami": {
+        "name": "海啸区",
+        "description": "{height}米高的海浪冲击海岸",
+        "measures": {
+          "evacuation": "立即撤离沿海地区",
+          "alerts": "海啸预警系统",
+          "routes": "前往高地路线"
+        }
+      },
+      "vaporization": {
+        "name": "汽化区",
+        "description": "瞬间完全摧毁",
+        "measures": {
+          "evacuation": "强制疏散",
+          "exclusion": "永久禁区"
+        }
+      },
+      "totalDestruction": {
+        "name": "完全摧毁",
+        "description": "结构完全坍塌",
+        "measures": {
+          "evacuation": "完全疏散",
+          "infrastructure": "关键基础设施关闭"
+        }
+      },
+      "severeDamage": {
+        "name": "严重损害",
+        "description": "建筑物倒塌，破坏性大风",
+        "measures": {
+          "shelters": "地下避难所",
+          "highBuildings": "高层建筑疏散"
+        }
+      },
+      "structuralDamage": {
+        "name": "结构损害",
+        "description": "窗户破碎，结构受损",
+        "measures": {
+          "shrapnel": "防碎片保护",
+          "criticalStructures": "关键结构加固"
+        }
+      },
+      "lightDamage": {
+        "name": "轻微损害",
+        "description": "听力损伤，窗户破碎",
+        "measures": {
+          "hearing": "听力保护",
+          "firstAid": "急救"
+        }
+      },
+      "alertArea": {
+        "name": "警报区",
+        "description": "震动和强烈噪音",
+        "measures": {
+          "alerts": "人口警报",
+          "evacuationPrep": "疏散准备"
+        }
+      }
+    },
+    "preventionMeasures": "预防措施：",
+    "estimatedCasualties": "预计伤亡 {percent}%",
+    "footer": {
+      "educational": "⚠️ 教育模拟",
+      "note": "基于简化的科学模型",
+      "realEmergency": "实际紧急情况：请遵循地方当局的指示",
+      "sources": "来源：NASA、ESA、Collins 等"
+    }
+  },
+  "mitigationChat": {
+    "title": "缓解聊天",
+    "subtitle": "策略助手",
+    "conversation": "对话",
+    "chatTab": "聊天",
+    "placeholder": "询问有关缓解措施（疏散、避难所、区域优先级）的问题。影响上下文已加载。",
+    "assistantLabel": "助手",
+    "youLabel": "您",
+    "typing": "正在输入...",
+    "inputPlaceholder": "询问如何减轻影响...",
+    "send": "发送",
+    "sending": "正在发送..."
   }
 }

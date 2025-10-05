@@ -16,18 +16,26 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 
-export default function FloatingForm() {
-  const [dateRange, setDateRange] = useState<{ start: string; end: string } | null>(null)
+interface FloatingFormProps {
+    onAsteroidSelect: (asteroidData: any) => void;
+    onDateRangeChange: (range: { start: string; end: string } | null) => void;
+}
+
+export default function FloatingForm({ onAsteroidSelect, onDateRangeChange }: FloatingFormProps) {
+  const [dateRange, setDateRange] = useState<{ start: string; end: string } | null>(null);
   const [minDiameter, setMinDiameter] = useState<number | undefined>()
   const [minVelocity, setMinVelocity] = useState<number | undefined>()
-  const [selectedAsteroid, setSelectedAsteroid] = useState<any>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   const handleAsteroidSelect = (asteroidData: any) => {
-    console.log('Asteroide selecionado:', asteroidData)
-    setSelectedAsteroid(asteroidData)
+    onAsteroidSelect(asteroidData)
     setIsDialogOpen(false) 
   }
+
+  const handleRangeChange = (range: { start: string; end: string } | null) => {
+    setDateRange(range);
+    onDateRangeChange(range); 
+  };
 
   return (
     <Card className="left-0">
@@ -40,7 +48,7 @@ export default function FloatingForm() {
 
       <CardContent className="flex flex-col gap-4">
         <div className="flex items-start mx-auto p-2">
-          <CCalendar onRangeChange={setDateRange} />
+          <CCalendar onRangeChange={handleRangeChange} />
         </div>
 
         <div className="flex items-start">
@@ -50,38 +58,38 @@ export default function FloatingForm() {
           />
         </div>
 
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild>
-              <Button disabled={!dateRange}>
-                Search Asteroids
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-lg">
-              <DialogHeader>
-                <DialogTitle>Asteroids List</DialogTitle>
-                <DialogDescription>
-                  Choose the asteroid you want to see more details about and attack Earth
-                </DialogDescription>
-              </DialogHeader>
-              <div className="-mx-6 max-h-[500px] overflow-y-auto px-6 text-sm">
-                {dateRange && (
-                  <AsteroidList 
-                    startDate={dateRange.start} 
-                    endDate={dateRange.end}
-                    minDiameter={minDiameter}
-                    minVelocity={minVelocity}
-                    onSelectAsteroid={handleAsteroidSelect}
-                  />
-                )}
-              </div>
-              <DialogFooter>
-                <DialogClose asChild>
-                  <Button>Close</Button>
-                </DialogClose>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        </CardContent>
-      </Card>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button disabled={!dateRange}>
+              Search Asteroids
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-lg">
+            <DialogHeader>
+              <DialogTitle>Asteroids List</DialogTitle>
+              <DialogDescription>
+                Choose the asteroid you want to see more details about
+              </DialogDescription>
+            </DialogHeader>
+            <div className="-mx-6 max-h-[500px] overflow-y-auto px-6 text-sm">
+              {dateRange && (
+                <AsteroidList 
+                  startDate={dateRange.start} 
+                  endDate={dateRange.end}
+                  minDiameter={minDiameter}
+                  minVelocity={minVelocity}
+                  onSelectAsteroid={handleAsteroidSelect}
+                />
+              )}
+            </div>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button>Close</Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </CardContent>
+    </Card>
   )
 }

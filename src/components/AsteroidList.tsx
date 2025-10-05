@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useEffect, useState, useMemo } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { useEffect, useState, useMemo } from 'react';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
 interface Asteroid {
   id: string;
@@ -47,24 +47,28 @@ export default function AsteroidList({
       setCurrentPage(1);
 
       try {
+        // ✅ Usa o proxy seguro (não chama diretamente /api/neo)
         const res = await fetch(
-          `/api/neo?type=neows&start_date=${startDate}&end_date=${endDate}`
+          `/api/proxy/neo?start_date=${startDate}&end_date=${endDate}` +
+            (minDiameter ? `&min_diameter=${minDiameter}` : '') +
+            (minVelocity ? `&min_velocity=${minVelocity}` : '')
         );
+
         const data = await res.json();
 
-        if (data.status === "success" && data.objects) {
+        if (res.ok && data.near_earth_objects) {
           const list: Asteroid[] = [];
 
-          for (const day of Object.keys(data.objects)) {
-            data.objects[day].forEach((obj: any) => {
+          for (const day of Object.keys(data.near_earth_objects)) {
+            data.near_earth_objects[day].forEach((obj: any) => {
               list.push({
                 id: obj.id,
                 name: obj.name,
                 diameter:
-                  obj.estimated_diameter?.meters?.estimated_diameter_min,
+                  obj.estimated_diameter?.meters?.estimated_diameter_min ??
+                  obj.estimated_diameter?.meters?.estimated_diameter_max,
                 velocity: parseFloat(
-                  obj.close_approach_data?.[0]?.relative_velocity
-                    ?.kilometers_per_second
+                  obj.close_approach_data?.[0]?.relative_velocity?.kilometers_per_second ?? '0'
                 ),
                 isPotentiallyHazardous: obj.is_potentially_hazardous_asteroid,
               });
@@ -73,40 +77,29 @@ export default function AsteroidList({
 
           setAllAsteroids(list);
         } else {
-          setError("Nenhum asteroide encontrado nesse período.");
+          setError('Nenhum asteroide encontrado nesse período.');
         }
       } catch (err) {
-        setError("Erro ao buscar asteroides.");
-        console.error(err);
+        console.error('Erro ao buscar asteroides:', err);
+        setError('Erro ao buscar asteroides.');
       } finally {
         setLoading(false);
       }
     }
 
     fetchAsteroids();
-  }, [startDate, endDate]);
+  }, [startDate, endDate, minDiameter, minVelocity]);
 
   const filteredAsteroids = useMemo(() => {
     return allAsteroids.filter((ast) => {
-      if (minDiameter && ast.diameter && ast.diameter < minDiameter)
-        return false;
-      if (maxDiameter && ast.diameter && ast.diameter > maxDiameter)
-        return false;
-      if (minVelocity && ast.velocity && ast.velocity < minVelocity)
-        return false;
-      if (maxVelocity && ast.velocity && ast.velocity > maxVelocity)
-        return false;
+      if (minDiameter && ast.diameter && ast.diameter < minDiameter) return false;
+      if (maxDiameter && ast.diameter && ast.diameter > maxDiameter) return false;
+      if (minVelocity && ast.velocity && ast.velocity < minVelocity) return false;
+      if (maxVelocity && ast.velocity && ast.velocity > maxVelocity) return false;
       if (isPotentiallyHazardous && !ast.isPotentiallyHazardous) return false;
       return true;
     });
-  }, [
-    allAsteroids,
-    minDiameter,
-    maxDiameter,
-    minVelocity,
-    maxVelocity,
-    isPotentiallyHazardous,
-  ]);
+  }, [allAsteroids, minDiameter, maxDiameter, minVelocity, maxVelocity, isPotentiallyHazardous]);
 
   const totalPages = Math.ceil(filteredAsteroids.length / itemsPerPage);
   const paginated = useMemo(
@@ -120,11 +113,11 @@ export default function AsteroidList({
 
   async function handleAsteroidClick(id: string) {
     try {
-      const res = await fetch(`/api/neo/lookup/${id}`);
+      const res = await fetch(`/api/proxy/neo/lookup/${id}`);
       const data = await res.json();
       if (onSelectAsteroid) onSelectAsteroid(data);
     } catch (err) {
-      console.error("Erro ao buscar detalhes do asteroide:", err);
+      console.error('Erro ao buscar detalhes do asteroide:', err);
     }
   }
 
@@ -144,21 +137,14 @@ export default function AsteroidList({
                   className="flex items-center justify-between bg-gray-50 rounded-md p-3 transition-all hover:bg-gray-200 hover:cursor-pointer"
                 >
                   <div>
-                    <span className="text-gray-800 font-medium block">
-                      {ast.name}
-                    </span>
+                    <span className="text-gray-800 font-medium block">{ast.name}</span>
                     <div className="text-xs text-gray-500 mt-1 space-x-3">
-                      {ast.diameter && (
-                        <span>
-                          Diâmetro mínimo: {ast.diameter.toFixed(2)} m
-                        </span>
-                      )}
+                      {ast.diameter && <span>{ast.diameter.toFixed(2)} m</span>}
                       {ast.velocity && (
                         <span>
-                          Velocidade mínima:{" "}
-                          {ast.velocity.toLocaleString("pt-BR", {
+                          {ast.velocity.toLocaleString('pt-BR', {
                             maximumFractionDigits: 0,
-                          })}{" "}
+                          })}{' '}
                           km/s
                         </span>
                       )}
@@ -168,11 +154,12 @@ export default function AsteroidList({
               ))}
             </ul>
 
+            {/* Paginação */}
             <div className="flex items-center justify-between mt-4 pt-2 border-t border-gray-200">
               {filteredAsteroids.length > 0 && (
                 <span className="text-sm font-normal text-gray-500">
                   ({filteredAsteroids.length} encontrado
-                  {filteredAsteroids.length !== 1 ? "s" : ""})
+                  {filteredAsteroids.length !== 1 ? 's' : ''})
                 </span>
               )}
               <button
@@ -180,8 +167,8 @@ export default function AsteroidList({
                 disabled={currentPage === 1}
                 className={`px-3 py-1 rounded-md text-sm ${
                   currentPage === 1
-                    ? "text-gray-400 bg-gray-100 cursor-not-allowed"
-                    : "bg-gray-200 hover:bg-gray-300 text-gray-800"
+                    ? 'text-gray-400 bg-gray-100 cursor-not-allowed'
+                    : 'bg-gray-200 hover:bg-gray-300 text-gray-800'
                 }`}
               >
                 Anterior
@@ -192,14 +179,12 @@ export default function AsteroidList({
               </span>
 
               <button
-                onClick={() =>
-                  setCurrentPage((p) => Math.min(p + 1, totalPages))
-                }
+                onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
                 disabled={currentPage === totalPages}
                 className={`px-3 py-1 rounded-md text-sm ${
                   currentPage === totalPages
-                    ? "text-gray-400 bg-gray-100 cursor-not-allowed"
-                    : "bg-gray-200 hover:bg-gray-300 text-gray-800"
+                    ? 'text-gray-400 bg-gray-100 cursor-not-allowed'
+                    : 'bg-gray-200 hover:bg-gray-300 text-gray-800'
                 }`}
               >
                 Próxima

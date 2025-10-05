@@ -24,41 +24,56 @@ interface EarthProps {
 }
 
 /**
- * Componente que renderiza a Terra em rotação com texturas.
+ * Componente que renderiza a Terra em rotação com texturas e atmosfera.
  */
-export function RotatingEarth({ earthData }: { earthData: EarthData }) {
+export function RotatingEarth({ earthData, isDestroyed = false }: { earthData: EarthData; isDestroyed?: boolean }) {
   const meshRef = useRef<THREE.Mesh>(null);
   const cloudsRef = useRef<THREE.Mesh>(null);
+  const atmosphereRef = useRef<THREE.Mesh>(null);
+  const timeRef = useRef(0);
 
-  // Carrega as texturas
-  const texture = earthData.textureUrl
-    ? useLoader(THREE.TextureLoader, earthData.textureUrl)
-    : null;
-  const normalMap = earthData.normalMapUrl
-    ? useLoader(THREE.TextureLoader, earthData.normalMapUrl)
-    : null;
-  const specularMap = earthData.specularMapUrl
-    ? useLoader(THREE.TextureLoader, earthData.specularMapUrl)
-    : null;
-  const cloudsTexture = earthData.cloudsTextureUrl
-    ? useLoader(THREE.TextureLoader, earthData.cloudsTextureUrl)
-    : null;
+  // Carrega as texturas. O useLoader deve ser chamado incondicionalmente.
+  // Se a URL for nula ou indefinida, passamos uma string vazia e tratamos o resultado.
+  const [texture, normalMap, specularMap, cloudsTexture] = useLoader(
+    THREE.TextureLoader,
+    [
+      earthData.textureUrl || '',
+      earthData.normalMapUrl || '',
+      earthData.specularMapUrl || '',
+      earthData.cloudsTextureUrl || '',
+    ]
+  );
 
   // Tamanho da Terra (padrão 2 unidades)
   const size = earthData.diameter ? earthData.diameter / 3000 : 4;
 
   // Velocidade de rotação baseada no período (padrão: 24 horas = rotação da Terra)
   const rotationSpeed = earthData.rotationPeriod
-    ? (24 / earthData.rotationPeriod) * 0.5
+    ? (24 / earthData.rotationPeriod) * 0.3
     : 0.1;
 
-  // Animação de rotação
+  // Animação de rotação suave
   useFrame((_, delta) => {
+    timeRef.current += delta;
+    
     if (meshRef.current) {
+      // Rotação da Terra
       meshRef.current.rotation.y += delta * rotationSpeed;
+      
+      // Pequena oscilação para simular precessão
+      const precession = Math.sin(timeRef.current * 0.1) * 0.01;
+      meshRef.current.rotation.x = precession;
     }
+    
     if (cloudsRef.current) {
-      cloudsRef.current.rotation.y += delta * rotationSpeed * 1.05; // Nuvens giram um pouco mais rápido
+      // Nuvens giram um pouco mais rápido e em direção oposta
+      cloudsRef.current.rotation.y += delta * rotationSpeed * 1.2;
+    }
+    
+    if (atmosphereRef.current) {
+      // Atmosfera com efeito de pulsação
+      const pulse = 1 + Math.sin(timeRef.current * 2) * 0.05;
+      atmosphereRef.current.scale.setScalar(pulse);
     }
   });
 
@@ -66,26 +81,52 @@ export function RotatingEarth({ earthData }: { earthData: EarthData }) {
     <group>
       {/* Terra */}
       <mesh ref={meshRef} castShadow receiveShadow>
-        <sphereGeometry args={[size, 64, 64]} />
+        <sphereGeometry args={[size, 128, 128]} />
         <meshStandardMaterial
-          map={texture}
-          normalMap={normalMap}
-          roughnessMap={specularMap}
-          roughness={1}
-          metalness={0.1}
-          color={texture ? '#ffffff' : '#2563eb'}
+          map={!isDestroyed ? texture : null}
+          normalMap={!isDestroyed ? normalMap : null}
+          roughnessMap={!isDestroyed ? specularMap : null}
+          roughness={isDestroyed ? 0.95 : 0.8}
+          metalness={isDestroyed ? 0.3 : 0.1}
+          color={isDestroyed ? '#2C2C2C' : (texture ? '#ffffff' : '#2563eb')}
+          envMapIntensity={isDestroyed ? 0.1 : 0.2}
         />
       </mesh>
 
-      {/* Camada de nuvens (opcional) */}
-      {cloudsTexture && (
+      {/* Camada de nuvens - desaparece quando destruída */}
+      {cloudsTexture && !isDestroyed && (
         <mesh ref={cloudsRef}>
-          <sphereGeometry args={[size * 1.01, 64, 64]} />
+          <sphereGeometry args={[size * 1.005, 128, 128]} />
           <meshStandardMaterial
             map={cloudsTexture}
             transparent
-            opacity={0.4}
+            opacity={0.6}
             depthWrite={false}
+            alphaTest={0.1}
+          />
+        </mesh>
+      )}
+
+      {/* Atmosfera - muda para vermelho quando destruída */}
+      <mesh ref={atmosphereRef}>
+        <sphereGeometry args={[size * 1.005, 64, 64]} />
+        <meshBasicMaterial
+          color={isDestroyed ? "#8B0000" : "#4A90E2"}
+          transparent
+          opacity={isDestroyed ? 0.2 : 0.05}
+          side={THREE.BackSide}
+        />
+      </mesh>
+
+      {/* Efeito de destruição - crateras e rachaduras */}
+      {isDestroyed && (
+        <mesh>
+          <sphereGeometry args={[size * 1.001, 64, 64]} />
+          <meshBasicMaterial
+            color="#1A1A1A"
+            transparent
+            opacity={0.8}
+            side={THREE.BackSide}
           />
         </mesh>
       )}
