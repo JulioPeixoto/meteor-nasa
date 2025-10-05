@@ -1,4 +1,3 @@
-// src/app/api/neo/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 
 const NASA_API_URL = 'https://api.nasa.gov/neo/rest/v1/feed';
@@ -9,6 +8,10 @@ export async function GET(request: NextRequest) {
   const type = searchParams.get('type');
   const startDate = searchParams.get('start_date');
   const endDate = searchParams.get('end_date');
+
+  const isPotentiallyHazardous = searchParams.get('isPotentiallyHazardous')
+    ? searchParams.get('isPotentiallyHazardous') === 'true'
+    : null;
 
   if (type === 'neows') {
     try {
@@ -28,12 +31,26 @@ export async function GET(request: NextRequest) {
       }
 
       const data = await response.json();
+      const filtered: Record<string, any[]> = {};
+
+      for (const date in data.near_earth_objects) {
+        filtered[date] = data.near_earth_objects[date].filter((obj: any) => {
+          if (isPotentiallyHazardous !== null) {
+            return obj.is_potentially_hazardous_asteroid === isPotentiallyHazardous;
+          }
+          return true;
+        });
+
+        if (filtered[date].length === 0) {
+          delete filtered[date];
+        }
+      }
 
       return NextResponse.json({
         status: 'success',
         start_date: start,
         end_date: end,
-        objects: data.near_earth_objects,
+        objects: filtered,
       });
     } catch (error: any) {
       return NextResponse.json(

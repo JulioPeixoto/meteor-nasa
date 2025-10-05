@@ -1,15 +1,17 @@
 'use client'
-
 import { useState } from 'react'
 import { Card, CardHeader, CardDescription, CardContent, CardTitle } from "@/components/ui/card"
 import CCalendar from "@/components/c-calendar"
 import CFormFields from "@/components/c-form-fields"
 import AsteroidList from "@/components/AsteroidList"
+import { Button } from "@/components/ui/button"
+import { CSlider } from "@/components/c-slider"
 
 export default function FloatingForm() {
-  // Estado que guarda o intervalo de datas
   const [dateRange, setDateRange] = useState<{ start: string; end: string } | null>(null)
-
+  const [minDiameter, setMinDiameter] = useState<number | undefined>()
+  const [minVelocity, setMinVelocity] = useState<number | undefined>()
+  
   return (
     <Card className="left-0">
       <CardHeader>
@@ -20,18 +22,31 @@ export default function FloatingForm() {
       </CardHeader>
 
       <CardContent className="flex flex-col gap-4">
-        {/* Calendário */}
         <div className="flex items-start p-2">
           <CCalendar onRangeChange={setDateRange} />
         </div>
 
-        {/* Campos adicionais */}
         <div className="flex items-start">
-          <CFormFields />
+          <CFormFields 
+            onMinDiameterChange={setMinDiameter}
+            onMinVelocityChange={setMinVelocity}
+          />
         </div>
+        
+        <CSlider />
 
-        {/* Card de asteroides */}
-        {dateRange && <AsteroidList startDate={dateRange.start} endDate={dateRange.end} />}
+        <Button>
+          ATTACK!
+        </Button>
+
+        {dateRange && (
+          <AsteroidList 
+            startDate={dateRange.start} 
+            endDate={dateRange.end}
+            minDiameter={minDiameter}
+            minVelocity={minVelocity}
+          />
+        )}
       </CardContent>
     </Card>
   )
