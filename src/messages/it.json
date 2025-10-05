@@ -1,0 +1,319 @@
+{
+  "app": {
+    "subtitle": "Visualizzazione di Oggetti Vicini alla Terra con React Three Fiber"
+  },
+  "header": {
+    "language": "Lingua",
+    "english": "Inglese",
+    "portuguese": "Portoghese",
+    "spanish": "Spagnolo",
+    "france": "Francese",
+    "chine": "Cinese",
+    "italian": "Italiano",
+    "switch": "Cambia a {lang}"
+  },
+  "sections": {
+    "asteroid": "Test di Visualizzazione 3D dell'Asteroide",
+    "instructions": "Usa il mouse per ruotare, zoomare e muovere la scena 3D",
+    "neoDataTitle": "Dati NEO",
+    "neoDataText": "Dati in tempo reale dal Servizio di Oggetti Vicini alla Terra della NASA",
+    "impactTitle": "Simulazione di Impatto",
+    "impactText": "Calcola zone di impatto e stime dei danni",
+    "visualizationTitle": "Visualizzazione 3D",
+    "visualizationText": "Rappresentazione 3D interattiva di asteroidi e traiettorie"
+  },
+  "impact": {
+    "title": "ANALISI DI IMPATTO",
+    "subtitle": "Sistema di Prevenzione",
+    "analysisTab": "Analisi",
+    "paramsTitle": "PARAMETRI DELL'IMPATTO",
+    "diameter": "Diametro",
+    "speed": "Velocità",
+    "energy": "Energia",
+    "crater": "Cratere",
+    "energyEquivalent": "Equivalente a {bombs} bombe di Hiroshima",
+    "tsunamiAlert": "ALLERTA TSUNAMI",
+    "waveHeight": "Altezza delle onde:",
+    "coastalEvacuation": "EVACUAZIONE COSTIERA IMMEDIATA",
+    "consequenceZones": "ZONE DI CONSEGUENZA",
+    "zones": {
+      "tsunami": {
+        "name": "Zona Tsunami",
+        "description": "Onde di {height}m che colpiscono la costa",
+        "measures": {
+          "evacuation": "Evacuazione immediata delle aree costiere",
+          "alerts": "Sistemi di allerta tsunami",
+          "routes": "Rotte verso terreni elevati"
+        }
+      },
+      "vaporization": {
+        "name": "Zona di Vaporizzazione",
+        "description": "Distruzione istantanea e completa",
+        "measures": {
+          "evacuation": "Evacuazione obbligatoria",
+          "exclusion": "Zona di esclusione permanente"
+        }
+      },
+      "totalDestruction": {
+        "name": "Distruzione Totale",
+        "description": "Crollo completo delle strutture",
+        "measures": {
+          "evacuation": "Evacuazione completa",
+          "infrastructure": "Spegnimento delle infrastrutture critiche"
+        }
+      },
+      "severeDamage": {
+        "name": "Danni Severi",
+        "description": "Crollo di edifici, venti distruttivi",
+        "measures": {
+          "shelters": "Rifugi sotterranei",
+          "highBuildings": "Evacuazione di edifici alti"
+        }
+      },
+      "structuralDamage": {
+        "name": "Danni Strutturali",
+        "description": "Vetrate rotte, strutture danneggiate",
+        "measures": {
+          "shrapnel": "Protezione contro le schegge",
+          "criticalStructures": "Rinforzo delle strutture critiche"
+        }
+      },
+      "lightDamage": {
+        "name": "Danni Leggeri",
+        "description": "Danni uditivi, vetrate rotte",
+        "measures": {
+          "hearing": "Protezione uditiva",
+          "firstAid": "Primo soccorso"
+        }
+      },
+      "alertArea": {
+        "name": "Area di Allerta",
+        "description": "Tremori e rumore intenso",
+        "measures": {
+          "alerts": "Allerte alla popolazione",
+          "evacuationPrep": "Preparazione per evacuazione"
+        }
+      }
+    },
+    "preventionMeasures": "Misure Preventive:",
+    "estimatedCasualties": "{percent}% di vittime stimate",
+    "footer": {
+      "educational": "⚠️ SIMULAZIONE EDUCATIVA",
+      "note": "Basato su modelli scientifici semplificati",
+      "realEmergency": "Per emergenze reali: segui le autorità locali",
+      "sources": "Fonti: NASA, ESA, Collins et al."
+    }
+  },
+  "mitigationChat": {
+    "title": "CHAT DI MITIGAZIONE",
+    "subtitle": "Assistente Strategico",
+    "conversation": "Conversazione",
+    "chatTab": "Chat",
+    "placeholder": "Fai domande sulla mitigazione (evacuazione, rifugi, priorità per zona). Il contesto dell'impatto è già caricato.",
+    "assistantLabel": "Assistente",
+    "youLabel": "Tu",
+    "typing": "Digitando...",
+    "inputPlaceholder": "Chiedi come mitigare gli effetti...",
+    "send": "Invia",
+    "sending": "Invio in corso...",
+    "sendMessageFailed": "Invio messaggio fallito"
+  },
+  "presentation": {
+    "hero": {
+      "title": "Simulatore di Impatto di Asteroidi",
+      "subtitle": "Esplora scenari di impatto, visualizza traiettorie e valuta la mitigazione utilizzando dati NASA e USGS.",
+      "cta": "Avvia Simulazione"
+    },
+    "features": {
+      "data": {
+        "title": "Rischio Cosmico Svelato",
+        "desc": "Visualizza asteroidi come \"Impactor-2025\". Dati NASA integrati per una visione chiara della minaccia."
+      },
+      "impact": {
+        "title": "Scenari di Impatto Critici",
+        "desc": "Calcoli precisi per ricercatori che studiano impatti reali di meteoriti. Dati NASA e USGS integrati."
+      },
+      "mitigation": {
+        "title": "Difesa Planetaria Attiva",
+        "desc": "Esplora strategie di deflessione di asteroidi, come impattatori cinetici, per proteggere la Terra."
+      }
+    },
+    "callout": {
+      "title": "Preparati a proteggere la Terra!",
+      "desc": "Vedi come piccoli cambiamenti di traiettoria possono alterare i risultati.",
+      "cta": "Avvia Simulazione"
+    },
+    "footer": "© {year} Asteroid Impact Lab. Tutti i diritti riservati."
+  },
+  "common": {
+    "loading": "Caricamento...",
+    "error": "Errore",
+    "success": "Successo",
+    "close": "Chiudi",
+    "cancel": "Annulla",
+    "confirm": "Conferma",
+    "save": "Salva",
+    "edit": "Modifica",
+    "delete": "Elimina",
+    "search": "Cerca",
+    "filter": "Filtra",
+    "previous": "Precedente",
+    "next": "Successiva",
+    "page": "Pagina",
+    "of": "di",
+    "found": "trovato",
+    "foundPlural": "trovati",
+    "noResults": "Nessun risultato trovato",
+    "retry": "Riprova",
+    "back": "Indietro",
+    "continue": "Continua",
+    "finish": "Termina"
+  },
+  "auth": {
+    "welcome": "Ciao, {name}",
+    "loading": "Caricamento...",
+    "unauthorized": "Utente non autenticato, reindirizzamento al login",
+    "redirecting": "Utente autenticato che tenta di accedere al login, reindirizzamento"
+  },
+  "asteroidList": {
+    "loading": "Caricamento...",
+    "error": "Errore nel recupero degli asteroidi.",
+    "noResults": "Nessun asteroide trovato in questo periodo.",
+    "noResultsFiltered": "Nessun asteroide trovato con i filtri applicati.",
+    "errorDetails": "Errore nel recupero dei dettagli dell'asteroide:",
+    "found": "trovato",
+    "foundPlural": "trovati",
+    "previous": "Precedente",
+    "next": "Successiva",
+    "page": "Pagina",
+    "of": "di",
+    "meters": "m",
+    "kmPerSecond": "km/s"
+  },
+  "form": {
+    "chooseParameters": "Scegli i tuoi parametri",
+    "chooseParametersDesc": "Scegli i tuoi parametri per vedere l'impatto dell'asteroide sulla Terra.",
+    "searchAsteroids": "Cerca Asteroidi",
+    "asteroidsList": "Lista Asteroidi",
+    "asteroidsListDesc": "Scegli l'asteroide di cui vuoi vedere più dettagli",
+    "minimumDiameter": "Diametro Minimo (m)",
+    "minimumVelocity": "Velocità Minima (km/s)",
+    "close": "Chiudi"
+  },
+  "consequenceTypes": {
+    "crater": {
+      "title": "Cratere di Impatto",
+      "description": "Formazione di cratere permanente nel sito di impatto",
+      "unit": "metri di diametro",
+      "measures": [
+        "Zona di esclusione permanente",
+        "Monitoraggio geologico continuo",
+        "Rilocazione della popolazione locale"
+      ]
+    },
+    "tsunami": {
+      "title": "Tsunami",
+      "description": "Onde giganti causate da impatto oceanico",
+      "unit": "metri di altezza",
+      "measures": [
+        "Sistema di allerta tsunami globale",
+        "Evacuazione immediata delle aree costiere",
+        "Costruzione di barriere marittime",
+        "Rotte di fuga verso terreni elevati"
+      ]
+    },
+    "shockwave": {
+      "title": "Onda d'Urto Sonica",
+      "description": "Onde di pressione estremamente alte",
+      "unit": "decibel",
+      "measures": [
+        "Protezione uditiva obbligatoria",
+        "Rifugi a prova di suono",
+        "Evacuazione preventiva nel raggio di 50km"
+      ]
+    },
+    "wind": {
+      "title": "Venti Distruttivi",
+      "description": "Venti più forti degli uragani categoria 5",
+      "unit": "km/h",
+      "measures": [
+        "Rifugi anticiclone",
+        "Fissaggio di strutture mobili",
+        "Spegnimento preventivo dell'energia"
+      ]
+    },
+    "buildings": {
+      "title": "Crollo di Edifici",
+      "description": "Distruzione di strutture urbane",
+      "unit": "% di distruzione",
+      "measures": [
+        "Codici di costruzione antisismica",
+        "Rinforzo strutturale di edifici critici",
+        "Ispezione preventiva delle strutture"
+      ]
+    },
+    "homes": {
+      "title": "Danni Residenziali",
+      "description": "Case danneggiate o distrutte",
+      "unit": "% di case colpite",
+      "measures": [
+        "Assicurazioni obbligatorie contro catastrofi",
+        "Costruzione con materiali resistenti",
+        "Piani di rilocazione temporanea"
+      ]
+    },
+    "trees": {
+      "title": "Abbattimento di Vegetazione",
+      "description": "Alberi abbattuti su larga scala",
+      "unit": "% di alberi abbattuti",
+      "measures": [
+        "Programmi di rimboschimento d'emergenza",
+        "Protezione di riserve naturali",
+        "Monitoraggio dell'erosione del suolo"
+      ]
+    },
+    "lung": {
+      "title": "Danni Polmonari",
+      "description": "Lesioni respiratorie da sovrapressione",
+      "unit": "% popolazione colpita",
+      "measures": [
+        "Maschere respiratorie d'emergenza",
+        "Ospedali da campo equipaggiati",
+        "Formazione in primo soccorso"
+      ]
+    },
+    "ears": {
+      "title": "Rottura del Timpano",
+      "description": "Danni uditivi permanenti",
+      "unit": "% popolazione colpita",
+      "measures": [
+        "Protezione uditiva distribuita",
+        "Centri di trattamento specializzati",
+        "Attrezzature di comunicazione visiva"
+      ]
+    },
+    "earthquake": {
+      "title": "Scossa Sismica",
+      "description": "Terremoto indotto dall'impatto",
+      "unit": "magnitudo Richter",
+      "measures": [
+        "Monitoraggio sismico in tempo reale",
+        "Protocolli di emergenza sismica",
+        "Spegnimento automatico delle infrastrutture critiche"
+      ]
+    }
+  },
+  "errors": {
+    "sendMessageFailed": "Invio messaggio fallito",
+    "fetchAsteroidsFailed": "Errore nel recupero degli asteroidi",
+    "fetchAsteroidDetailsFailed": "Errore nel recupero dei dettagli dell'asteroide",
+    "genericError": "Si è verificato un errore imprevisto",
+    "networkError": "Errore di connessione",
+    "timeoutError": "Timeout superato",
+    "unauthorizedError": "Accesso non autorizzato"
+  },
+  "app": {
+    "title": "Meteor Mitigate",
+    "subtitle": "Sistema di Visualizzazione e Mitigazione degli Impatti di Asteroidi"
+  }
+}

@@ -76,7 +76,7 @@ function getBasePromptByLocale(locale: SupportedLocale, languageName: string, me
       return `Você é um assistente de IA especializado em astronomia e objetos próximos da Terra (NEO). 
 Você deve sempre responder em ${languageName} de forma clara, educativa e envolvente.
 
-Contexto da aplicação: ${messages.app.title} - ${messages.app.subtitle}
+Contexto da aplicação: NASA METEOR MITIGATE - ${messages.app.subtitle}
 
 Como especialista, você pode ajudar com:
 - Informações sobre asteroides e meteoros
@@ -91,7 +91,7 @@ Sempre mantenha um tom científico mas acessível, explicando conceitos complexo
       return `Eres un asistente de IA especializado en astronomía y objetos cercanos a la Tierra (NEO).
 Siempre debes responder en ${languageName} de manera clara, educativa y atractiva.
 
-Contexto de la aplicación: ${messages.app.title} - ${messages.app.subtitle}
+Contexto de la aplicación: NASA METEOR MITIGATE - ${messages.app.subtitle}
 
 Como especialista, puedes ayudar con:
 - Información sobre asteroides y meteoros
@@ -106,7 +106,7 @@ Siempre mantén un tono científico pero accesible, explicando conceptos complej
       return `Vous êtes un assistant IA spécialisé en astronomie et en objets géocroiseurs (NEO).
 Vous devez toujours répondre en ${languageName} de manière claire, éducative et engageante.
 
-Contexte de l'application : ${messages.app.title} - ${messages.app.subtitle}
+Contexte de l'application : NASA METEOR MITIGATE - ${messages.app.subtitle}
 
 En tant qu'expert, vous pouvez aider avec :
 - Informations sur les astéroïdes et les météores
@@ -121,7 +121,7 @@ Maintenez toujours un ton scientifique mais accessible, en expliquant les concep
       return `您是专门研究天文学和近地天体（NEO）的AI助手。
 您必须始终用${languageName}以清晰、教育性和引人入胜的方式回答。
 
-应用程序背景：${messages.app.title} - ${messages.app.subtitle}
+应用程序背景：NASA METEOR MITIGATE - ${messages.app.subtitle}
 
 作为专家，您可以帮助解答：
 - 关于小行星和流星的信息
@@ -137,7 +137,7 @@ Maintenez toujours un ton scientifique mais accessible, en expliquant les concep
       return `You are an AI assistant specialized in astronomy and Near Earth Objects (NEO).
 You must always respond in ${languageName} in a clear, educational, and engaging manner.
 
-Application context: ${messages.app.title} - ${messages.app.subtitle}
+Application context: NASA METEOR MITIGATE - ${messages.app.subtitle}
 
 As an expert, you can help with:
 - Information about asteroids and meteors

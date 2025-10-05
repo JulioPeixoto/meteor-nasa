@@ -2,7 +2,7 @@ import { getRequestConfig } from 'next-intl/server';
 
 export const i18n = {
   defaultLocale: 'en',
-  locales: ['en', 'pt', 'fr', 'zh', 'es']
+  locales: ['en', 'pt', 'fr', 'zh', 'es', 'it']
 };
 
 export default getRequestConfig(async ({ locale }) => ({

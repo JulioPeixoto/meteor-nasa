@@ -1,6 +1,5 @@
 {
   "app": {
-    "title": "流星狂热",
     "subtitle": "使用 React Three Fiber 可视化近地天体"
   },
   "header": {
@@ -10,6 +9,7 @@
     "spanish": "西班牙语",
     "france": "法语",
     "chine": "中文",
+    "italian": "意大利语",
     "switch": "切换到 {lang}"
   },
   "sections": {
@@ -115,7 +115,8 @@
     "typing": "正在输入...",
     "inputPlaceholder": "询问如何减轻影响...",
     "send": "发送",
-    "sending": "正在发送..."
+    "sending": "正在发送...",
+    "sendMessageFailed": "发送消息失败"
   },
   "presentation": {
     "hero": {
@@ -143,5 +144,176 @@
       "cta": "开始模拟"
     },
     "footer": "© {year} 小行星撞击实验室。保留所有权利。"
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "close": "关闭",
+    "cancel": "取消",
+    "confirm": "确认",
+    "save": "保存",
+    "edit": "编辑",
+    "delete": "删除",
+    "search": "搜索",
+    "filter": "过滤",
+    "previous": "上一页",
+    "next": "下一页",
+    "page": "页面",
+    "of": "共",
+    "found": "找到",
+    "foundPlural": "找到",
+    "noResults": "未找到结果",
+    "retry": "重试",
+    "back": "返回",
+    "continue": "继续",
+    "finish": "完成"
+  },
+  "auth": {
+    "welcome": "你好，{name}",
+    "loading": "加载中...",
+    "unauthorized": "用户未认证，正在重定向到登录页面",
+    "redirecting": "已认证用户尝试访问登录页面，正在重定向"
+  },
+  "asteroidList": {
+    "loading": "加载中...",
+    "error": "获取小行星时出错。",
+    "noResults": "在此时间段内未找到小行星。",
+    "noResultsFiltered": "使用应用的过滤器未找到小行星。",
+    "errorDetails": "获取小行星详细信息时出错：",
+    "found": "找到",
+    "foundPlural": "找到",
+    "previous": "上一页",
+    "next": "下一页",
+    "page": "页面",
+    "of": "共",
+    "meters": "米",
+    "kmPerSecond": "公里/秒"
+  },
+  "form": {
+    "chooseParameters": "选择您的参数",
+    "chooseParametersDesc": "选择您的参数以查看小行星对地球的影响。",
+    "searchAsteroids": "搜索小行星",
+    "asteroidsList": "小行星列表",
+    "asteroidsListDesc": "选择您想要查看详细信息的小行星",
+    "minimumDiameter": "最小直径（米）",
+    "minimumVelocity": "最小速度（公里/秒）",
+    "close": "关闭"
+  },
+  "consequenceTypes": {
+    "crater": {
+      "title": "撞击坑",
+      "description": "在撞击地点形成永久性撞击坑",
+      "unit": "米直径",
+      "measures": [
+        "永久禁区",
+        "持续地质监测",
+        "当地人口迁移"
+      ]
+    },
+    "tsunami": {
+      "title": "海啸",
+      "description": "海洋撞击引起的巨浪",
+      "unit": "米高度",
+      "measures": [
+        "全球海啸预警系统",
+        "立即撤离沿海地区",
+        "建造海上屏障",
+        "通往高地的逃生路线"
+      ]
+    },
+    "shockwave": {
+      "title": "声波冲击波",
+      "description": "极高压力波",
+      "unit": "分贝",
+      "measures": [
+        "强制听力保护",
+        "隔音避难所",
+        "50公里半径内预防性撤离"
+      ]
+    },
+    "wind": {
+      "title": "破坏性风",
+      "description": "比5级飓风更强的风",
+      "unit": "公里/小时",
+      "measures": [
+        "防飓风避难所",
+        "固定移动结构",
+        "预防性断电"
+      ]
+    },
+    "buildings": {
+      "title": "建筑物倒塌",
+      "description": "城市结构破坏",
+      "unit": "% 破坏",
+      "measures": [
+        "抗震建筑规范",
+        "关键建筑物结构加固",
+        "预防性结构检查"
+      ]
+    },
+    "homes": {
+      "title": "住宅损坏",
+      "description": "房屋损坏或摧毁",
+      "unit": "% 房屋受影响",
+      "measures": [
+        "强制灾难保险",
+        "使用抗性材料建造",
+        "临时迁移计划"
+      ]
+    },
+    "trees": {
+      "title": "植被破坏",
+      "description": "大规模树木倒塌",
+      "unit": "% 树木倒塌",
+      "measures": [
+        "紧急重新造林计划",
+        "保护自然保护区",
+        "土壤侵蚀监测"
+      ]
+    },
+    "lung": {
+      "title": "肺部损伤",
+      "description": "超压引起的呼吸损伤",
+      "unit": "% 人口受影响",
+      "measures": [
+        "紧急呼吸面罩",
+        "配备野战医院",
+        "急救培训"
+      ]
+    },
+    "ears": {
+      "title": "鼓膜破裂",
+      "description": "永久性听力损伤",
+      "unit": "% 人口受影响",
+      "measures": [
+        "分发听力保护",
+        "专业治疗中心",
+        "视觉通信设备"
+      ]
+    },
+    "earthquake": {
+      "title": "地震震动",
+      "description": "撞击引起的地震",
+      "unit": "里氏震级",
+      "measures": [
+        "实时地震监测",
+        "地震应急协议",
+        "关键基础设施自动关闭"
+      ]
+    }
+  },
+  "errors": {
+    "sendMessageFailed": "发送消息失败",
+    "fetchAsteroidsFailed": "获取小行星时出错",
+    "fetchAsteroidDetailsFailed": "获取小行星详细信息时出错",
+    "genericError": "发生意外错误",
+    "networkError": "连接错误",
+    "timeoutError": "超时",
+    "unauthorizedError": "未授权访问"
+  },
+  "app": {
+    "title": "Meteor Mitigate",
+    "subtitle": "小行星撞击可视化和缓解系统"
   }
 }

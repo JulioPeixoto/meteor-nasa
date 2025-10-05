@@ -1,6 +1,5 @@
 {
   "app": {
-    "title": "Folie des Météorites",
     "subtitle": "Visualisation des Objets Proches de la Terre avec React Three Fiber"
   },
   "header": {
@@ -10,6 +9,7 @@
     "spanish": "Espagnol",
     "france": "Français",
     "chine": "Chinois",
+    "italian": "Italien",
     "switch": "Changer pour {lang}"
   },
   "sections": {
@@ -115,7 +115,8 @@
     "typing": "Saisie...",
     "inputPlaceholder": "Demandez comment atténuer les effets...",
     "send": "Envoyer",
-    "sending": "Envoi..."
+    "sending": "Envoi...",
+    "sendMessageFailed": "Échec de l'envoi du message"
   },
   "presentation": {
     "hero": {
@@ -143,5 +144,176 @@
       "cta": "Démarrer la simulation"
     },
     "footer": "© {year} Laboratoire d'Impact d'Astéroïdes. Tous droits réservés."
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "close": "Fermer",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "save": "Sauvegarder",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "page": "Page",
+    "of": "de",
+    "found": "trouvé",
+    "foundPlural": "trouvés",
+    "noResults": "Aucun résultat trouvé",
+    "retry": "Réessayer",
+    "back": "Retour",
+    "continue": "Continuer",
+    "finish": "Terminer"
+  },
+  "auth": {
+    "welcome": "Bonjour, {name}",
+    "loading": "Chargement...",
+    "unauthorized": "Utilisateur non authentifié, redirection vers la connexion",
+    "redirecting": "Utilisateur authentifié tentant d'accéder à la connexion, redirection"
+  },
+  "asteroidList": {
+    "loading": "Chargement...",
+    "error": "Erreur lors de la récupération des astéroïdes.",
+    "noResults": "Aucun astéroïde trouvé dans cette période.",
+    "noResultsFiltered": "Aucun astéroïde trouvé avec les filtres appliqués.",
+    "errorDetails": "Erreur lors de la récupération des détails de l'astéroïde :",
+    "found": "trouvé",
+    "foundPlural": "trouvés",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "page": "Page",
+    "of": "de",
+    "meters": "m",
+    "kmPerSecond": "km/s"
+  },
+  "form": {
+    "chooseParameters": "Choisissez vos paramètres",
+    "chooseParametersDesc": "Choisissez vos paramètres pour voir l'impact de l'astéroïde sur la Terre.",
+    "searchAsteroids": "Rechercher des Astéroïdes",
+    "asteroidsList": "Liste des Astéroïdes",
+    "asteroidsListDesc": "Choisissez l'astéroïde dont vous voulez voir plus de détails",
+    "minimumDiameter": "Diamètre Minimum (m)",
+    "minimumVelocity": "Vitesse Minimum (km/s)",
+    "close": "Fermer"
+  },
+  "consequenceTypes": {
+    "crater": {
+      "title": "Cratère d'Impact",
+      "description": "Formation de cratère permanent sur le site d'impact",
+      "unit": "mètres de diamètre",
+      "measures": [
+        "Zone d'exclusion permanente",
+        "Surveillance géologique continue",
+        "Relocalisation de la population locale"
+      ]
+    },
+    "tsunami": {
+      "title": "Tsunami",
+      "description": "Vagues géantes causées par un impact océanique",
+      "unit": "mètres de hauteur",
+      "measures": [
+        "Système d'alerte tsunami mondial",
+        "Évacuation immédiate des zones côtières",
+        "Construction de barrières maritimes",
+        "Routes d'évacuation vers les terrains élevés"
+      ]
+    },
+    "shockwave": {
+      "title": "Onde de Choc Sonique",
+      "description": "Ondes de pression extrêmement élevées",
+      "unit": "décibels",
+      "measures": [
+        "Protection auditive obligatoire",
+        "Abris insonorisés",
+        "Évacuation préventive dans un rayon de 50km"
+      ]
+    },
+    "wind": {
+      "title": "Vents Destructeurs",
+      "description": "Vents plus forts que les ouragans de catégorie 5",
+      "unit": "km/h",
+      "measures": [
+        "Abris anti-cycloniques",
+        "Fixation des structures mobiles",
+        "Coupure préventive de l'électricité"
+      ]
+    },
+    "buildings": {
+      "title": "Effondrement de Bâtiments",
+      "description": "Destruction de structures urbaines",
+      "unit": "% de destruction",
+      "measures": [
+        "Codes de construction anti-sismiques",
+        "Renforcement structurel des bâtiments critiques",
+        "Inspection préventive des structures"
+      ]
+    },
+    "homes": {
+      "title": "Dommages Résidentiels",
+      "description": "Maisons endommagées ou détruites",
+      "unit": "% de maisons affectées",
+      "measures": [
+        "Assurance obligatoire contre les catastrophes",
+        "Construction avec des matériaux résistants",
+        "Plans de relocalisation temporaire"
+      ]
+    },
+    "trees": {
+      "title": "Abattage de Végétation",
+      "description": "Arbres abattus à grande échelle",
+      "unit": "% d'arbres abattus",
+      "measures": [
+        "Programmes de reboisement d'urgence",
+        "Protection des réserves naturelles",
+        "Surveillance de l'érosion du sol"
+      ]
+    },
+    "lung": {
+      "title": "Dommages Pulmonaires",
+      "description": "Blessures respiratoires par surpression",
+      "unit": "% population affectée",
+      "measures": [
+        "Masques respiratoires d'urgence",
+        "Hôpitaux de campagne équipés",
+        "Formation aux premiers secours"
+      ]
+    },
+    "ears": {
+      "title": "Rupture du Tympan",
+      "description": "Dommages auditifs permanents",
+      "unit": "% population affectée",
+      "measures": [
+        "Protection auditive distribuée",
+        "Centres de traitement spécialisés",
+        "Équipements de communication visuelle"
+      ]
+    },
+    "earthquake": {
+      "title": "Tremblement Sismique",
+      "description": "Tremblement de terre induit par l'impact",
+      "unit": "magnitude Richter",
+      "measures": [
+        "Surveillance sismique en temps réel",
+        "Protocoles d'urgence sismique",
+        "Arrêt automatique des infrastructures critiques"
+      ]
+    }
+  },
+  "errors": {
+    "sendMessageFailed": "Échec de l'envoi du message",
+    "fetchAsteroidsFailed": "Erreur lors de la récupération des astéroïdes",
+    "fetchAsteroidDetailsFailed": "Erreur lors de la récupération des détails de l'astéroïde",
+    "genericError": "Une erreur inattendue s'est produite",
+    "networkError": "Erreur de connexion",
+    "timeoutError": "Délai d'attente dépassé",
+    "unauthorizedError": "Accès non autorisé"
+  },
+  "app": {
+    "title": "Meteor Mitigate",
+    "subtitle": "Système de Visualisation et d'Atténuation des Impacts d'Astéroïdes"
   }
 }

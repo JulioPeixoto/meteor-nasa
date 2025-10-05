@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import { Input } from "@/components/ui/input"
 
 interface Props {
@@ -9,6 +10,8 @@ export default function CFormFields({
   onMinDiameterChange, 
   onMinVelocityChange 
 }: Props) {
+  const t = useTranslations('form')
+  
   const handleNumericInput = (e: React.FormEvent<HTMLInputElement>) => {
     e.currentTarget.value = e.currentTarget.value.replace(/[^0-9.]/g, '')
     
@@ -35,7 +38,7 @@ export default function CFormFields({
         type="number"
         step="0.01"
         min="0"
-        placeholder="Minimum Diameter (m)"
+        placeholder={t('minimumDiameter')}
         onInput={handleNumericInput}
         onChange={handleDiameterChange}
       />
@@ -44,7 +47,7 @@ export default function CFormFields({
         type="number"
         step="0.01"
         min="0"
-        placeholder="Minimum Velocity (km/s)"
+        placeholder={t('minimumVelocity')}
         onInput={handleNumericInput}
         onChange={handleVelocityChange}
       />

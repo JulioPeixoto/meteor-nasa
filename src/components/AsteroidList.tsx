@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
 interface Asteroid {
@@ -32,6 +33,7 @@ export default function AsteroidList({
   isPotentiallyHazardous,
   onSelectAsteroid,
 }: Props) {
+  const t = useTranslations('asteroidList');
   const [allAsteroids, setAllAsteroids] = useState<Asteroid[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -77,11 +79,11 @@ export default function AsteroidList({
 
           setAllAsteroids(list);
         } else {
-          setError('Nenhum asteroide encontrado nesse período.');
+          setError(t('noResults'));
         }
       } catch (err) {
-        console.error('Erro ao buscar asteroides:', err);
-        setError('Erro ao buscar asteroides.');
+        console.error(t('errorDetails'), err);
+        setError(t('error'));
       } finally {
         setLoading(false);
       }
@@ -117,14 +119,14 @@ export default function AsteroidList({
       const data = await res.json();
       if (onSelectAsteroid) onSelectAsteroid(data);
     } catch (err) {
-      console.error('Erro ao buscar detalhes do asteroide:', err);
+      console.error(t('errorDetails'), err);
     }
   }
 
   return (
     <Card className="mt-4 bg-white shadow-md rounded-xl">
       <CardContent>
-        {loading && <p className="text-gray-500">Carregando...</p>}
+        {loading && <p className="text-gray-500">{t('loading')}</p>}
         {error && <p className="text-red-500">{error}</p>}
 
         {!loading && !error && filteredAsteroids.length > 0 && (
@@ -139,13 +141,13 @@ export default function AsteroidList({
                   <div>
                     <span className="text-gray-800 font-medium block">{ast.name}</span>
                     <div className="text-xs text-gray-500 mt-1 space-x-3">
-                      {ast.diameter && <span>{ast.diameter.toFixed(2)} m</span>}
+                      {ast.diameter && <span>{ast.diameter.toFixed(2)} {t('meters')}</span>}
                       {ast.velocity && (
                         <span>
                           {ast.velocity.toLocaleString('pt-BR', {
                             maximumFractionDigits: 0,
                           })}{' '}
-                          km/s
+                          {t('kmPerSecond')}
                         </span>
                       )}
                     </div>
@@ -158,8 +160,7 @@ export default function AsteroidList({
             <div className="flex items-center justify-between mt-4 pt-2 border-t border-gray-200">
               {filteredAsteroids.length > 0 && (
                 <span className="text-sm font-normal text-gray-500">
-                  ({filteredAsteroids.length} encontrado
-                  {filteredAsteroids.length !== 1 ? 's' : ''})
+                  ({filteredAsteroids.length} {filteredAsteroids.length !== 1 ? t('foundPlural') : t('found')})
                 </span>
               )}
               <button
@@ -171,11 +172,11 @@ export default function AsteroidList({
                     : 'bg-gray-200 hover:bg-gray-300 text-gray-800'
                 }`}
               >
-                Anterior
+                {t('previous')}
               </button>
 
               <span className="text-sm text-gray-600">
-                Página <strong>{currentPage}</strong> de {totalPages}
+                {t('page')} <strong>{currentPage}</strong> {t('of')} {totalPages}
               </span>
 
               <button
@@ -187,7 +188,7 @@ export default function AsteroidList({
                     : 'bg-gray-200 hover:bg-gray-300 text-gray-800'
                 }`}
               >
-                Próxima
+                {t('next')}
               </button>
             </div>
           </>
@@ -195,7 +196,7 @@ export default function AsteroidList({
 
         {!loading && !error && filteredAsteroids.length === 0 && (
           <p className="text-gray-500">
-            Nenhum asteroide encontrado com os filtros aplicados.
+            {t('noResultsFiltered')}
           </p>
         )}
       </CardContent>
