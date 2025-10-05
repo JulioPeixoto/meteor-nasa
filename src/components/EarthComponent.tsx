@@ -30,19 +30,17 @@ export function RotatingEarth({ earthData, isDestroyed = false }: { earthData: E
   const atmosphereRef = useRef<THREE.Mesh>(null);
   const timeRef = useRef(0);
 
-  // Carrega as texturas
-  const texture = earthData.textureUrl
-    ? useLoader(THREE.TextureLoader, earthData.textureUrl)
-    : null;
-  const normalMap = earthData.normalMapUrl
-    ? useLoader(THREE.TextureLoader, earthData.normalMapUrl)
-    : null;
-  const specularMap = earthData.specularMapUrl
-    ? useLoader(THREE.TextureLoader, earthData.specularMapUrl)
-    : null;
-  const cloudsTexture = earthData.cloudsTextureUrl
-    ? useLoader(THREE.TextureLoader, earthData.cloudsTextureUrl)
-    : null;
+  // Carrega as texturas. O useLoader deve ser chamado incondicionalmente.
+  // Se a URL for nula ou indefinida, passamos uma string vazia e tratamos o resultado.
+  const [texture, normalMap, specularMap, cloudsTexture] = useLoader(
+    THREE.TextureLoader,
+    [
+      earthData.textureUrl || '',
+      earthData.normalMapUrl || '',
+      earthData.specularMapUrl || '',
+      earthData.cloudsTextureUrl || '',
+    ]
+  );
 
   // Tamanho da Terra (padrão 2 unidades)
   const size = earthData.diameter ? earthData.diameter / 3000 : 4;

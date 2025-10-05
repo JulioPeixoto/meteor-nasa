@@ -3,8 +3,8 @@
 import { useTranslations } from 'next-intl';
 import { Canvas } from '@react-three/fiber';
 import { AsteroidScene } from '@/components/three/asteroid-scene';
-import { AsteroidInfo } from '@/components/three/asteroid-info';
 import type { AsteroidData } from '@/components/three/rotating-asteroid';
+import Link from 'next/link';
 
 export default function ScenePage() {
   const t = useTranslations();
@@ -61,12 +61,12 @@ export default function ScenePage() {
       
       {/* Botão de voltar */}
       <div className="absolute top-4 left-4">
-        <a 
+        <Link 
           href="/" 
           className="bg-blue-600/80 hover:bg-blue-600 text-white px-4 py-2 rounded-lg backdrop-blur-sm transition-colors"
         >
           ← Voltar
-        </a>
+        </Link>
       </div>
     </main>
   );

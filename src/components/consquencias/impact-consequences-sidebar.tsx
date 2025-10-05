@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
 import {
   AlertTriangle,
@@ -40,6 +40,16 @@ export function ImpactConsequencesSidebar({
 
   const results = computeImpactPhysics({ diameter, speed, impactAngle, location, density });
   const damageZones = buildDamageZones({ diameter, speed, impactAngle, location, density, latitude, longitude }, results);
+
+  const buildConsequencesPayload = useCallback(() => {
+    return (damageZones || []).map((z) => ({
+      name: z.name,
+      severity: z.severity,
+      radiusKm: z.radiusKm,
+      casualties: z.casualties,
+      description: z.description,
+    }));
+  }, [damageZones]);
 
   // Chat state
   type ChatMessage = { role: "user" | "assistant"; content: string };
@@ -83,17 +93,7 @@ export function ImpactConsequencesSidebar({
     if (activeSection === 'chat' && !sessionId) {
       initSession();
     }
-  }, [activeSection]);
-
-  const buildConsequencesPayload = () => {
-    return (damageZones || []).map((z) => ({
-      name: z.name,
-      severity: z.severity,
-      radiusKm: z.radiusKm,
-      casualties: z.casualties,
-      description: z.description,
-    }));
-  };
+  }, [activeSection, buildConsequencesPayload, locale, sessionId]);
 
   const sendMessage = async () => {
     if (!chatInput.trim() || sending) return;

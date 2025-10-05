@@ -55,21 +55,17 @@ function RotatingAsteroid({
   const timeRef = useRef(0);
   const collisionTimeRef = useRef(0);
 
-  const texture = asteroidData.textureUrl
-    ? useLoader(THREE.TextureLoader, asteroidData.textureUrl)
-    : null;
-  const normalMap = asteroidData.normalMapUrl
-    ? useLoader(THREE.TextureLoader, asteroidData.normalMapUrl)
-    : null;
-  const roughnessMap = asteroidData.roughnessMapUrl
-    ? useLoader(THREE.TextureLoader, asteroidData.roughnessMapUrl)
-    : null;
-  const displacementMap = asteroidData.displacementMapUrl
-    ? useLoader(THREE.TextureLoader, asteroidData.displacementMapUrl)
-    : null;
-  const aoMap = asteroidData.aoMapUrl
-    ? useLoader(THREE.TextureLoader, asteroidData.aoMapUrl)
-    : null;
+  // Carregar texturas incondicionalmente
+  const [texture, normalMap, roughnessMap, displacementMap, aoMap] = useLoader(
+    THREE.TextureLoader,
+    [
+      asteroidData.textureUrl || '',
+      asteroidData.normalMapUrl || '',
+      asteroidData.roughnessMapUrl || '',
+      asteroidData.displacementMapUrl || '',
+      asteroidData.aoMapUrl || '',
+    ]
+  );
 
   const diameter = asteroidData.estimated_diameter_min ?? 10; 
   const scaleFactor = 0.001; 

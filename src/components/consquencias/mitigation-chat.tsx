@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { Zap, AlertTriangle } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 
 type ChatZone = {
@@ -22,6 +23,7 @@ type MitigationChatProps = {
 export function MitigationChat({ zones, isOpen = true, className }: MitigationChatProps) {
   const params = useParams();
   const locale = (params?.locale as string) || "pt";
+  const t = useTranslations();
 
   type ChatMessage = { role: "user" | "assistant"; content: string };
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
@@ -53,7 +55,7 @@ export function MitigationChat({ zones, isOpen = true, className }: MitigationCh
       }
     };
     if (!sessionId && zones?.length) init();
-  }, [zones]);
+  }, [zones, locale, sessionId]);
 
   const sendMessage = async () => {
     if (!chatInput.trim() || sending) return;
@@ -137,23 +139,23 @@ export function MitigationChat({ zones, isOpen = true, className }: MitigationCh
             <AlertTriangle className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h2 className="text-lg font-heading text-main-foreground">CHAT DE MITIGAÇÃO</h2>
-            <p className="text-sm text-main-foreground/80">Assistente de Estratégias</p>
+            <h2 className="text-lg font-heading text-main-foreground">{t('mitigationChat.title')}</h2>
+            <p className="text-sm text-main-foreground/80">{t('mitigationChat.subtitle')}</p>
           </div>
         </div>
       </div>
 
       <div className="p-4">
         <h3 className="font-heading text-foreground mb-3 flex items-center gap-2">
-          <Zap className="w-5 h-5" /> Conversa
+          <Zap className="w-5 h-5" /> {t('mitigationChat.conversation')}
         </h3>
 
         <div className="h-[60vh] min-h-[260px] overflow-y-auto border-2 border-border bg-white p-3 mb-3 rounded-base shadow-shadow">
           {chatMessages.length === 0 && (
             <div className="mb-3">
-              <div className="text-[10px] uppercase text-gray-800 font-bold mb-1 bg-gray-300 px-2 py-1 rounded inline-block">Assistente</div>
+              <div className="text-[10px] uppercase text-gray-800 font-bold mb-1 bg-gray-300 px-2 py-1 rounded inline-block">{t('mitigationChat.assistantLabel')}</div>
               <div className="text-sm p-3 border-2 border-border rounded-base bg-secondary-background text-foreground whitespace-pre-wrap">
-                Faça perguntas sobre mitigação (evacuação, abrigos, prioridades por zona). O contexto do impacto já foi carregado.
+                {t('mitigationChat.placeholder')}
               </div>
             </div>
           )}
@@ -161,7 +163,7 @@ export function MitigationChat({ zones, isOpen = true, className }: MitigationCh
           {chatMessages.map((m, i) => (
             <div key={i} className="mb-3">
               <div className={`text-[10px] uppercase font-bold mb-1 px-2 py-1 rounded inline-block ${m.role === 'user' ? 'text-blue-800 bg-blue-100' : 'text-gray-800 bg-gray-100'}`}>
-                {m.role === 'user' ? 'Você' : 'Assistente'}
+                {m.role === 'user' ? t('mitigationChat.youLabel') : t('mitigationChat.assistantLabel')}
               </div>
               <div className={`text-sm p-3 border-2 border-border rounded-base whitespace-pre-wrap ${m.role === 'user' ? 'bg-blue-50 text-gray-900 border-blue-200' : 'bg-secondary-background text-foreground'}`}>
                 {m.content}
@@ -176,8 +178,8 @@ export function MitigationChat({ zones, isOpen = true, className }: MitigationCh
             return show
           })() && (
             <div className="mb-3">
-              <div className="text-[10px] uppercase font-bold mb-1 px-2 py-1 rounded inline-block text-gray-800 bg-gray-100">Assistente</div>
-              <div className="text-sm p-3 border-2 border-dashed border-border rounded-base bg-secondary-background text-foreground">Digitando...</div>
+              <div className="text-[10px] uppercase font-bold mb-1 px-2 py-1 rounded inline-block text-gray-800 bg-gray-100">{t('mitigationChat.assistantLabel')}</div>
+              <div className="text-sm p-3 border-2 border-dashed border-border rounded-base bg-secondary-background text-foreground">{t('mitigationChat.typing')}</div>
             </div>
           )}
 
@@ -188,7 +190,7 @@ export function MitigationChat({ zones, isOpen = true, className }: MitigationCh
           <textarea
             value={chatInput}
             onChange={(e) => setChatInput(e.target.value)}
-            placeholder="Pergunte como mitigar os efeitos..."
+            placeholder={t('mitigationChat.inputPlaceholder')}
             className="flex-1 min-h-[48px] max-h-32 resize-none rounded-base border-2 border-border bg-secondary-background text-foreground placeholder:text-foreground/60 px-3 py-2 text-sm font-base focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
@@ -198,7 +200,7 @@ export function MitigationChat({ zones, isOpen = true, className }: MitigationCh
             }}
           />
           <Button onClick={sendMessage} disabled={sending} className="h-12 px-4">
-            {sending ? "Enviando..." : "Enviar"}
+            {sending ? t('mitigationChat.sending') : t('mitigationChat.send')}
           </Button>
         </div>
 
@@ -209,4 +211,3 @@ export function MitigationChat({ zones, isOpen = true, className }: MitigationCh
     </div>
   );
 }
-
