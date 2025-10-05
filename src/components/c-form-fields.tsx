@@ -35,7 +35,7 @@ export default function CFormFields({
         type="number"
         step="0.01"
         min="0"
-        placeholder="Diâmetro mínimo (m)"
+        placeholder="Minimum Diameter (m)"
         onInput={handleNumericInput}
         onChange={handleDiameterChange}
       />
@@ -44,7 +44,7 @@ export default function CFormFields({
         type="number"
         step="0.01"
         min="0"
-        placeholder="Velocidade mínima (km/s)"
+        placeholder="Minimum Velocity (km/s)"
         onInput={handleNumericInput}
         onChange={handleVelocityChange}
       />
