@@ -71,12 +71,13 @@ function RotatingAsteroid({
     ? useLoader(THREE.TextureLoader, asteroidData.aoMapUrl)
     : null;
 
-  // Proporção mais realista do asteroide (muito menor que a Terra)
-  const size = asteroidData.estimated_diameter_min
-    ? Math.log10(asteroidData.estimated_diameter_min + 1) * 0.5 + 0.5
-    : 0.2;
+  const diameter = asteroidData.estimated_diameter_min ?? 10; 
+  const scaleFactor = 0.001; 
 
-  // Rotação mais realista baseada no período de rotação
+  let size = diameter * scaleFactor;
+  if (size < 0.15) size = 0.15;
+  if (size > 2.5) size = 2.5;
+
   const rotationSpeed = asteroidData.rotationPeriod
     ? {
         x: (24 / asteroidData.rotationPeriod) * 0.05,
@@ -166,7 +167,6 @@ function RotatingAsteroid({
 
   return (
     <group ref={groupRef}>
-      {/* Trilha orbital */}
       <Trail
         width={0.5}
         length={20}
@@ -227,12 +227,12 @@ function Scene({ asteroidData, showStars, showEarth, earthData, isColliding, onC
   return (
     <>
       {/* Iluminação ambiente suave */}
-      <ambientLight intensity={0.4} color="#404040" />
+      <ambientLight intensity={0.9} color="#404040" />
       
       {/* Sol - luz principal */}
       <directionalLight 
         position={[10, 5, 5]} 
-        intensity={2} 
+        intensity={8} 
         castShadow 
         shadow-mapSize-width={2048}
         shadow-mapSize-height={2048}
@@ -268,7 +268,7 @@ function Scene({ asteroidData, showStars, showEarth, earthData, isColliding, onC
 
       {/* Luz ambiente espacial */}
       <hemisphereLight 
-        args={["#001122", "#000000", 0.3]} 
+        args={["#001122", "#000000", 0.5]} 
       />
 
       <Suspense fallback={null}>

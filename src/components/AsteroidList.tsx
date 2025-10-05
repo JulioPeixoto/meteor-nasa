@@ -111,7 +111,6 @@ export default function AsteroidList({
     [filteredAsteroids, currentPage]
   );
 
-  // 🔍 Clicar no asteroide → busca detalhes via proxy lookup
   async function handleAsteroidClick(id: string) {
     try {
       const res = await fetch(`/api/proxy/neo/lookup/${id}`);
@@ -160,9 +159,6 @@ export default function AsteroidList({
                           })}{' '}
                           km/s
                         </span>
-                      )}
-                      {ast.isPotentiallyHazardous && (
-                        <span className="text-red-500 font-semibold">⚠️ Perigoso</span>
                       )}
                     </div>
                   </div>
