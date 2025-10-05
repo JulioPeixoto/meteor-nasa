@@ -169,10 +169,10 @@ export function EarthComponent({
     name: 'Terra',
     diameter: 12742, // km
     rotationPeriod: 24, // horas
-    textureUrl: './textures/earth/earth_day_4096.jpg', // textura principal (dia)
-    normalMapUrl: './textures/earth/earth_normal_2048.jpg', // relevo e detalhes da superfície
-    specularMapUrl: './textures/earth/earth_specular_2048.jpg', // reflexos oceânicos
-    cloudsTextureUrl: './textures/earth/earth_clouds_1024.png', // camada de nuvens
+    textureUrl: '/textures/earth/earth_day_4096.jpg', // textura principal (dia)
+    normalMapUrl: '/textures/earth/earth_normal_2048.jpg', // relevo e detalhes da superfície
+    specularMapUrl: '/textures/earth/earth_specular_2048.jpg', // reflexos oceânicos
+    cloudsTextureUrl: '/textures/earth/earth_clouds_1024.png', // camada de nuvens
     ...incomingData,
   };
 

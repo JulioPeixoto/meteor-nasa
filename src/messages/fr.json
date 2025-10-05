@@ -116,5 +116,32 @@
     "inputPlaceholder": "Demandez comment atténuer les effets...",
     "send": "Envoyer",
     "sending": "Envoi..."
+  },
+  "presentation": {
+    "hero": {
+      "title": "Présentation",
+      "subtitle": "",
+      "cta": "Commencer"
+    },
+    "features": {
+      "data": {
+        "title": "Données",
+        "desc": ""
+      },
+      "impact": {
+        "title": "Impact",
+        "desc": ""
+      },
+      "mitigation": {
+        "title": "Atténuation",
+        "desc": ""
+      }
+    },
+    "callout": {
+      "title": "",
+      "desc": "",
+      "cta": "Commencer"
+    },
+    "footer": "© {year} Asteroid Impact Lab."
   }
 }

@@ -116,5 +116,32 @@
     "inputPlaceholder": "Ask how to mitigate the effects...",
     "send": "Send",
     "sending": "Sending..."
+  },
+  "presentation": {
+    "hero": {
+      "title": "Asteroid Impact Simulator",
+      "subtitle": "Explore impact scenarios, visualize trajectories, and assess mitigation using NASA and USGS data.",
+      "cta": "Start Simulation"
+    },
+    "features": {
+      "data": {
+        "title": "Asteroid Data",
+        "desc": "Access detailed NEO information."
+      },
+      "impact": {
+        "title": "Impact Simulation",
+        "desc": "Predict consequences based on real data."
+      },
+      "mitigation": {
+        "title": "Damage Mitigation",
+        "desc": "AI-assisted strategies to reduce risks."
+      }
+    },
+    "callout": {
+      "title": "Get ready to protect Earth!",
+      "desc": "See how small trajectory changes can alter outcomes.",
+      "cta": "Start Simulation"
+    },
+    "footer": "© {year} Asteroid Impact Lab. All rights reserved."
   }
 }

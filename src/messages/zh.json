@@ -116,5 +116,32 @@
     "inputPlaceholder": "询问如何减轻影响...",
     "send": "发送",
     "sending": "正在发送..."
+  },
+  "presentation": {
+    "hero": {
+      "title": "演示",
+      "subtitle": "",
+      "cta": "开始"
+    },
+    "features": {
+      "data": {
+        "title": "数据",
+        "desc": ""
+      },
+      "impact": {
+        "title": "撞击",
+        "desc": ""
+      },
+      "mitigation": {
+        "title": "减灾",
+        "desc": ""
+      }
+    },
+    "callout": {
+      "title": "",
+      "desc": "",
+      "cta": "开始"
+    },
+    "footer": "© {year} Asteroid Impact Lab."
   }
 }

@@ -25,7 +25,7 @@ export default function Header({ locale }: { locale: string }) {
   return (
     <header className="z-50 flex justify-between items-center px-6 py-4 bg-gradient-to-r from-slate-900 to-slate-800 text-white border-b-2 border-border">
       <h1 className="flex items-center gap-2 text-xl font-heading text-white">
-        NASA Meteor Mitigate
+        Meteor Mitigate
       </h1>
 
       {/* Botão de logout e dropdown de idiomas */}

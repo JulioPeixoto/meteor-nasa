@@ -116,5 +116,32 @@
     "inputPlaceholder": "Pregunta cómo mitigar los efectos...",
     "send": "Enviar",
     "sending": "Enviando..."
+  },
+  "presentation": {
+    "hero": {
+      "title": "Presentación",
+      "subtitle": "",
+      "cta": "Comenzar"
+    },
+    "features": {
+      "data": {
+        "title": "Datos",
+        "desc": ""
+      },
+      "impact": {
+        "title": "Impacto",
+        "desc": ""
+      },
+      "mitigation": {
+        "title": "Mitigación",
+        "desc": ""
+      }
+    },
+    "callout": {
+      "title": "",
+      "desc": "",
+      "cta": "Comenzar"
+    },
+    "footer": "© {year} Asteroid Impact Lab."
   }
 }
