@@ -187,7 +187,7 @@ export function ThreeJSExample({
   return (
     <div className="w-full space-y-4 text-white">
       {asteroidData.name && (
-        <div className="bg-gray-900/50 backdrop-blur-sm p-4 rounded-lg border border-white/10">
+        <div className="p-4 rounded-lg border border-white/10">
           <h3 className="text-white text-lg font-bold mb-2">{asteroidData.name}</h3>
           <div className="grid grid-cols-2 gap-2 text-sm">
             {asteroidData.diameter && (

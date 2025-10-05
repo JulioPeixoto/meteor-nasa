@@ -30,24 +30,25 @@ export default function CFormFields({
 
   return (
     <div className="flex flex-col gap-2 w-full">
-      <Input  
-        className="bg-white placeholder:text-gray-500 text-black" 
-        type="number"
-        step="0.01"
-        min="0"
-        placeholder="Diâmetro mínimo (m)"
-        onInput={handleNumericInput}
-        onChange={handleDiameterChange}
+      <Input
+        className="bg-white placeholder:text-gray-500"  
+        placeholder="Tipo da superfície"
       />
-      <Input 
-        className="bg-white placeholder:text-gray-500 text-black" 
-        type="number"
-        step="0.01"
-        min="0"
-        placeholder="Velocidade mínima (km/h)"
-        onInput={handleNumericInput}
-        onChange={handleVelocityChange}
+      <Input
+        className="bg-white placeholder:text-gray-500" 
+        placeholder="Input 2"
       />
+      <Input
+        className="bg-white placeholder:text-gray-500" 
+        placeholder="Input 3"
+      />
+
+      <CSlider />
+
+      <Button>
+        ATTACK!
+      </Button>
+
     </div>
   )
 }
