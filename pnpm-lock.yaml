@@ -47,6 +47,9 @@ dependencies:
   lucide-react:
     specifier: ^0.544.0
     version: 0.544.0(react@19.2.0)
+  motion:
+    specifier: ^12.23.22
+    version: 12.23.22(react-dom@19.2.0)(react@19.2.0)
   next:
     specifier: ^15.0.2
     version: 15.5.4(@babel/core@7.28.4)(react-dom@19.2.0)(react@19.2.0)
@@ -5224,6 +5227,26 @@ packages:
 
   /motion-utils@12.23.6:
     resolution: {integrity: sha512-eAWoPgr4eFEOFfg2WjIsMoqJTW6Z8MTUCgn/GZ3VRpClWBdnbjryiA3ZSNLyxCTmCQx4RmYX6jX1iWHbenUPNQ==}
+    dev: false
+
+  /motion@12.23.22(react-dom@19.2.0)(react@19.2.0):
+    resolution: {integrity: sha512-iSq6X9vLHbeYwmHvhK//+U74ROaPnZmBuy60XZzqNl0QtZkWfoZyMDHYnpKuWFv0sNMqHgED8aCXk94LCoQPGg==}
+    peerDependencies:
+      '@emotion/is-prop-valid': '*'
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@emotion/is-prop-valid':
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      framer-motion: 12.23.22(react-dom@19.2.0)(react@19.2.0)
+      react: 19.2.0
+      react-dom: 19.2.0(react@19.2.0)
+      tslib: 2.8.1
     dev: false
 
   /ms@2.1.3:

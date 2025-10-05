@@ -3,6 +3,7 @@
 import { EarthComponent } from "@/components/EarthComponent";
 import { Button } from "@/components/ui/button";
 import { motion } from 'framer-motion';
+import { Meteors } from "@/components/ui/meteors";
 import { ArrowRight, Shield, Telescope, AlertTriangle } from 'lucide-react';
 import ScrollIndicator from "@/components/ui/scrollIndicator";
 import Link from 'next/link';
@@ -73,19 +74,27 @@ export default function Presentation() {
                 />
             </section>
 
-            <section className="text-center py-24 bg-gradient-to-t from-gray-950 to-gray-900">
+            <section className="relative text-center py-24 bg-gradient-to-t from-gray-950 to-gray-900 overflow-hidden">
+                <div className="absolute top-0 left-0">
+                    <Meteors number={30} />
+                </div>
+                    
+                <div className="absolute top-0 right-0">
+                    <Meteors number={30} />
+                </div>
+
                 <motion.h2
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
-                    className="text-4xl font-bold mb-6"
+                    className="relative z-10 text-4xl font-bold mb-6"
                 >
                     Prepare-se para defender a Terra!
                 </motion.h2>
-                <p className="text-gray-400 mb-8">
+                <p className="relative z-10 text-gray-400 mb-8">
                     Experimente o simulador e compreenda como pequenas mudanças na trajetória de um asteroide pode mudar tudo.
                 </p>
-                <Button asChild className="w-1/3 mx-auto text-lg px-8 py-6 rounded-2xl flex items-center gap-3">
+                <Button asChild className="relative z-10 w-1/3 mx-auto text-lg px-8 py-6 rounded-2xl flex items-center gap-3">
                     <Link href="/">
                         Iniciar Simulação
                         <ArrowRight className="w-6 h-6" />
@@ -94,7 +103,7 @@ export default function Presentation() {
             </section>
 
             <footer className="text-center py-6 text-gray-500 text-sm border-t border-gray-800">
-                © {new Date().getFullYear()} Asteroid Impact Lab. Todos os direitos reservados.
+                © {new Date().getFullYear()} Space Gang Lab. Todos os direitos reservados.
             </footer>
         </div>
     );
