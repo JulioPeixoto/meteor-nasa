@@ -18,6 +18,8 @@ export interface EarthData {
 interface EarthProps {
   earthData?: Partial<EarthData>;
   showStars?: boolean;
+  showMenu?: boolean;
+  showHint?: boolean;
   cameraDistance?: number;
 }
 
@@ -43,7 +45,7 @@ export function RotatingEarth({ earthData }: { earthData: EarthData }) {
     : null;
 
   // Tamanho da Terra (padrão 2 unidades)
-const size = earthData.diameter ? earthData.diameter / 3000 : 4;
+  const size = earthData.diameter ? earthData.diameter / 3000 : 4;
 
   // Velocidade de rotação baseada no período (padrão: 24 horas = rotação da Terra)
   const rotationSpeed = earthData.rotationPeriod
@@ -118,22 +120,24 @@ function Scene({ earthData, showStars }: { earthData: EarthData; showStars: bool
 export function EarthComponent({
   earthData: incomingData,
   showStars = true,
+  showMenu = true,
+  showHint = true,
   cameraDistance = 5,
 }: EarthProps) {
   const earthData: EarthData = {
     name: 'Terra',
     diameter: 12742, // km
     rotationPeriod: 24, // horas
-    textureUrl: './textures/earth_color.jpg', // MUDE AQUI para o caminho da sua imagem
-    normalMapUrl: './textures/earth_normal.jpg', // Opcional
-    specularMapUrl: './textures/earth_specular.jpg', // Opcional
-    cloudsTextureUrl: './textures/earth_clouds.jpg', // Opcional
+    textureUrl: './textures/earth/earth_day_4096.jpg', // textura principal (dia)
+    normalMapUrl: './textures/earth/earth_normal_2048.jpg', // relevo e detalhes da superfície
+    specularMapUrl: './textures/earth/earth_specular_2048.jpg', // reflexos oceânicos
+    cloudsTextureUrl: './textures/earth/earth_clouds_1024.png', // camada de nuvens
     ...incomingData,
   };
 
   return (
-    <div className="w-full space-y-4">
-      {earthData.name && (
+    <div className="w-full h-screen space-y-4">
+      {showMenu && (
         <div className="bg-blue-900/50 backdrop-blur-sm p-4 rounded-lg border border-blue-500/30">
           <h3 className="text-white text-lg font-bold mb-2">🌍 {earthData.name}</h3>
           <div className="grid grid-cols-2 gap-2 text-sm">
@@ -150,13 +154,17 @@ export function EarthComponent({
           </div>
         </div>
       )}
-      <div className="w-full h-96  border-2 border-blue-500/50 rounded-lg overflow-hidden bg-black relative">
-        <Canvas camera={{ position: [0, 0, cameraDistance], fov: 60 }} shadows>
-          <Scene earthData={earthData} showStars={showStars} />
-        </Canvas>
-        <div className="absolute bottom-2 right-2 text-xs text-gray-400 bg-black/50 px-2 py-1 rounded">
-          Use o mouse para girar e dar zoom
+      <div className="w-full h-full border-2 border-blue-500/50 rounded-lg overflow-hidden bg-black relative">
+        <div className="absolute inset-0 w-full h-full">
+          <Canvas camera={{ position: [0, 0, cameraDistance], fov: 60 }} shadows className="w-full h-full">
+            <Scene earthData={earthData} showStars={showStars} />
+          </Canvas>
         </div>
+        {showHint && (
+          <div className="absolute bottom-2 right-2 text-xs text-gray-400 bg-black/50 px-2 py-1 rounded">
+            Use o mouse para girar e dar zoom
+          </div>
+        )}
       </div>
     </div>
   );
