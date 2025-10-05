@@ -12,7 +12,7 @@ export default function Presentation() {
   const t = useTranslations('presentation')
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-950 to-black text-white flex flex-col">
-      <section className="relative flex flex-col items-center justify-center text-center min-h-screen px-6 overflow-hidden">
+      <section className="h-[92vh] relative flex flex-col items-center justify-center text-center min-h-screen px-6 overflow-hidden">
         <div className="absolute inset-0 w-full h-screen z-0">
           <EarthComponent showMenu={false} cameraDistance={16} showStars={true} showHint={false} />
         </div>
