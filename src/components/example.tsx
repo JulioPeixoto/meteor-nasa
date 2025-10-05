@@ -4,18 +4,23 @@ import { Canvas, useLoader, useFrame } from '@react-three/fiber';
 import { OrbitControls, Stars } from '@react-three/drei';
 import { useRef, Suspense } from 'react';
 import * as THREE from 'three';
-import { RotatingEarth } from '@/components/EarthComponent'; // Importa o componente da Terra
+import { RotatingEarth } from '@/components/EarthComponent';
 
 export interface AsteroidData {
   name?: string;
-  diameter?: number;
   orbitalPeriod?: number;
   rotationPeriod?: number;
-  absoluteMagnitude?: number;
-  isPotentiallyHazardous?: boolean;
+  estimated_diameter_min?: number;
+  estimated_diameter_max?: number;
+  absolute_magnitude_h?: number;
+  is_potentially_hazardous_asteroid?: boolean;
   composition?: 'rocky' | 'metallic' | 'carbonaceous' | 'icy';
-  albedo?: number;
-  relativeVelocity?: number;
+  relative_velocity?: {
+    kilometers_per_second?: string;
+    kilometers_per_hour?: string;
+  };
+  close_approach_date?: string;
+  close_approach_date_full?: string;
   textureUrl?: string;
   normalMapUrl?: string;
   roughnessMapUrl?: string;
@@ -24,12 +29,11 @@ export interface AsteroidData {
   displacementScale?: number;
 }
 
-// Adiciona dados da Terra nas props
 interface MeteorProps {
   asteroidData?: Partial<AsteroidData>;
   showStars?: boolean;
   cameraDistance?: number;
-  showEarth?: boolean; // Nova prop para mostrar/ocultar a Terra
+  showEarth?: boolean; 
   earthTextureUrl?: string;
   earthNormalMapUrl?: string;
   earthSpecularMapUrl?: string;
@@ -55,8 +59,8 @@ function RotatingAsteroid({ asteroidData }: { asteroidData: AsteroidData }) {
     ? useLoader(THREE.TextureLoader, asteroidData.aoMapUrl)
     : null;
 
-  const size = asteroidData.diameter
-    ? Math.log10(asteroidData.diameter + 1) * 0.5 + 0.5
+  const size = asteroidData.estimated_diameter_min
+    ? Math.log10(asteroidData.estimated_diameter_min + 1) * 0.5 + 0.5
     : 1.5;
 
   const rotationSpeed = asteroidData.rotationPeriod
@@ -89,7 +93,7 @@ function RotatingAsteroid({ asteroidData }: { asteroidData: AsteroidData }) {
   });
 
   return (
-    <mesh ref={meshRef} position={[4, 0, 0]} castShadow receiveShadow> {/* Posicionado ao lado */}
+    <mesh ref={meshRef} position={[4, 0, 0]} castShadow receiveShadow>
       <sphereGeometry args={[size, 128, 128]} />
       <meshStandardMaterial
         map={texture}
@@ -107,7 +111,6 @@ function RotatingAsteroid({ asteroidData }: { asteroidData: AsteroidData }) {
   );
 }
 
-// Atualiza a Scene para incluir a Terra
 interface SceneProps {
   asteroidData: AsteroidData;
   showStars: boolean;
@@ -121,7 +124,7 @@ interface SceneProps {
 }
 
 function Scene({ asteroidData, showStars, showEarth, earthData }: SceneProps) {
-  const dangerGlow = asteroidData.isPotentiallyHazardous ? 0.5 : 0;
+  const dangerGlow = asteroidData.is_potentially_hazardous_asteroid ? 0.5 : 0;
 
   return (
     <>
@@ -129,13 +132,13 @@ function Scene({ asteroidData, showStars, showEarth, earthData }: SceneProps) {
       <pointLight position={[10, 10, 10]} intensity={4} />
       <directionalLight position={[-10, 5, 5]} intensity={3} castShadow />
 
-      {asteroidData.isPotentiallyHazardous && (
+      {asteroidData.is_potentially_hazardous_asteroid && (
         <pointLight position={[0, 0, 0]} color="#ff4400" intensity={dangerGlow} distance={10} />
       )}
 
       <Suspense fallback={null}>
         {showEarth && (
-          <group position={[-8, 0, 0]}> {/* Terra posicionada à esquerda */}
+          <group position={[-8, 0, 0]}>
             <RotatingEarth earthData={earthData} />
           </group>
         )}
@@ -152,7 +155,7 @@ function Scene({ asteroidData, showStars, showEarth, earthData }: SceneProps) {
 export function ThreeJSExample({
   asteroidData: incomingData,
   showStars = true,
-  cameraDistance = 8, // Aumentado para ver ambos
+  cameraDistance = 8, 
   showEarth = true,
   earthTextureUrl = '/textures/earth/earth_atmos_2048.jpg',
   earthNormalMapUrl = '/textures/earth/earth_normal_2048.jpg',
@@ -160,18 +163,12 @@ export function ThreeJSExample({
   earthCloudsTextureUrl = '/textures/earth/earth_clouds_1024.png',
 }: MeteorProps) {
   const asteroidData: AsteroidData = {
-    name: 'Asteroide Rochoso Detalhado',
-    diameter: 10,
-    composition: 'rocky',
-    isPotentiallyHazardous: false,
-    rotationPeriod: 30,
-    absoluteMagnitude: 16,
     textureUrl: '/textures/meteor/Rock031_2K-JPG_Color.jpg',
     normalMapUrl: '/textures/meteor/Rock031_2K-JPG_NormalGL.jpg',
     roughnessMapUrl: '/textures/meteor/Rock031_2K-JPG_Roughness.jpg',
     displacementMapUrl: '/textures/meteor/Rock031_2K-JPG_Displacement.jpg',
     aoMapUrl: '/textures/meteor/Rock031_2K-JPG_AmbientOcclusion.jpg',
-    displacementScale: 0.15, 
+    displacementScale: 0.15,
     ...incomingData,
   };
 
@@ -186,34 +183,59 @@ export function ThreeJSExample({
 
   return (
     <div className="w-full space-y-4 text-white">
-      {asteroidData.name && (
-        <div className="p-4 rounded-lg border border-white/10">
-          <h3 className="text-white text-lg font-bold mb-2">{asteroidData.name}</h3>
-          <div className="grid grid-cols-2 gap-2 text-sm">
-            {asteroidData.diameter && (
-              <div className="text-gray-300">
-                <span className="font-semibold text-gray-400">Diâmetro:</span> {asteroidData.diameter.toFixed(2)} km
-              </div>
-            )}
-            {asteroidData.composition && (
-              <div className="text-gray-300">
-                <span className="font-semibold text-gray-400">Tipo:</span> {asteroidData.composition}
-              </div>
-            )}
-            {asteroidData.absoluteMagnitude && (
-              <div className="text-gray-300">
-                <span className="font-semibold text-gray-400">Magnitude:</span> {asteroidData.absoluteMagnitude.toFixed(1)}
-              </div>
-            )}
-            {asteroidData.isPotentiallyHazardous !== undefined && (
-              <div className={asteroidData.isPotentiallyHazardous ? 'text-red-400' : 'text-green-400'}>
-                <span className="font-semibold text-gray-400">Status:</span> {asteroidData.isPotentiallyHazardous ? 'Potencialmente Perigoso' : 'Seguro'}
-              </div>
-            )}
+      <div className="p-4 rounded-lg border border-white/10">
+        {asteroidData.name ? (
+          <>
+            <h3 className="text-white text-lg font-bold mb-2">{asteroidData.name}</h3>
+            <div className="grid grid-cols-2 gap-3 text-sm">
+              {asteroidData.estimated_diameter_min && (
+                <div className="text-gray-300">
+                  <span className="font-semibold text-gray-400">Diâmetro Mínimo:</span>{' '}
+                  {asteroidData.estimated_diameter_min.toFixed(2)} m
+                </div>
+              )}
+              {asteroidData.estimated_diameter_max && (
+                <div className="text-gray-300">
+                  <span className="font-semibold text-gray-400">Diâmetro Máximo:</span>{' '}
+                  {asteroidData.estimated_diameter_max.toFixed(2)} m
+                </div>
+              )}
+              {asteroidData.composition && (
+                <div className="text-gray-300">
+                  <span className="font-semibold text-gray-400">Tipo:</span> {asteroidData.composition}
+                </div>
+              )}
+              {asteroidData.absolute_magnitude_h && (
+                <div className="text-gray-300">
+                  <span className="font-semibold text-gray-400">Magnitude:</span> {asteroidData.absolute_magnitude_h.toFixed(1)}
+                </div>
+              )}
+              {asteroidData.relative_velocity?.kilometers_per_second && (
+                <div className="text-gray-300">
+                  <span className="font-semibold text-gray-400">Velocidade Mínima:</span>{' '}
+                  {parseFloat(asteroidData.relative_velocity.kilometers_per_second).toFixed(2)} km/s
+                </div>
+              )}
+              {asteroidData.relative_velocity?.kilometers_per_second && (
+                <div className="text-gray-300">
+                  <span className="font-semibold text-gray-400">Velocidade Max:</span>{' '}
+                  {parseFloat(asteroidData.relative_velocity.kilometers_per_second).toLocaleString('pt-BR', { maximumFractionDigits: 0 })} km/s
+                </div>
+              )}
+              {asteroidData.close_approach_date && (
+                <div className="text-gray-300 col-span-2">
+                  <span className="font-semibold text-gray-400">Data de Aproximação:</span> {asteroidData.close_approach_date}
+                </div>
+              )}
+            </div>
+          </>
+        ) : (
+          <div className="text-center text-gray-400 py-4">
+            <p className="text-sm">Select an asteroid to see more information</p>
           </div>
-        </div>
-      )}
-      <div className="w-full h-[55vh]  border-2 border-gray-500 rounded-lg overflow-hidden bg-black relative">
+        )}
+      </div>
+      <div className="w-full h-[55vh] border-2 border-gray-500 rounded-lg overflow-hidden bg-black relative">
         <Canvas camera={{ position: [0, 0, cameraDistance], fov: 60 }} shadows>
           <Scene 
             asteroidData={asteroidData} 
