@@ -144,7 +144,7 @@ function Scene({ asteroidData, showStars, showEarth, earthData }: SceneProps) {
 
       {showStars && <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />}
 
-      <OrbitControls enableZoom={true} enablePan={true} autoRotate autoRotateSpeed={0.5} />
+      <OrbitControls enableZoom={true} enablePan={true} minDistance={12} autoRotate={false} autoRotateSpeed={0.4} />
     </>
   );
 }
@@ -213,7 +213,7 @@ export function ThreeJSExample({
           </div>
         </div>
       )}
-      <div className="w-full h-96 border-2 border-gray-500 rounded-lg overflow-hidden bg-black relative">
+      <div className="w-full h-[55vh]  border-2 border-gray-500 rounded-lg overflow-hidden bg-black relative">
         <Canvas camera={{ position: [0, 0, cameraDistance], fov: 60 }} shadows>
           <Scene 
             asteroidData={asteroidData} 
