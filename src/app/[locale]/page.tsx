@@ -70,17 +70,6 @@ export default function HomePage() {
               </p>
             </div>
           </div>
-          
-          {/* Link para visualização completa */}
-          <div className="flex justify-center mt-4">
-            <a 
-              href="/scene" 
-              className="bg-blue-600/80 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm backdrop-blur-sm transition-colors"
-            >
-              🎮 Visualização Completa
-            </a>
-          </div>
-        </div>
         </div>
       </div>
     </main>

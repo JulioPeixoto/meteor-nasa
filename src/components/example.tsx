@@ -308,9 +308,6 @@ function Scene({ asteroidData, showStars, showEarth, earthData, isColliding, onC
       />
     </>
   );
-=======
-  enableImpact?: boolean;
->>>>>>> 810af39 (feat: enhance HomePage layout with asteroid section and add complete view link; update RotatingEarth component for destruction effects)
 }
 
 export function ThreeJSExample({
@@ -325,14 +322,31 @@ export function ThreeJSExample({
   enableImpact = true,
 }: MeteorProps) {
   const [isColliding, setIsColliding] = useState(false);
-  const [collisionCount, setCollisionCount] = useState(0);
-  const asteroidData: AsteroidData = {
+  
+  // Dados padrão do asteroide para sempre mostrar na página principal
+  const defaultAsteroidData: AsteroidData = {
+    name: 'Asteroide Padrão',
+    estimated_diameter_min: 50,
+    estimated_diameter_max: 100,
+    absolute_magnitude_h: 22.5,
+    is_potentially_hazardous_asteroid: false,
+    relative_velocity: {
+      kilometers_per_second: '15.5',
+      kilometers_per_hour: '55800'
+    },
+    close_approach_date: '2024-12-25',
+    close_approach_date_full: '2024-Dec-25 14:30',
+    composition: 'rocky',
     textureUrl: '/textures/meteor/Rock031_2K-JPG_Color.jpg',
     normalMapUrl: '/textures/meteor/Rock031_2K-JPG_NormalGL.jpg',
     roughnessMapUrl: '/textures/meteor/Rock031_2K-JPG_Roughness.jpg',
     displacementMapUrl: '/textures/meteor/Rock031_2K-JPG_Displacement.jpg',
     aoMapUrl: '/textures/meteor/Rock031_2K-JPG_AmbientOcclusion.jpg',
     displacementScale: 0.15,
+  };
+
+  const asteroidData: AsteroidData = {
+    ...defaultAsteroidData,
     ...incomingData,
   };
 
@@ -345,73 +359,58 @@ export function ThreeJSExample({
     rotationPeriod: 24,
   };
 
-  const handleAttack = () => {
-    if (!isColliding) {
-      setIsColliding(true);
-    }
-  };
 
   const handleCollisionComplete = () => {
     setIsColliding(false);
-    setCollisionCount(prev => prev + 1);
   };
 
   return (
     <div className="w-full space-y-4 text-white">
       <div className="p-4 rounded-lg border border-white/10">
-        {asteroidData.name ? (
-          <>
-            <h3 className="text-white text-lg font-bold mb-2">{asteroidData.name}</h3>
-            <div className="grid grid-cols-2 gap-3 text-sm">
-              {asteroidData.estimated_diameter_min && (
-                <div className="text-gray-300">
-                  <span className="font-semibold text-gray-400">Diâmetro Mínimo:</span>{' '}
-                  {asteroidData.estimated_diameter_min.toFixed(2)} m
-                </div>
-              )}
-              {asteroidData.estimated_diameter_max && (
-                <div className="text-gray-300">
-                  <span className="font-semibold text-gray-400">Diâmetro Máximo:</span>{' '}
-                  {asteroidData.estimated_diameter_max.toFixed(2)} m
-                </div>
-              )}
-              {asteroidData.composition && (
-                <div className="text-gray-300">
-                  <span className="font-semibold text-gray-400">Tipo:</span> {asteroidData.composition}
-                </div>
-              )}
-              {asteroidData.absolute_magnitude_h && (
-                <div className="text-gray-300">
-                  <span className="font-semibold text-gray-400">Magnitude:</span> {asteroidData.absolute_magnitude_h.toFixed(1)}
-                </div>
-              )}
-              {asteroidData.relative_velocity?.kilometers_per_second && (
-                <div className="text-gray-300">
-                  <span className="font-semibold text-gray-400">Velocidade Mínima:</span>{' '}
-                  {parseFloat(asteroidData.relative_velocity.kilometers_per_second).toFixed(2)} km/s
-                </div>
-              )}
-              {asteroidData.relative_velocity?.kilometers_per_second && (
-                <div className="text-gray-300">
-                  <span className="font-semibold text-gray-400">Velocidade Max:</span>{' '}
-                  {parseFloat(asteroidData.relative_velocity.kilometers_per_second).toLocaleString('pt-BR', { maximumFractionDigits: 0 })} km/s
-                </div>
-              )}
-              {asteroidData.close_approach_date && (
-                <div className="text-gray-300 col-span-2">
-                  <span className="font-semibold text-gray-400">Data de Aproximação:</span> {asteroidData.close_approach_date}
-                </div>
-              )}
-              <div className="text-yellow-400">
-                <span className="font-semibold text-gray-400">Colisões:</span> {collisionCount}
+        <>
+          <h3 className="text-white text-lg font-bold mb-2">{asteroidData.name}</h3>
+          <div className="grid grid-cols-2 gap-3 text-sm">
+            {asteroidData.estimated_diameter_min && (
+              <div className="text-gray-300">
+                <span className="font-semibold text-gray-400">Diâmetro Mínimo:</span>{' '}
+                {asteroidData.estimated_diameter_min.toFixed(2)} m
               </div>
-            </div>
-          </>
-        ) : (
-          <div className="text-center text-gray-400 py-4">
-            <p className="text-sm">Select an asteroid to see more information</p>
+            )}
+            {asteroidData.estimated_diameter_max && (
+              <div className="text-gray-300">
+                <span className="font-semibold text-gray-400">Diâmetro Máximo:</span>{' '}
+                {asteroidData.estimated_diameter_max.toFixed(2)} m
+              </div>
+            )}
+            {asteroidData.composition && (
+              <div className="text-gray-300">
+                <span className="font-semibold text-gray-400">Tipo:</span> {asteroidData.composition}
+              </div>
+            )}
+            {asteroidData.absolute_magnitude_h && (
+              <div className="text-gray-300">
+                <span className="font-semibold text-gray-400">Magnitude:</span> {asteroidData.absolute_magnitude_h.toFixed(1)}
+              </div>
+            )}
+            {asteroidData.relative_velocity?.kilometers_per_second && (
+              <div className="text-gray-300">
+                <span className="font-semibold text-gray-400">Velocidade Mínima:</span>{' '}
+                {parseFloat(asteroidData.relative_velocity.kilometers_per_second).toFixed(2)} km/s
+              </div>
+            )}
+            {asteroidData.relative_velocity?.kilometers_per_second && (
+              <div className="text-gray-300">
+                <span className="font-semibold text-gray-400">Velocidade Max:</span>{' '}
+                {parseFloat(asteroidData.relative_velocity.kilometers_per_second).toLocaleString('pt-BR', { maximumFractionDigits: 0 })} km/s
+              </div>
+            )}
+            {asteroidData.close_approach_date && (
+              <div className="text-gray-300 col-span-2">
+                <span className="font-semibold text-gray-400">Data de Aproximação:</span> {asteroidData.close_approach_date}
+              </div>
+            )}
           </div>
-        )}
+        </>
       </div>
       <div className="w-full h-[55vh] border-2 border-gray-500 rounded-lg overflow-hidden bg-black relative">
         <Canvas camera={{ position: [0, 0, cameraDistance], fov: 60 }} shadows>
@@ -427,17 +426,6 @@ export function ThreeJSExample({
         <div className="absolute bottom-2 right-2 text-xs text-gray-400 bg-black/50 px-2 py-1 rounded">
           Use o mouse para girar e dar zoom.
         </div>
-        <button
-          onClick={handleAttack}
-          disabled={isColliding}
-          className={`absolute top-2 right-2 px-4 py-2 rounded-lg font-bold transition-all duration-200 ${
-            isColliding 
-              ? 'bg-red-600 text-white cursor-not-allowed' 
-              : 'bg-red-500 hover:bg-red-600 text-white hover:scale-105'
-          }`}
-        >
-          {isColliding ? 'COLIDINDO...' : 'ATTACK'}
-        </button>
       </div>
     </div>
   );

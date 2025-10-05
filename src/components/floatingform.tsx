@@ -68,7 +68,7 @@ export default function FloatingForm({ onAsteroidSelect, onDateRangeChange }: Fl
             <DialogHeader>
               <DialogTitle>Asteroids List</DialogTitle>
               <DialogDescription>
-                Choose the asteroid you want to see more details about and attack Earth
+                Choose the asteroid you want to see more details about
               </DialogDescription>
             </DialogHeader>
             <div className="-mx-6 max-h-[500px] overflow-y-auto px-6 text-sm">
