@@ -63,6 +63,7 @@ export function ImpactConsequencesSidebar({
   const [chatInput, setChatInput] = useState("");
   const [sending, setSending] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
+  const [isThinking, setIsThinking] = useState(false);
   const [chatError, setChatError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const abortRef = useRef<AbortController | null>(null);
@@ -74,7 +75,7 @@ export function ImpactConsequencesSidebar({
 
   useEffect(() => {
     scrollToBottom();
-  }, [chatMessages, sending, isStreaming]);
+  }, [chatMessages, sending, isStreaming, isThinking]);
 
   // Initialize a session with current consequences once when Chat tab opens
   useEffect(() => {
@@ -107,20 +108,19 @@ export function ImpactConsequencesSidebar({
     const userText = chatInput.trim();
     const historyBefore = [...chatMessages];
 
-    // Add user + placeholder assistant
+    // Add user message
     setChatMessages([
       ...historyBefore,
       { role: "user", content: userText },
-      { role: "assistant", content: "" },
     ]);
     setChatInput("");
+    setIsThinking(true);
 
     try {
       // cancel previous stream if any
       abortRef.current?.abort();
       const controller = new AbortController();
       abortRef.current = controller;
-      setIsStreaming(true);
 
       const res = await fetch("/api/mitigation-chat/stream", {
         method: "POST",
@@ -145,6 +145,14 @@ export function ImpactConsequencesSidebar({
       let receivedAny = false;
 
       let doneStreaming = false;
+      
+      // Add assistant message placeholder when we start receiving
+      setChatMessages(prev => [
+        ...prev,
+        { role: "assistant", content: "" },
+      ]);
+      setIsStreaming(true);
+      setIsThinking(false);
       while (!doneStreaming) {
         const { value, done } = await reader.read();
         if (done) break;
@@ -190,11 +198,12 @@ export function ImpactConsequencesSidebar({
       }
     } catch (e: any) {
       setChatError(e?.message || "Falha ao enviar mensagem");
-      // rollback assistant placeholder
+      // rollback to state before sending
       setChatMessages(historyBefore);
     } finally {
       setSending(false);
       setIsStreaming(false);
+      setIsThinking(false);
     }
   };
 
@@ -445,6 +454,20 @@ export function ImpactConsequencesSidebar({
                 </div>
               ))}
 
+              {/* Thinking indicator */}
+              {isThinking && (
+                <div className="mb-3">
+                  <div className="text-[10px] uppercase font-bold mb-1 px-2 py-1 rounded inline-block text-gray-800 bg-gray-100">
+                    Assistente
+                  </div>
+                  <div className="text-sm p-3 border-2 border-border rounded-base bg-secondary-background text-foreground">
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-600 italic">thinking...</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div ref={messagesEndRef} />
             </div>
 
@@ -464,12 +487,12 @@ export function ImpactConsequencesSidebar({
               />
               <Button
                 onClick={sendMessage}
-                disabled={sending}
+                disabled={sending || isThinking}
                 variant="default"
                 size="default"
                 className="h-12 px-4"
               >
-                {sending ? tMitigationChat("sending") : tMitigationChat("send")}
+                {sending || isThinking ? tMitigationChat("sending") : tMitigationChat("send")}
               </Button>
             </div>
 
