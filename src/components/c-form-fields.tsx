@@ -1,26 +1,53 @@
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { CSlider } from "@/components/c-slider"
 
-export default function CFormFields() {
+interface Props {
+  onMinDiameterChange?: (value: number | undefined) => void
+  onMinVelocityChange?: (value: number | undefined) => void
+}
+
+export default function CFormFields({ 
+  onMinDiameterChange, 
+  onMinVelocityChange 
+}: Props) {
+  const handleNumericInput = (e: React.FormEvent<HTMLInputElement>) => {
+    e.currentTarget.value = e.currentTarget.value.replace(/[^0-9.]/g, '')
+    
+    const parts = e.currentTarget.value.split('.')
+    if (parts.length > 2) {
+      e.currentTarget.value = parts[0] + '.' + parts.slice(1).join('')
+    }
+  }
+
+  const handleDiameterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    onMinDiameterChange?.(value ? parseFloat(value) : undefined)
+  }
+
+  const handleVelocityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    onMinVelocityChange?.(value ? parseFloat(value) : undefined)
+  }
+
   return (
     <div className="flex flex-col gap-2 w-full">
       <Input  
-        placeholder="Tipo da superfície"
+        className="bg-white placeholder:text-gray-500 text-black" 
+        type="number"
+        step="0.01"
+        min="0"
+        placeholder="Diâmetro mínimo (m)"
+        onInput={handleNumericInput}
+        onChange={handleDiameterChange}
       />
       <Input 
-        placeholder="Input 2"
+        className="bg-white placeholder:text-gray-500 text-black" 
+        type="number"
+        step="0.01"
+        min="0"
+        placeholder="Velocidade mínima (km/h)"
+        onInput={handleNumericInput}
+        onChange={handleVelocityChange}
       />
-      <Input 
-        placeholder="Input 3"
-      />
-
-      <CSlider />
-
-      <Button>
-        ATTACK!
-      </Button>
-
     </div>
   )
-}  
+}
