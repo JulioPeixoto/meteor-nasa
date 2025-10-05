@@ -60,7 +60,7 @@ export async function POST(req: Request) {
       temperature: 0.3,
       maxTokens: 150,
       specialInstructions:
-        'Atue como consultor em mitigação de impacto de asteroides. Responda em 2–3 frases curtas e objetivas (<= 60 palavras), priorizando ações por gravidade/raio. Se faltar dado, faça 1 pergunta de esclarecimento. NUNCA use Markdown: apenas texto plano, sem asteriscos/backticks/títulos.'
+        'Atue como consultor em mitigação de impacto de asteroides. Responda em 2–3 frases curtas e objetivas (<= 60 palavras), priorizando ações por gravidade/raio. Mencione raios das zonas-chave em parênteses quando útil. Se faltar dado, faça 1 pergunta de esclarecimento. NUNCA use Markdown: apenas texto plano, sem asteriscos/backticks/títulos.'
     })
 
     const composed = `Contexto de consequências: ${contextSummary}\n\nPergunta do usuário: ${message}`

@@ -5,6 +5,7 @@ export const revalidate = 0
 import { NextResponse } from 'next/server'
 import type { ChatMessage, SupportedLocale } from '@/ai/interfaces'
 import { getSession, summarizeConsequences } from '../store'
+import { buildSystemContextFromVectors } from '@/ai/vector'
 import { createSystemPrompt } from '@/ai/prompts'
 
 type ConsequenceZone = {
@@ -45,18 +46,39 @@ export async function POST(req: Request) {
       specialInstructions: [
         'Seja CONCISO (<= 60 palavras).',
         'Use 2–3 frases curtas e claras (texto contínuo).',
+        'Mencione raios das zonas-chave em parênteses quando útil (ex.: 24 km).',
         'Faça no máximo 1 pergunta objetiva ao final, apenas se necessário.',
         'Sem saudações/meta; vá direto às ações priorizadas por severidade/raio.',
         'NUNCA use Markdown. Apenas texto plano: sem asteriscos/backticks/títulos/negrito/itálico.'
       ].join(' ')
     })
 
+    const keyFacts = session?.keyFacts as string | undefined
     const messages: ChatMessage[] = [
       { role: 'system', content: baseSystem },
-      { role: 'user', content: `Contexto de consequências: ${summary}` },
+      { role: 'system', content: `Contexto de consequências: ${summary}` },
+      keyFacts ? { role: 'system', content: `Dados-chave: ${keyFacts}` } : undefined,
       ...history,
       { role: 'user', content: message }
-    ]
+    ].filter(Boolean) as ChatMessage[]
+
+    // Detecção leve de saudação para evitar plano longo
+    const isGreeting = /^(oi|olá|ola|hello|hi)\b/i.test(message.trim())
+    if (isGreeting) {
+      messages.unshift({ role: 'system', content: 'A próxima mensagem do usuário é uma saudação curta. Responda com 2–3 frases objetivas e finalize com uma pergunta: "Você está em qual região para orientação específica?". Não liste plano completo.' })
+    }
+
+    // RAG: recupera contexto vectorial da sessão para a pergunta atual (best-effort)
+    try {
+      if (session?.id) {
+        const rag = await buildSystemContextFromVectors(session.id, locale, message)
+        if (rag) {
+          messages.splice(1, 0, { role: 'system', content: rag })
+        }
+      }
+    } catch (e) {
+      console.warn('[mitigation-chat:stream] rag-failed', { traceId, error: e instanceof Error ? e.message : String(e) })
+    }
 
     console.info('[mitigation-chat:stream] start', {
       traceId,

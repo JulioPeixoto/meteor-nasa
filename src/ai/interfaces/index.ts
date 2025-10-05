@@ -85,4 +85,5 @@ export interface LocalizedAIOptions extends Omit<InvokeOptions, 'systemMessage'>
   userLocation?: string
   appContext?: string
   specialInstructions?: string
+  sessionId?: string
 }

@@ -20,6 +20,9 @@ dependencies:
   '@react-three/fiber':
     specifier: ^9.3.0
     version: 9.3.0(@types/react@18.3.25)(react-dom@19.2.0)(react@19.2.0)(three@0.180.0)
+  chromadb:
+    specifier: ^3.0.17
+    version: 3.0.17
   class-variance-authority:
     specifier: ^0.7.1
     version: 0.7.1
@@ -2682,6 +2685,65 @@ packages:
     resolution: {integrity: sha512-+IxzY9BZOQd/XuYPRmrvEVjF/nqj5kgT4kEq7VofrDoM1MxoRjEWkrCC3EtLi59TVawxTAn+orJwFQcrqEN1+g==}
     engines: {node: '>=18'}
     dev: true
+
+  /chromadb-js-bindings-darwin-arm64@1.0.8:
+    resolution: {integrity: sha512-QPKG6Q76y0kEsSueZB1s6M/bk0OUGjojG4LQIa5T2zUgHHKplWRpQCUk1ziMTYzUt2AP9MynBYvh8/BoLefZAg==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /chromadb-js-bindings-darwin-x64@1.0.8:
+    resolution: {integrity: sha512-yBdnL7MUbR8sm4JkLYtvHuCT3Bb12xn+c0UAefJUVhn8qvud7nLAAfOKY8b911NpfpYAOPABqm8PUXhZMAD8fg==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /chromadb-js-bindings-linux-arm64-gnu@1.0.8:
+    resolution: {integrity: sha512-KYPeETSAGAcGSQVur5OEe0svmEmrStwXJfNOBNPwclCnKmLs8QKlMh2Jxwq6ymWjWfZggNIy8NYpgBnMcWqOtA==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /chromadb-js-bindings-linux-x64-gnu@1.0.8:
+    resolution: {integrity: sha512-XPNB64rulyR/qpw/VXeKETvCWtTMOBAV2mCRdRD8XGIWEcgUaYnVnCeWep2r1G2UT6B9yJxSmDIgsOxKWzNKVA==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /chromadb-js-bindings-win32-x64-msvc@1.0.8:
+    resolution: {integrity: sha512-8m/YYe0AQos+pEU171+wefNtOLw7YZjhhEzruqz7O34SPU48oRM9+T2CefKWBkFTBcYPQGpTOorclq0nFteCvQ==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /chromadb@3.0.17:
+    resolution: {integrity: sha512-QDruPC+SawO2OECPK0vs+tGB+Rl+I3BO+R7AVKCC1O4SJUtEUgHpM/u+c/PrlaIgA4n9zoE/5ryZ/XKU8HPR4w==}
+    engines: {node: '>=20'}
+    hasBin: true
+    dependencies:
+      semver: 7.7.2
+    optionalDependencies:
+      chromadb-js-bindings-darwin-arm64: 1.0.8
+      chromadb-js-bindings-darwin-x64: 1.0.8
+      chromadb-js-bindings-linux-arm64-gnu: 1.0.8
+      chromadb-js-bindings-linux-x64-gnu: 1.0.8
+      chromadb-js-bindings-win32-x64-msvc: 1.0.8
+    dev: false
 
   /ci-info@4.3.1:
     resolution: {integrity: sha512-Wdy2Igu8OcBpI2pZePZ5oWjPC38tmDVx5WKUXKwlLYkA0ozo85sLsLvkBbBn/sZaSCMFOGZJ14fvW9t5/d7kdA==}

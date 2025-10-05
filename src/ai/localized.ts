@@ -1,5 +1,6 @@
 import { AIInvoker, createInvoker } from './invoke'
 import { createSystemPrompt } from './prompts'
+import { buildSystemContextFromVectors } from '@/ai/vector'
 import type { 
   ChatMessage, 
   InvokeOptions, 
@@ -12,6 +13,7 @@ export class LocalizedAI {
   private invoker: AIInvoker
   private locale: SupportedLocale
   private systemPrompt: string
+  private sessionId?: string
 
   constructor(options: LocalizedAIOptions) {
     this.locale = options.locale
@@ -28,12 +30,28 @@ export class LocalizedAI {
       appContext: options.appContext,
       specialInstructions: options.specialInstructions
     })
+
+    this.sessionId = options.sessionId
+  }
+
+  private async composeSystemWithRag(question: string): Promise<string> {
+    if (!this.sessionId) return this.systemPrompt
+    try {
+      const rag = await buildSystemContextFromVectors(this.sessionId, this.locale, question)
+      if (rag && rag.trim().length > 0) {
+        return `${this.systemPrompt}\n\n${rag}`
+      }
+    } catch (e) {
+      // RAG best-effort: if it fails, ignore and use base system prompt
+    }
+    return this.systemPrompt
   }
 
   async ask(question: string, options?: Omit<InvokeOptions, 'systemMessage'>): Promise<InvokeResult> {
+    const system = await this.composeSystemWithRag(question)
     return this.invoker.invoke(question, {
       ...options,
-      systemMessage: this.systemPrompt
+      systemMessage: system
     })
   }
 
@@ -42,9 +60,10 @@ export class LocalizedAI {
     history: ChatMessage[] = [],
     options?: Omit<InvokeOptions, 'systemMessage'>
   ): Promise<InvokeResult<{ response: string; updatedHistory: ChatMessage[] }>> {
+    const system = await this.composeSystemWithRag(question)
     return this.invoker.invokeWithHistory(question, history, {
       ...options,
-      systemMessage: this.systemPrompt
+      systemMessage: system
     })
   }
 
@@ -66,6 +85,10 @@ export class LocalizedAI {
   }): void {
     this.locale = locale
     this.systemPrompt = createSystemPrompt(locale, context)
+  }
+
+  setSession(sessionId?: string): void {
+    this.sessionId = sessionId
   }
 
   getSystemPrompt(): string {

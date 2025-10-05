@@ -12,14 +12,15 @@ export type ChatSession = {
   id: string
   locale: SupportedLocale
   contextSummary: string
+  keyFacts: string
   createdAt: number
 }
 
 const sessions = new Map<string, ChatSession>()
 
-export function createSession(locale: SupportedLocale, contextSummary: string): ChatSession {
+export function createSession(locale: SupportedLocale, contextSummary: string, keyFacts: string): ChatSession {
   const id = Math.random().toString(36).slice(2, 10)
-  const sess: ChatSession = { id, locale, contextSummary, createdAt: Date.now() }
+  const sess: ChatSession = { id, locale, contextSummary, keyFacts, createdAt: Date.now() }
   sessions.set(id, sess)
   return sess
 }
@@ -38,3 +39,18 @@ export function summarizeConsequences(zones: ConsequenceZone[] = []): string {
   return `Zonas consideradas: ${items}. Considere gravidade e distância ao priorizar ações.`
 }
 
+export function keyFactsFromConsequences(zones: ConsequenceZone[] = []): string {
+  if (!zones.length) return 'Sem zonas definidas.'
+  const wanted = new Map<string, string>([
+    ['Zona de Vaporização', 'Vaporização'],
+    ['Destruição Total', 'Destruição Total'],
+    ['Danos Severos', 'Danos Severos'],
+    ['Danos Estruturais', 'Danos Estruturais'],
+  ])
+  const picked: string[] = []
+  for (const z of zones) {
+    const name = wanted.get(z.name) || undefined
+    if (name) picked.push(`${name}: ${Math.round(z.radiusKm)} km`)
+  }
+  return picked.slice(0, 4).join('; ')
+}
