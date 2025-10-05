@@ -1,4 +1,6 @@
 import { Input } from "@/components/ui/input"
+import { CSlider } from "./c-slider"
+import { Button } from "./ui/button"
 
 interface Props {
   onMinDiameterChange?: (value: number | undefined) => void
@@ -42,13 +44,6 @@ export default function CFormFields({
         className="bg-white placeholder:text-gray-500" 
         placeholder="Input 3"
       />
-
-      <CSlider />
-
-      <Button>
-        ATTACK!
-      </Button>
-
     </div>
   )
 }
