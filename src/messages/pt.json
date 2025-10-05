@@ -116,5 +116,32 @@
     "inputPlaceholder": "Pergunte como mitigar os efeitos...",
     "send": "Enviar",
     "sending": "Enviando..."
+  },
+  "presentation": {
+    "hero": {
+      "title": "Simulador de Impacto de Asteroides",
+      "subtitle": "Explore cenários de impacto, visualize trajetórias e avalie mitigação com dados da NASA e USGS.",
+      "cta": "Iniciar Simulação"
+    },
+    "features": {
+      "data": {
+        "title": "Risco Cósmico Desvendado",
+        "desc": "Visualize asteroides como \"Impactor-2025\". Dados da NASA integrados para uma visão clara da ameaça."
+      },
+      "impact": {
+        "title": "Cenários de Impacto Críticos",
+        "desc": "Simule impactos em tempo real. Preveja tsunamis e eventos sísmicos com dados NASA e USGS."
+      },
+      "mitigation": {
+        "title": "Defesa Planetária Ativa",
+        "desc": "Explore estratégias de deflexão de asteroides, como impactadores cinéticos, para proteger a Terra."
+      }
+    },
+    "callout": {
+      "title": "Prepare-se para defender a Terra!",
+      "desc": "Entenda como pequenas mudanças na trajetória podem alterar tudo.",
+      "cta": "Iniciar Simulação"
+    },
+    "footer": "© {year} Asteroid Impact Lab. Todos os direitos reservados."
   }
 }
