@@ -19,7 +19,7 @@ interface Props {
   maxVelocity?: number;
   maxDiameter?: number;
   isPotentiallyHazardous?: boolean;
-  onSelectAsteroid?: (data: any) => void; // 👈 callback para enviar dados detalhados ao pai
+  onSelectAsteroid?: (data: any) => void;
 }
 
 export default function AsteroidList({
@@ -30,7 +30,7 @@ export default function AsteroidList({
   maxVelocity,
   maxDiameter,
   isPotentiallyHazardous,
-  onSelectAsteroid
+  onSelectAsteroid,
 }: Props) {
   const [allAsteroids, setAllAsteroids] = useState<Asteroid[]>([]);
   const [loading, setLoading] = useState(true);
@@ -47,19 +47,29 @@ export default function AsteroidList({
       setCurrentPage(1);
 
       try {
-        const res = await fetch(`/api/neo?type=neows&start_date=${startDate}&end_date=${endDate}`);
+        // ✅ Usa o proxy seguro (não chama diretamente /api/neo)
+        const res = await fetch(
+          `/api/proxy/neo?start_date=${startDate}&end_date=${endDate}` +
+            (minDiameter ? `&min_diameter=${minDiameter}` : '') +
+            (minVelocity ? `&min_velocity=${minVelocity}` : '')
+        );
+
         const data = await res.json();
 
-        if (data.status === 'success' && data.objects) {
+        if (res.ok && data.near_earth_objects) {
           const list: Asteroid[] = [];
 
-          for (const day of Object.keys(data.objects)) {
-            data.objects[day].forEach((obj: any) => {
+          for (const day of Object.keys(data.near_earth_objects)) {
+            data.near_earth_objects[day].forEach((obj: any) => {
               list.push({
                 id: obj.id,
                 name: obj.name,
-                diameter: obj.estimated_diameter?.meters?.estimated_diameter_min,
-                velocity: parseFloat(obj.close_approach_data?.[0]?.relative_velocity?.kilometers_per_second),
+                diameter:
+                  obj.estimated_diameter?.meters?.estimated_diameter_min ??
+                  obj.estimated_diameter?.meters?.estimated_diameter_max,
+                velocity: parseFloat(
+                  obj.close_approach_data?.[0]?.relative_velocity?.kilometers_per_second ?? '0'
+                ),
                 isPotentiallyHazardous: obj.is_potentially_hazardous_asteroid,
               });
             });
@@ -70,17 +80,16 @@ export default function AsteroidList({
           setError('Nenhum asteroide encontrado nesse período.');
         }
       } catch (err) {
+        console.error('Erro ao buscar asteroides:', err);
         setError('Erro ao buscar asteroides.');
-        console.error(err);
       } finally {
         setLoading(false);
       }
     }
 
     fetchAsteroids();
-  }, [startDate, endDate]);
+  }, [startDate, endDate, minDiameter, minVelocity]);
 
-  // 🧮 Filtro com useMemo
   const filteredAsteroids = useMemo(() => {
     return allAsteroids.filter((ast) => {
       if (minDiameter && ast.diameter && ast.diameter < minDiameter) return false;
@@ -92,17 +101,20 @@ export default function AsteroidList({
     });
   }, [allAsteroids, minDiameter, maxDiameter, minVelocity, maxVelocity, isPotentiallyHazardous]);
 
-  // 🔢 Paginação
   const totalPages = Math.ceil(filteredAsteroids.length / itemsPerPage);
   const paginated = useMemo(
-    () => filteredAsteroids.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage),
+    () =>
+      filteredAsteroids.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+      ),
     [filteredAsteroids, currentPage]
   );
 
-  // 🔍 Clicar no asteroide -> busca detalhes via /lookup/{id}
+  // 🔍 Clicar no asteroide → busca detalhes via proxy lookup
   async function handleAsteroidClick(id: string) {
     try {
-      const res = await fetch(`/api/neo/lookup/${id}`);
+      const res = await fetch(`/api/proxy/neo/lookup/${id}`);
       const data = await res.json();
       if (onSelectAsteroid) onSelectAsteroid(data);
     } catch (err) {
@@ -192,7 +204,9 @@ export default function AsteroidList({
         )}
 
         {!loading && !error && filteredAsteroids.length === 0 && (
-          <p className="text-gray-500">Nenhum asteroide encontrado com os filtros aplicados.</p>
+          <p className="text-gray-500">
+            Nenhum asteroide encontrado com os filtros aplicados.
+          </p>
         )}
       </CardContent>
     </Card>
