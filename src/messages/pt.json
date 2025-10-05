@@ -10,7 +10,8 @@
     "spanish": "Espanhol",
     "france": "Francês",
     "chine": "Chinês",
-    "switch": "Mudar para {lang}"
+    "switch": "Mudar para {lang}",
+    "logout": "Sair"
   },
   "sections": {
     "asteroid": "Teste de Visualização 3D do Asteroide",

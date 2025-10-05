@@ -10,7 +10,8 @@
     "spanish": "Spanish",
     "france": "France",
     "chine": "Chine",
-    "switch": "Switch to {lang}"
+    "switch": "Switch to {lang}",
+    "logout": "Logout"
   },
   "sections": {
     "asteroid": "3D Asteroid Visualization Test",

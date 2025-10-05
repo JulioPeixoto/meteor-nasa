@@ -10,7 +10,8 @@
     "spanish": "西班牙语",
     "france": "法语",
     "chine": "中文",
-    "switch": "切换到 {lang}"
+    "switch": "切换到 {lang}",
+    "logout": "退出"
   },
   "sections": {
     "asteroid": "小行星 3D 可视化测试",

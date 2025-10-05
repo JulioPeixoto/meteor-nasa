@@ -30,12 +30,12 @@ export default function Header({ locale }: { locale: string }) {
 
       {/* Botão de logout e dropdown de idiomas */}
       <div className="flex items-center gap-4">
-        <LogoutButton />
+        <LogoutButton className="px-3 py-2 bg-main border-2 border-border rounded-base shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all" />
         
         <div className="relative z-50">
         <button
           onClick={() => setOpen(!open)}
-          className="flex items-center gap-2 px-3 py-2 bg-main border-2 border-border rounded-base shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
+          className="flex items-center gap-2 px-3 py-2 bg-main border-2 border-border rounded-base shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
         >
           <Image src={currentLocale?.flag || '/flags/united-states.png'} alt={currentLocale?.label || 'lang'} width={20} height={20} />
           <span className="text-main-foreground font-base">{currentLocale?.label}</span>
