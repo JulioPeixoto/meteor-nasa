@@ -150,7 +150,7 @@ export function EarthComponent({
           </div>
         </div>
       )}
-      <div className="w-full h-96 border-2 border-blue-500/50 rounded-lg overflow-hidden bg-black relative">
+      <div className="w-full h-96  border-2 border-blue-500/50 rounded-lg overflow-hidden bg-black relative">
         <Canvas camera={{ position: [0, 0, cameraDistance], fov: 60 }} shadows>
           <Scene earthData={earthData} showStars={showStars} />
         </Canvas>
