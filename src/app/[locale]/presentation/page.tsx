@@ -27,7 +27,7 @@ export default function Presentation() {
           </motion.p>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6, duration: 0.8 }}>
             <Link href="/">
-              <Button className="text-lg px-8 py-6 rounded-2xl flex items-center gap-3">
+              <Button className=" text-lg px-8 py-6 rounded-2xl flex items-center gap-3 shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:shadow-[0px_0px_0px_0px_rgba(255,255,255,1)]">
                 {t('hero.cta')}
                 <ArrowRight className="w-6 h-6" />
               </Button>
@@ -49,7 +49,7 @@ export default function Presentation() {
           {t('callout.title')}
         </motion.h2>
         <p className="text-gray-400 mb-8">{t('callout.desc')}</p>
-        <Button asChild className="w-1/3 mx-auto text-lg px-8 py-6 rounded-2xl flex items-center gap-3">
+        <Button asChild className="w-1/3 mx-auto text-lg px-8 py-6 rounded-2xl flex items-center gap-3 shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:shadow-[0px_0px_0px_0px_rgba(255,255,255,1)]">
           <Link href="/">
             {t('callout.cta')}
             <ArrowRight className="w-6 h-6" />
@@ -69,7 +69,7 @@ function FeatureCard({ icon, title, description }: { icon: React.ReactNode; titl
     <motion.div
       whileHover={{ scale: 1.05 }}
       transition={{ type: 'spring', stiffness: 300 }}
-      className="bg-gray-900/70 p-8 rounded-none border-2 border-gray-700 text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all duration-200"
+      className="bg-gray-900/70 p-8 rounded-none border-2 border-gray-700 text-center shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] transition-all duration-200"
     >
       <div className="flex justify-center mb-6">{icon}</div>
       <h3 className="text-3xl font-bold mb-4 uppercase">{title}</h3>
