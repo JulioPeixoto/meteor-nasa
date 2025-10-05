@@ -44,7 +44,7 @@ export default function CFormFields({
         type="number"
         step="0.01"
         min="0"
-        placeholder="Velocidade mínima (km/h)"
+        placeholder="Velocidade mínima (km/s)"
         onInput={handleNumericInput}
         onChange={handleVelocityChange}
       />
