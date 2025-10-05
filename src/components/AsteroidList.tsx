@@ -111,7 +111,6 @@ export default function AsteroidList({
     [filteredAsteroids, currentPage]
   );
 
-  // 🔍 Clicar no asteroide → busca detalhes via proxy lookup
   async function handleAsteroidClick(id: string) {
     try {
       const res = await fetch(`/api/proxy/neo/lookup/${id}`);
@@ -124,18 +123,6 @@ export default function AsteroidList({
 
   return (
     <Card className="mt-4 bg-white shadow-md rounded-xl">
-      <CardHeader>
-        <CardTitle className="text-gray-800 flex flex-col items-start gap-1">
-          <span className="text-base font-semibold">Asteroides próximos à Terra</span>
-          {filteredAsteroids.length > 0 && (
-            <span className="text-sm font-normal text-gray-500">
-              ({filteredAsteroids.length} encontrado
-              {filteredAsteroids.length !== 1 ? 's' : ''})
-            </span>
-          )}
-        </CardTitle>
-      </CardHeader>
-
       <CardContent>
         {loading && <p className="text-gray-500">Carregando...</p>}
         {error && <p className="text-red-500">{error}</p>}
@@ -161,9 +148,6 @@ export default function AsteroidList({
                           km/s
                         </span>
                       )}
-                      {ast.isPotentiallyHazardous && (
-                        <span className="text-red-500 font-semibold">⚠️ Perigoso</span>
-                      )}
                     </div>
                   </div>
                 </li>
@@ -172,6 +156,12 @@ export default function AsteroidList({
 
             {/* Paginação */}
             <div className="flex items-center justify-between mt-4 pt-2 border-t border-gray-200">
+              {filteredAsteroids.length > 0 && (
+                <span className="text-sm font-normal text-gray-500">
+                  ({filteredAsteroids.length} encontrado
+                  {filteredAsteroids.length !== 1 ? 's' : ''})
+                </span>
+              )}
               <button
                 onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
                 disabled={currentPage === 1}
