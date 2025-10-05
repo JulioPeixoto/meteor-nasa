@@ -19,7 +19,7 @@ function LoginForm() {
     <div>
       <div className="mb-5 sm:mb-6">
         <h1 className="text-xl sm:text-2xl font-heading mb-2 text-white">
-          Entrar
+          Sign in
         </h1>
       </div>
 
@@ -31,8 +31,8 @@ function LoginForm() {
         onClick={handleGoogleLogin}
         disabled={googleLoading}
         aria-busy={googleLoading}
-        aria-label="Continuar com Google"
-        title="Continuar com Google"
+        aria-label="Continue with Google"
+        title="Continue with Google"
       >
         {googleLoading ? (
           <div className="w-5 h-5" />
@@ -40,7 +40,7 @@ function LoginForm() {
           <LogoGoogle size={20} />
         )}
         <span className="flex-1 text-center font-medium">
-          {googleLoading ? "Entrando..." : "Continuar com Google"}
+          {googleLoading ? "Signing in..." : "Continue with Google"}
         </span>
         {googleLoading ? (
           <div className="w-5 h-5 animate-spin flex items-center justify-center">
