@@ -11,9 +11,10 @@ import {
   Zap,
 } from "lucide-react";
 import {
-  useImpactCalculations,
+  computeImpactPhysics,
+  buildDamageZones,
   type ImpactCalculationParams,
-} from "./use-impact-calculations";
+} from "./utils/impact-calculations";
 import { Button } from "@/components/ui/button";
 
 type SidebarProps = ImpactCalculationParams & {
@@ -37,15 +38,8 @@ export function ImpactConsequencesSidebar({
   );
   const [expandedZone, setExpandedZone] = useState<number | null>(null);
 
-  const calculations = useImpactCalculations({
-    diameter,
-    speed,
-    impactAngle,
-    location,
-    density,
-    latitude,
-    longitude,
-  });
+  const results = computeImpactPhysics({ diameter, speed, impactAngle, location, density });
+  const damageZones = buildDamageZones({ diameter, speed, impactAngle, location, density, latitude, longitude }, results);
 
   // Chat state
   type ChatMessage = { role: "user" | "assistant"; content: string };
@@ -92,7 +86,7 @@ export function ImpactConsequencesSidebar({
   }, [activeSection]);
 
   const buildConsequencesPayload = () => {
-    return (calculations?.damageZones || []).map((z) => ({
+    return (damageZones || []).map((z) => ({
       name: z.name,
       severity: z.severity,
       radiusKm: z.radiusKm,
@@ -291,25 +285,25 @@ export function ImpactConsequencesSidebar({
             </div>
             <div className="p-2 bg-gray-100 border-2 border-border">
               <div className="text-xs text-gray-600">Energia</div>
-              <div className="font-bold text-black">{formatNumber(calculations.yieldKT)} kt</div>
+              <div className="font-bold text-black">{formatNumber(results.yieldKT)} kt</div>
             </div>
             <div className="p-2 bg-gray-100 border-2 border-border">
               <div className="text-xs text-gray-600">Cratera</div>
-              <div className="font-bold text-black">{Math.round(calculations.craterDiameter)}m</div>
+              <div className="font-bold text-black">{Math.round(results.craterDiameter)}m</div>
             </div>
           </div>
 
           {/* Energy Comparison */}
           <div className="mt-3 p-2 bg-yellow-100 border border-yellow-400 rounded">
             <div className="text-xs text-yellow-800 font-medium">
-              💣 Equivalente a {Math.round(calculations.yieldKT / 15)} bombas de Hiroshima
+              💣 Equivalente a {Math.round(results.yieldKT / 15)} bombas de Hiroshima
             </div>
           </div>
         </div>
       )}
 
       {/* Tsunami Alert */}
-      {activeSection === "consequences" && location === "ocean" && calculations.tsunamiHeight && (
+      {activeSection === "consequences" && location === "ocean" && results.tsunamiHeight && (
         <div className="p-4 bg-blue-500 border-b-4 border-border">
           <div className="flex items-center gap-2 text-white mb-2">
             <div className="w-6 h-6 bg-white/20 rounded flex items-center justify-center">
@@ -321,7 +315,7 @@ export function ImpactConsequencesSidebar({
             <div className="flex justify-between items-center mb-1">
               <span>Altura das ondas:</span>
               <span className="font-bold">
-                {Math.round(calculations.tsunamiHeight)}m
+                {Math.round(results.tsunamiHeight)}m
               </span>
             </div>
             <div className="p-2 bg-white/20 border-2 border-white/40 font-medium text-center">
@@ -342,7 +336,7 @@ export function ImpactConsequencesSidebar({
             </h3>
 
             <div className="space-y-3">
-              {calculations.damageZones.map((zone, index) => (
+              {damageZones.map((zone, index) => (
                 <div key={index}>
                   <button
                     onClick={() =>

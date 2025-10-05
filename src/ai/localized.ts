@@ -35,15 +35,31 @@ export class LocalizedAI {
   }
 
   private async composeSystemWithRag(question: string): Promise<string> {
-    if (!this.sessionId) return this.systemPrompt
+    if (!this.sessionId) {
+      console.log('--- System Prompt (no session) ---')
+      console.log(this.systemPrompt)
+      console.log('-----------------------------------')
+      return this.systemPrompt
+    }
     try {
       const rag = await buildSystemContextFromVectors(this.sessionId, this.locale, question)
       if (rag && rag.trim().length > 0) {
-        return `${this.systemPrompt}\n\n${rag}`
+        const fullSystemPrompt = `${this.systemPrompt}\n\n${rag}`
+        console.log('--- System Prompt (with RAG) ---')
+        console.log(fullSystemPrompt)
+        console.log('----------------------------------')
+        console.log('--- Asteroid Data (RAG) ---')
+        console.log(rag)
+        console.log('---------------------------')
+        return fullSystemPrompt
       }
     } catch (e) {
+      console.error('RAG buildSystemContextFromVectors error:', e)
       // RAG best-effort: if it fails, ignore and use base system prompt
     }
+    console.log('--- System Prompt (RAG failed or empty) ---')
+    console.log(this.systemPrompt)
+    console.log('-------------------------------------------')
     return this.systemPrompt
   }
 
