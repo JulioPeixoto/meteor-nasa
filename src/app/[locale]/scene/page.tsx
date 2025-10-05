@@ -34,7 +34,7 @@ export default function ScenePage() {
   };
 
   return (
-    <main className="bg-black relative overflow-hidden w-screen h-screen">
+    <div className="bg-black relative overflow-hidden w-full h-full">
       {/* Canvas em tela cheia */}
       <Canvas 
         camera={{ position: [0, 0, 8], fov: 60 }} 
@@ -49,25 +49,6 @@ export default function ScenePage() {
           enableImpact={true}
         />
       </Canvas>
-      
-      {/* Controles de instrução */}
-      <div className="absolute bottom-4 right-4 text-xs text-gray-400 bg-black/50 px-3 py-2 rounded-lg backdrop-blur-sm">
-        <div className="space-y-1">
-          <div>🖱️ Mouse: Girar e dar zoom</div>
-          <div>💥 Impacto: Asteroide e Terra desaparecem</div>
-          <div>⭐ 8000+ estrelas de fundo</div>
-        </div>
-      </div>
-      
-      {/* Botão de voltar */}
-      <div className="absolute top-4 left-4">
-        <Link 
-          href="/" 
-          className="bg-blue-600/80 hover:bg-blue-600 text-white px-4 py-2 rounded-lg backdrop-blur-sm transition-colors"
-        >
-          ← Voltar
-        </Link>
-      </div>
-    </main>
+    </div>
   );
 }

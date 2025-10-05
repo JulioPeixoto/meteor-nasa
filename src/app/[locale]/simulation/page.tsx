@@ -1,7 +1,10 @@
 'use client';
 import React from 'react'
 import { ImpactConsequencesSidebar } from '@/components/consquencias'
-
+import { Canvas } from '@react-three/fiber'
+import { AsteroidScene } from '@/components/AsteroidScene'
+import { asteroidData, earthData } from '@/components/example'
+import ScenePage from '../scene/page'
 export default function TestAuthPage() {
   const [running, setRunning] = React.useState(false)
   const [diameter, setDiameter] = React.useState(100) // meters
@@ -25,8 +28,11 @@ export default function TestAuthPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 pt-[80px] p-8">
-      
+    <main className="min-h-screen bg-black relative overflow-hidden">
+      {/* Canvas ocupando toda a tela */}
+      <div className={`w-full h-screen transition-all duration-300 ${sidebarOpen ? 'pr-96' : ''}`}>
+        <ScenePage />
+      </div>
 
       {/* Impact Consequences Sidebar */}
       <ImpactConsequencesSidebar
