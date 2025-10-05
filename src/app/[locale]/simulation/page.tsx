@@ -1,5 +1,4 @@
 'use client';
-import { MeteorTest } from '@/components/three/meteor-test'
 import React from 'react'
 
 export default function TestAuthPage() {
@@ -54,13 +53,6 @@ export default function TestAuthPage() {
             </div>
           </div>
 
-          <MeteorTest
-            size={size}
-            texture="/textures/black-white-details-moon-texture-concept.jpg"
-            running={running}
-            speed={speed}
-            startKey={startKey}
-          />
         </div>
       </div>
     </main>
