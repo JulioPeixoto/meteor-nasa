@@ -7,12 +7,20 @@ export class AIInvoker {
 
   constructor(client?: DeepSeekClient, defaultOptions?: InvokeOptions) {
     this.client = client || deepseek
+
+    const clean = <T extends object>(obj?: T): Partial<T> => {
+      if (!obj) return {}
+      return Object.fromEntries(
+        Object.entries(obj).filter(([, v]) => v !== undefined)
+      ) as Partial<T>
+    }
+
     this.defaultOptions = {
       retries: 3,
       timeout: 30000,
       temperature: 0.7,
       maxTokens: 4096,
-      ...defaultOptions
+      ...clean(defaultOptions)
     }
   }
 
@@ -52,16 +60,29 @@ export class AIInvoker {
     options?: InvokeOptions
   ): Promise<InvokeResult> {
     const startTime = Date.now()
-    const config = { ...this.defaultOptions, ...options }
+    const clean = <T extends object>(obj?: T): Partial<T> => {
+      if (!obj) return {}
+      return Object.fromEntries(
+        Object.entries(obj).filter(([, v]) => v !== undefined)
+      ) as Partial<T>
+    }
+    const config = { ...this.defaultOptions, ...clean(options) }
     let retriesUsed = 0
 
     try {
+      const retries = typeof config.retries === 'number' && isFinite(config.retries)
+        ? (config.retries as number)
+        : 3
+      const timeoutMs = typeof config.timeout === 'number' && isFinite(config.timeout)
+        ? (config.timeout as number)
+        : 30000
+
       const result = await this.executeWithRetry(async () => {
         retriesUsed++
         
         const operation = this.client.simpleChat(prompt, config.systemMessage)
-        return await this.withTimeout(operation, config.timeout!)
-      }, config.retries!)
+        return await this.withTimeout(operation, timeoutMs)
+      }, retries)
 
       const duration = Date.now() - startTime
 
@@ -96,16 +117,29 @@ export class AIInvoker {
     options?: InvokeOptions
   ): Promise<InvokeResult<{ response: string; updatedHistory: ChatMessage[] }>> {
     const startTime = Date.now()
-    const config = { ...this.defaultOptions, ...options }
+    const clean = <T extends object>(obj?: T): Partial<T> => {
+      if (!obj) return {}
+      return Object.fromEntries(
+        Object.entries(obj).filter(([, v]) => v !== undefined)
+      ) as Partial<T>
+    }
+    const config = { ...this.defaultOptions, ...clean(options) }
     let retriesUsed = 0
 
     try {
+      const retries = typeof config.retries === 'number' && isFinite(config.retries)
+        ? (config.retries as number)
+        : 3
+      const timeoutMs = typeof config.timeout === 'number' && isFinite(config.timeout)
+        ? (config.timeout as number)
+        : 30000
+
       const result = await this.executeWithRetry(async () => {
         retriesUsed++
         
         const operation = this.client.chatWithHistory(newMessage, history, config.systemMessage)
-        return await this.withTimeout(operation, config.timeout!)
-      }, config.retries!)
+        return await this.withTimeout(operation, timeoutMs)
+      }, retries)
 
       const duration = Date.now() - startTime
 
