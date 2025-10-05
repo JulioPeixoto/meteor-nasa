@@ -21,5 +21,100 @@
     "impactText": "Calculate impact zones and damage estimates",
     "visualizationTitle": "3D Visualization",
     "visualizationText": "Interactive 3D representation of asteroids and trajectories"
+  },
+  "impact": {
+    "title": "IMPACT ANALYSIS",
+    "subtitle": "Prevention System",
+    "analysisTab": "Analysis",
+    "paramsTitle": "IMPACT PARAMETERS",
+    "diameter": "Diameter",
+    "speed": "Speed",
+    "energy": "Energy",
+    "crater": "Crater",
+    "energyEquivalent": "Equivalent to {bombs} Hiroshima bombs",
+    "tsunamiAlert": "TSUNAMI ALERT",
+    "waveHeight": "Wave height:",
+    "coastalEvacuation": "IMMEDIATE COASTAL EVACUATION",
+    "consequenceZones": "CONSEQUENCE ZONES",
+    "zones": {
+      "tsunami": {
+        "name": "Tsunami Zone",
+        "description": "{height}m waves hitting coast",
+        "measures": {
+          "evacuation": "Immediate evacuation of coastal areas",
+          "alerts": "Tsunami warning systems",
+          "routes": "Routes to high ground"
+        }
+      },
+      "vaporization": {
+        "name": "Vaporization Zone",
+        "description": "Instantaneous and complete destruction",
+        "measures": {
+          "evacuation": "Mandatory evacuation",
+          "exclusion": "Permanent exclusion zone"
+        }
+      },
+      "totalDestruction": {
+        "name": "Total Destruction",
+        "description": "Complete collapse of structures",
+        "measures": {
+          "evacuation": "Complete evacuation",
+          "infrastructure": "Shutdown of critical infrastructure"
+        }
+      },
+      "severeDamage": {
+        "name": "Severe Damage",
+        "description": "Building collapse, destructive winds",
+        "measures": {
+          "shelters": "Underground shelters",
+          "highBuildings": "Evacuation of tall buildings"
+        }
+      },
+      "structuralDamage": {
+        "name": "Structural Damage",
+        "description": "Broken windows, damaged structures",
+        "measures": {
+          "shrapnel": "Protection against shrapnel",
+          "criticalStructures": "Reinforcement of critical structures"
+        }
+      },
+      "lightDamage": {
+        "name": "Light Damage",
+        "description": "Hearing damage, broken windows",
+        "measures": {
+          "hearing": "Hearing protection",
+          "firstAid": "First aid"
+        }
+      },
+      "alertArea": {
+        "name": "Alert Area",
+        "description": "Tremors and intense noise",
+        "measures": {
+          "alerts": "Population alerts",
+          "evacuationPrep": "Evacuation preparation"
+        }
+      }
+    },
+    "preventionMeasures": "Preventive Measures:",
+    "estimatedCasualties": "{percent}% estimated casualties",
+    "footer": {
+      "educational": "⚠️ EDUCATIONAL SIMULATION",
+      "note": "Based on simplified scientific models",
+      "realEmergency": "For real emergencies: follow local authorities",
+      "sources": "Sources: NASA, ESA, Collins et al."
+    }
+  },
+  "mitigationChat": {
+    "title": "MITIGATION CHAT",
+    "subtitle": "Strategy Assistant",
+    "conversation": "Conversation",
+    "chatTab": "Chat",
+    "placeholder": "Ask about mitigation (evacuation, shelters, zone priorities). Impact context is already loaded.",
+    "assistantLabel": "Assistant",
+    "youLabel": "You",
+    "typing": "Typing...",
+    "inputPlaceholder": "Ask how to mitigate the effects...",
+    "send": "Send",
+    "sending": "Sending..."
   }
 }

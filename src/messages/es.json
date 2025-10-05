@@ -21,5 +21,100 @@
     "impactText": "Calcula zonas de impacto y estimaciones de daños",
     "visualizationTitle": "Visualización 3D",
     "visualizationText": "Representación 3D interactiva de asteroides y trayectorias"
+  },
+  "impact": {
+    "title": "ANÁLISIS DE IMPACTO",
+    "subtitle": "Sistema de Prevención",
+    "analysisTab": "Análisis",
+    "paramsTitle": "PARÁMETROS DE IMPACTO",
+    "diameter": "Diámetro",
+    "speed": "Velocidad",
+    "energy": "Energía",
+    "crater": "Cráter",
+    "energyEquivalent": "Equivalente a {bombs} bombas de Hiroshima",
+    "tsunamiAlert": "ALERTA DE TSUNAMI",
+    "waveHeight": "Altura de las olas:",
+    "coastalEvacuation": "EVACUACIÓN COSTERA INMEDIATA",
+    "consequenceZones": "ZONAS DE CONSECUENCIA",
+    "zones": {
+      "tsunami": {
+        "name": "Zona de Tsunami",
+        "description": "Olas de {height}m golpeando la costa",
+        "measures": {
+          "evacuation": "Evacuación inmediata de zonas costeras",
+          "alerts": "Sistemas de alerta de tsunami",
+          "routes": "Rutas a terrenos elevados"
+        }
+      },
+      "vaporization": {
+        "name": "Zona de Vaporización",
+        "description": "Destrucción instantánea y completa",
+        "measures": {
+          "evacuation": "Evacuación obligatoria",
+          "exclusion": "Zona de exclusión permanente"
+        }
+      },
+      "totalDestruction": {
+        "name": "Destrucción Total",
+        "description": "Colapso completo de estructuras",
+        "measures": {
+          "evacuation": "Evacuación completa",
+          "infrastructure": "Apagado de infraestructura crítica"
+        }
+      },
+      "severeDamage": {
+        "name": "Daños Severos",
+        "description": "Colapso de edificios, vientos destructivos",
+        "measures": {
+          "shelters": "Refugios subterráneos",
+          "highBuildings": "Evacuación de edificios altos"
+        }
+      },
+      "structuralDamage": {
+        "name": "Daños Estructurales",
+        "description": "Ventanas rotas, estructuras dañadas",
+        "measures": {
+          "shrapnel": "Protección contra metralla",
+          "criticalStructures": "Refuerzo de estructuras críticas"
+        }
+      },
+      "lightDamage": {
+        "name": "Daños Leves",
+        "description": "Daños auditivos, ventanas rotas",
+        "measures": {
+          "hearing": "Protección auditiva",
+          "firstAid": "Primeros auxilios"
+        }
+      },
+      "alertArea": {
+        "name": "Zona de Alerta",
+        "description": "Temblores y ruido intenso",
+        "measures": {
+          "alerts": "Alertas a la población",
+          "evacuationPrep": "Preparación para evacuación"
+        }
+      }
+    },
+    "preventionMeasures": "Medidas Preventivas:",
+    "estimatedCasualties": "{percent}% de bajas estimadas",
+    "footer": {
+      "educational": "⚠️ SIMULACIÓN EDUCATIVA",
+      "note": "Basado en modelos científicos simplificados",
+      "realEmergency": "En emergencias reales: siga a las autoridades locales",
+      "sources": "Fuentes: NASA, ESA, Collins et al."
+    }
+  },
+  "mitigationChat": {
+    "title": "CHAT DE MITIGACIÓN",
+    "subtitle": "Asistente de Estrategias",
+    "conversation": "Conversación",
+    "chatTab": "Chat",
+    "placeholder": "Pregunte sobre mitigación (evacuación, refugios, prioridades por zona). El contexto del impacto ya está cargado.",
+    "assistantLabel": "Asistente",
+    "youLabel": "Tú",
+    "typing": "Escribiendo...",
+    "inputPlaceholder": "Pregunta cómo mitigar los efectos...",
+    "send": "Enviar",
+    "sending": "Enviando..."
   }
 }

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import {
   AlertTriangle,
   Shield,
@@ -37,6 +38,9 @@ export function ImpactConsequencesSidebar({
     "consequences"
   );
   const [expandedZone, setExpandedZone] = useState<number | null>(null);
+
+  const tImpact = useTranslations("impact");
+  const tMitigationChat = useTranslations("mitigationChat");
 
   const results = computeImpactPhysics({ diameter, speed, impactAngle, location, density });
   const damageZones = buildDamageZones({ diameter, speed, impactAngle, location, density, latitude, longitude }, results);
@@ -230,11 +234,13 @@ export function ImpactConsequencesSidebar({
             <div>
               <h2 className="text-lg font-heading text-main-foreground">
                 {activeSection === "consequences"
-                  ? "ANÁLISE DE IMPACTO"
-                  : "CHAT DE MITIGAÇÃO"}
+                  ? tImpact("title")
+                  : tMitigationChat("title")}
               </h2>
               <p className="text-sm text-main-foreground/80">
-                Sistema de Prevenção
+                {activeSection === "consequences"
+                  ? tImpact("subtitle")
+                  : tMitigationChat("subtitle")}
               </p>
             </div>
           </div>
@@ -251,7 +257,7 @@ export function ImpactConsequencesSidebar({
               : "bg-secondary-background text-foreground hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           }`}
         >
-          Análise
+          {tImpact("analysisTab")}
         </button>
         <button
           onClick={() => setActiveSection("chat")}
@@ -261,7 +267,7 @@ export function ImpactConsequencesSidebar({
               : "bg-secondary-background text-foreground hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           }`}
         >
-          Chat
+          {tMitigationChat("chatTab")}
         </button>
       </div>
 
@@ -271,24 +277,24 @@ export function ImpactConsequencesSidebar({
         <div className="p-4 bg-white border-b-4 border-border">
           <h3 className="font-heading text-black mb-3 flex items-center gap-2">
             <Target className="w-4 h-4 text-black" />
-            PARÂMETROS DO IMPACTO
+            {tImpact("paramsTitle")}
           </h3>
 
           <div className="grid grid-cols-2 gap-2 text-sm">
             <div className="p-2 bg-gray-100 border-2 border-border">
-              <div className="text-xs text-gray-600">Diâmetro</div>
+              <div className="text-xs text-gray-600">{tImpact("diameter")}</div>
               <div className="font-bold text-black">{diameter}m</div>
             </div>
             <div className="p-2 bg-gray-100 border-2 border-border">
-              <div className="text-xs text-gray-600">Velocidade</div>
+              <div className="text-xs text-gray-600">{tImpact("speed")}</div>
               <div className="font-bold text-black">{(speed / 1000).toFixed(1)} km/s</div>
             </div>
             <div className="p-2 bg-gray-100 border-2 border-border">
-              <div className="text-xs text-gray-600">Energia</div>
+              <div className="text-xs text-gray-600">{tImpact("energy")}</div>
               <div className="font-bold text-black">{formatNumber(results.yieldKT)} kt</div>
             </div>
             <div className="p-2 bg-gray-100 border-2 border-border">
-              <div className="text-xs text-gray-600">Cratera</div>
+              <div className="text-xs text-gray-600">{tImpact("crater")}</div>
               <div className="font-bold text-black">{Math.round(results.craterDiameter)}m</div>
             </div>
           </div>
@@ -296,7 +302,7 @@ export function ImpactConsequencesSidebar({
           {/* Energy Comparison */}
           <div className="mt-3 p-2 bg-yellow-100 border border-yellow-400 rounded">
             <div className="text-xs text-yellow-800 font-medium">
-              💣 Equivalente a {Math.round(results.yieldKT / 15)} bombas de Hiroshima
+              💣 {tImpact("energyEquivalent", { bombs: Math.round(results.yieldKT / 15) })}
             </div>
           </div>
         </div>
@@ -309,17 +315,17 @@ export function ImpactConsequencesSidebar({
             <div className="w-6 h-6 bg-white/20 rounded flex items-center justify-center">
               🌊
             </div>
-            <h3 className="font-heading">ALERTA TSUNAMI</h3>
+            <h3 className="font-heading">{tImpact("tsunamiAlert")}</h3>
           </div>
           <div className="text-white text-sm">
             <div className="flex justify-between items-center mb-1">
-              <span>Altura das ondas:</span>
+              <span>{tImpact("waveHeight")}</span>
               <span className="font-bold">
                 {Math.round(results.tsunamiHeight)}m
               </span>
             </div>
             <div className="p-2 bg-white/20 border-2 border-white/40 font-medium text-center">
-              🚨 EVACUAÇÃO COSTEIRA IMEDIATA
+              🚨 {tImpact("coastalEvacuation")}
             </div>
           </div>
         </div>
@@ -332,7 +338,7 @@ export function ImpactConsequencesSidebar({
           <div className="p-4">
             <h3 className="font-heading text-foreground mb-4 flex items-center gap-2">
               <Zap className="w-5 h-5 text-red-500" />
-              ZONAS DE CONSEQUÊNCIA
+              {tImpact("consequenceZones")}
             </h3>
 
             <div className="space-y-3">
@@ -355,7 +361,7 @@ export function ImpactConsequencesSidebar({
                         )}
                       </div>
                       <h4 className="font-heading text-sm flex-1 text-left">
-                        {zone.name}
+                        {typeof zone.name === 'string' ? zone.name : tImpact(zone.name.key, zone.name.params)}
                       </h4>
                       <div className="text-current font-bold text-xs">
                         {zone.radiusKm.toFixed(1)}km
@@ -364,10 +370,14 @@ export function ImpactConsequencesSidebar({
 
                     <div className="mt-2 text-left">
                       <div className="text-xs opacity-90">
-                        {zone.description}
+                        {typeof zone.description === 'string' ? zone.description : tImpact(zone.description.key, zone.description.params)}
                       </div>
                       <div className="text-xs font-bold mt-1">
-                        {zone.casualties}% de casualidades estimadas
+                        {(() => {
+                          const translatedCasualties = tImpact("estimatedCasualties", { percent: zone.casualties });
+                          console.log(`Translated Casualties for zone ${zone.name}:`, translatedCasualties);
+                          return translatedCasualties;
+                        })()}
                       </div>
                     </div>
                   </button>
@@ -376,13 +386,13 @@ export function ImpactConsequencesSidebar({
                     <div className="mt-2 p-3 bg-white border-4 border-border">
                       <h5 className="font-heading text-sm text-gray-800 mb-2 flex items-center gap-1">
                         <Shield className="w-4 h-4" />
-                        Medidas Preventivas:
+                        {tImpact("preventionMeasures")}
                       </h5>
                       <ul className="text-xs text-gray-700 space-y-1">
                         {zone.preventionMeasures.map((measure, i) => (
                           <li key={i} className="flex items-start gap-2">
                             <span className="text-green-600 font-bold">•</span>
-                            {measure}
+                            {typeof measure === 'string' ? measure : tImpact(measure.key, measure.params)}
                           </li>
                         ))}
                       </ul>
@@ -399,7 +409,7 @@ export function ImpactConsequencesSidebar({
           <div className="p-4">
             <h3 className="font-heading text-foreground mb-3 flex items-center gap-2">
               <Zap className="w-5 h-5" />
-              Chat de Mitigação
+              {tMitigationChat("title")}
             </h3>
 
             {/* Chat Messages Area */}
@@ -407,10 +417,10 @@ export function ImpactConsequencesSidebar({
               {chatMessages.length === 0 && (
                 <div className="mb-3">
                   <div className="text-[10px] uppercase text-gray-800 font-bold mb-1 bg-gray-300 px-2 py-1 rounded inline-block">
-                    Assistente
+                    {tMitigationChat("assistantLabel")}
                   </div>
                   <div className="text-sm p-3 border-2 border-border rounded-base bg-secondary-background text-foreground whitespace-pre-wrap">
-                    Faça perguntas sobre estratégias de mitigação com base nas consequências acima (ex.: evacuação, abrigos, prioridades por zona).
+                    {tMitigationChat("placeholder")}
                   </div>
                 </div>
               )}
@@ -421,7 +431,7 @@ export function ImpactConsequencesSidebar({
                       ? "text-blue-800 bg-blue-100" 
                       : "text-gray-800 bg-gray-100"
                   }`}>
-                    {m.role === "user" ? "Você" : "Assistente"}
+                    {m.role === "user" ? tMitigationChat("youLabel") : tMitigationChat("assistantLabel")}
                   </div>
                   <div
                     className={`text-sm p-3 border-2 border-border rounded-base whitespace-pre-wrap ${
@@ -443,7 +453,7 @@ export function ImpactConsequencesSidebar({
               <textarea
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
-                placeholder="Pergunte como mitigar os efeitos..."
+                placeholder={tMitigationChat("inputPlaceholder")}
                 className="flex-1 min-h-[48px] max-h-32 resize-none rounded-base border-2 border-border bg-secondary-background text-foreground placeholder:text-foreground/60 px-3 py-2 text-sm font-base focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !e.shiftKey) {
@@ -459,7 +469,7 @@ export function ImpactConsequencesSidebar({
                 size="default"
                 className="h-12 px-4"
               >
-                {sending ? "Enviando..." : "Enviar"}
+                {sending ? tMitigationChat("sending") : tMitigationChat("send")}
               </Button>
             </div>
 
@@ -476,14 +486,14 @@ export function ImpactConsequencesSidebar({
       <div className="p-4 bg-gray-800 text-white text-xs border-t-4 border-border">
         <div className="text-center space-y-1">
           <p className="font-heading text-yellow-400">
-            ⚠️ SIMULAÇÃO EDUCACIONAL
+            {tImpact("footer.educational")}
           </p>
-          <p>Baseado em modelos científicos simplificados</p>
+          <p>{tImpact("footer.note")}</p>
           <p className="text-gray-400">
-            Para emergências reais: siga autoridades locais
+            {tImpact("footer.realEmergency")}
           </p>
           <div className="mt-2 pt-2 border-t border-gray-600">
-            <p className="text-gray-400">Fontes: NASA, ESA, Collins et al.</p>
+            <p className="text-gray-400">{tImpact("footer.sources")}</p>
           </div>
         </div>
       </div>
