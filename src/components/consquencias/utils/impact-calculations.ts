@@ -7,7 +7,7 @@
 
 export type ImpactCalculationParams = {
   diameter: number // meters
-  speed: number // m/s
+  speed: number // km/s
   impactAngle: number // degrees
   location: 'land' | 'ocean'
   density?: number // kg/m³
@@ -49,22 +49,35 @@ export function computeImpactPhysics({
   const volume = (4 / 3) * Math.PI * Math.pow(radius, 3)
   const mass = volume * density
 
-  const energy = 0.5 * mass * Math.pow(speed, 2)
+  const energy = 0.5 * mass * Math.pow(speed, 2) * 1e6
   const yieldKT = energy / 4.184e12 // 1 kt TNT = 4.184e12 J
 
   const impactAngleRad = (impactAngle * Math.PI) / 180
-  const angleEfficiency = Math.pow(Math.sin(impactAngleRad), 1 / 3)
-  const craterDiameter = 1.161 * Math.pow(energy / 1e15, 0.22) * angleEfficiency * 1000
-  const craterDepth = craterDiameter * 0.13
+  const angleEfficiency = impactAngle < 10 
+    ? Math.pow(Math.sin(10 * Math.PI / 180), 1/3) 
+    : Math.pow(Math.sin(impactAngleRad), 1/3)
 
-  const blastRadius = 2.2 * Math.pow(yieldKT, 0.33) * 1000
+  const energyMT = energy / 4.184e15
+  const impactorDensity = density
+  const targetDensity = location === 'ocean' ? 1000 : 2500 
+  const densityFactor = Math.pow(impactorDensity / targetDensity, 1/3)
+  const craterDiameter = 1.8 * Math.pow(energyMT, 0.33) * densityFactor * angleEfficiency * 1000
+
+  const craterDepth = craterDiameter * 0.2
+
+  const blastRadius = 0.28 * Math.pow(yieldKT, 0.33) * 1000
 
   let tsunamiHeight: number | undefined
   if (location === 'ocean') {
-    tsunamiHeight = 0.016 * Math.pow(energy / 1e15, 0.5) * 1000
+    const waterDepth = 4000 
+    const impactDiameter = diameter
+    tsunamiHeight = Math.min(
+      Math.pow(energy / 1e19, 0.5) * 100,
+      Math.sqrt(waterDepth * impactDiameter) 
+)
   }
 
-  const earthquakeMagnitude = Math.log10(energy / 1e9) - 5.87
+  const earthquakeMagnitude = (2/3) * Math.log10(energy / 1e4) - 10.7
 
   return {
     mass,
@@ -113,7 +126,7 @@ export function buildDamageZones(
     zones.push(
       withPopulation({
         name: 'Zona de Tsunami',
-        radiusKm: Math.min(1000, tsunamiHeight * 50),
+        radiusKm: Math.min(500, Math.sqrt(results.yieldKT) * 10),
         severity: 'catastrophic',
         casualties: 85,
         description: `Ondas de ${Math.round(tsunamiHeight)}m atingindo costa`,
