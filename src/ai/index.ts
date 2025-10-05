@@ -17,12 +17,8 @@ export type {
   ChatMessage, 
   DeepSeekResponse,
   InvokeOptions, 
-  InvokeResult 
+  InvokeResult,
+  SupportedLocale,
+  LocalizedMessages,
+  LocalizedAIOptions
 } from './interfaces'
-export type { 
-  SupportedLocale, 
-  LocalizedMessages 
-} from './prompts'
-export type { 
-  LocalizedAIOptions 
-} from './localized'

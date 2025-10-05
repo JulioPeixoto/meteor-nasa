@@ -1,13 +1,12 @@
 import { AIInvoker, createInvoker } from './invoke'
-import { createSystemPrompt, type SupportedLocale } from './prompts'
-import type { ChatMessage, InvokeOptions, InvokeResult } from './interfaces'
-
-export interface LocalizedAIOptions extends Omit<InvokeOptions, 'systemMessage'> {
-  locale: SupportedLocale
-  userLocation?: string
-  appContext?: string
-  specialInstructions?: string
-}
+import { createSystemPrompt } from './prompts'
+import type { 
+  ChatMessage, 
+  InvokeOptions, 
+  InvokeResult, 
+  SupportedLocale,
+  LocalizedAIOptions 
+} from './interfaces'
 
 export class LocalizedAI {
   private invoker: AIInvoker
@@ -128,4 +127,4 @@ export async function quickAsk(
   throw new Error(result.error || 'Erro desconhecido na consulta')
 }
 
-export { type SupportedLocale } from './prompts'
+export { type SupportedLocale } from './interfaces'

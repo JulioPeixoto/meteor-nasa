@@ -13,8 +13,6 @@ export class DeepSeekClient {
   }
 
   async chat(messages: ChatMessage[], options?: {
-    temperature?: number
-    maxTokens?: number
     model?: string
   }): Promise<DeepSeekResponse> {
     const url = `${this.config.baseUrl}/chat/completions`
@@ -22,9 +20,8 @@ export class DeepSeekClient {
     const requestBody = {
       model: options?.model || this.config.model,
       messages,
-      max_tokens: options?.maxTokens || this.config.maxTokens,
-      temperature: options?.temperature !== undefined ? options.temperature : this.config.temperature,
-      stream: false
+      stream: false,
+      ...options
     }
 
     try {

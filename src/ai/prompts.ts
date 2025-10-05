@@ -1,33 +1,6 @@
 import { readFileSync } from 'fs'
 import { join } from 'path'
-
-export type SupportedLocale = 'en' | 'pt' | 'es' | 'fr' | 'zh'
-
-export interface LocalizedMessages {
-  app: {
-    title: string
-    subtitle: string
-  }
-  header: {
-    language: string
-    english: string
-    portuguese: string
-    spanish: string
-    france: string
-    chine: string
-    switch: string
-  }
-  sections: {
-    asteroid: string
-    instructions: string
-    neoDataTitle: string
-    neoDataText: string
-    impactTitle: string
-    impactText: string
-    visualizationTitle: string
-    visualizationText: string
-  }
-}
+import type { SupportedLocale, LocalizedMessages } from './interfaces'
 
 const messagesCache = new Map<SupportedLocale, LocalizedMessages>()
 

@@ -2,8 +2,6 @@ export interface DeepSeekConfig {
   apiKey: string
   baseUrl: string
   model: string
-  maxTokens: number
-  temperature: number
 }
 
 export interface ChatMessage {
@@ -51,4 +49,40 @@ export interface InvokeResult<T = string> {
     duration: number
     retries: number
   }
+}
+
+// Interfaces para o sistema de prompts localizados
+export type SupportedLocale = 'en' | 'pt' | 'es' | 'fr' | 'zh'
+
+export interface LocalizedMessages {
+  app: {
+    title: string
+    subtitle: string
+  }
+  header: {
+    language: string
+    english: string
+    portuguese: string
+    spanish: string
+    france: string
+    chine: string
+    switch: string
+  }
+  sections: {
+    asteroid: string
+    instructions: string
+    neoDataTitle: string
+    neoDataText: string
+    impactTitle: string
+    impactText: string
+    visualizationTitle: string
+    visualizationText: string
+  }
+}
+
+export interface LocalizedAIOptions extends Omit<InvokeOptions, 'systemMessage'> {
+  locale: SupportedLocale
+  userLocation?: string
+  appContext?: string
+  specialInstructions?: string
 }
