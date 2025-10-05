@@ -33,11 +33,12 @@ interface MeteorProps {
   asteroidData?: Partial<AsteroidData>;
   showStars?: boolean;
   cameraDistance?: number;
-  showEarth?: boolean; 
+  showEarth?: boolean;
   earthTextureUrl?: string;
   earthNormalMapUrl?: string;
   earthSpecularMapUrl?: string;
   earthCloudsTextureUrl?: string;
+  enableImpact?: boolean;
 }
 
 function RotatingAsteroid({ 
@@ -307,17 +308,21 @@ function Scene({ asteroidData, showStars, showEarth, earthData, isColliding, onC
       />
     </>
   );
+=======
+  enableImpact?: boolean;
+>>>>>>> 810af39 (feat: enhance HomePage layout with asteroid section and add complete view link; update RotatingEarth component for destruction effects)
 }
 
 export function ThreeJSExample({
   asteroidData: incomingData,
   showStars = true,
-  cameraDistance = 8, 
+  cameraDistance = 8,
   showEarth = true,
   earthTextureUrl = '/textures/earth/earth_atmos_2048.jpg',
   earthNormalMapUrl = '/textures/earth/earth_normal_2048.jpg',
   earthSpecularMapUrl = '/textures/earth/earth_specular_2048.jpg',
   earthCloudsTextureUrl = '/textures/earth/earth_clouds_1024.png',
+  enableImpact = true,
 }: MeteorProps) {
   const [isColliding, setIsColliding] = useState(false);
   const [collisionCount, setCollisionCount] = useState(0);

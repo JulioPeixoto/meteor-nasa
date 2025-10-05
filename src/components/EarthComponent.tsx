@@ -24,7 +24,7 @@ interface EarthProps {
 /**
  * Componente que renderiza a Terra em rotação com texturas e atmosfera.
  */
-export function RotatingEarth({ earthData }: { earthData: EarthData }) {
+export function RotatingEarth({ earthData, isDestroyed = false }: { earthData: EarthData; isDestroyed?: boolean }) {
   const meshRef = useRef<THREE.Mesh>(null);
   const cloudsRef = useRef<THREE.Mesh>(null);
   const atmosphereRef = useRef<THREE.Mesh>(null);
@@ -83,18 +83,18 @@ export function RotatingEarth({ earthData }: { earthData: EarthData }) {
       <mesh ref={meshRef} castShadow receiveShadow>
         <sphereGeometry args={[size, 128, 128]} />
         <meshStandardMaterial
-          map={texture}
-          normalMap={normalMap}
-          roughnessMap={specularMap}
-          roughness={0.8}
-          metalness={0.1}
-          color={texture ? '#ffffff' : '#2563eb'}
-          envMapIntensity={0.2}
+          map={!isDestroyed ? texture : null}
+          normalMap={!isDestroyed ? normalMap : null}
+          roughnessMap={!isDestroyed ? specularMap : null}
+          roughness={isDestroyed ? 0.95 : 0.8}
+          metalness={isDestroyed ? 0.3 : 0.1}
+          color={isDestroyed ? '#2C2C2C' : (texture ? '#ffffff' : '#2563eb')}
+          envMapIntensity={isDestroyed ? 0.1 : 0.2}
         />
       </mesh>
 
-      {/* Camada de nuvens */}
-      {cloudsTexture && (
+      {/* Camada de nuvens - desaparece quando destruída */}
+      {cloudsTexture && !isDestroyed && (
         <mesh ref={cloudsRef}>
           <sphereGeometry args={[size * 1.005, 128, 128]} />
           <meshStandardMaterial
@@ -107,16 +107,29 @@ export function RotatingEarth({ earthData }: { earthData: EarthData }) {
         </mesh>
       )}
 
-      {/* Atmosfera sutil (sem aura) */}
+      {/* Atmosfera - muda para vermelho quando destruída */}
       <mesh ref={atmosphereRef}>
         <sphereGeometry args={[size * 1.005, 64, 64]} />
         <meshBasicMaterial
-          color="#4A90E2"
+          color={isDestroyed ? "#8B0000" : "#4A90E2"}
           transparent
-          opacity={0.05}
+          opacity={isDestroyed ? 0.2 : 0.05}
           side={THREE.BackSide}
         />
       </mesh>
+
+      {/* Efeito de destruição - crateras e rachaduras */}
+      {isDestroyed && (
+        <mesh>
+          <sphereGeometry args={[size * 1.001, 64, 64]} />
+          <meshBasicMaterial
+            color="#1A1A1A"
+            transparent
+            opacity={0.8}
+            side={THREE.BackSide}
+          />
+        </mesh>
+      )}
     </group>
   );
 }
