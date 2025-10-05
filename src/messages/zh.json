@@ -119,29 +119,29 @@
   },
   "presentation": {
     "hero": {
-      "title": "演示",
-      "subtitle": "",
-      "cta": "开始"
+      "title": "小行星撞击模拟器",
+      "subtitle": "利用NASA和USGS数据探索撞击场景、可视化轨迹并评估缓解措施。",
+      "cta": "开始模拟"
     },
     "features": {
       "data": {
-        "title": "数据",
-        "desc": ""
+        "title": "宇宙风险揭示",
+        "desc": "可视化像\"Impactor-2025\"这样的小行星。整合NASA数据，清晰展示威胁。"
       },
       "impact": {
-        "title": "撞击",
-        "desc": ""
+        "title": "关键撞击场景",
+        "desc": "为研究人员提供精确计算，以研究真实的流星撞击。整合了NASA和USGS数据。"
       },
       "mitigation": {
-        "title": "减灾",
-        "desc": ""
+        "title": "主动行星防御",
+        "desc": "探索小行星偏转策略，如动能撞击器，以保护地球。"
       }
     },
     "callout": {
-      "title": "",
-      "desc": "",
-      "cta": "开始"
+      "title": "准备好保卫地球！",
+      "desc": "了解轨迹的微小变化如何改变结果。",
+      "cta": "开始模拟"
     },
-    "footer": "© {year} Asteroid Impact Lab."
+    "footer": "© {year} 小行星撞击实验室。保留所有权利。"
   }
 }

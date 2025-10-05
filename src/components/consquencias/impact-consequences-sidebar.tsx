@@ -232,8 +232,17 @@ export function ImpactConsequencesSidebar({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed right-0 top-[80px] h-[calc(100vh-80px)] w-96 bg-secondary-background border-l-4 border-border z-40 overflow-y-auto shadow-[0px_0px_0px_4px_rgba(0,0,0,1)]">
-      {/* Header */}
+<div
+  className="
+    w-full
+    bg-secondary-background
+    border-t-4 border-border
+    z-40
+    overflow-y-auto
+    shadow-[0px_0px_0px_4px_rgba(0,0,0,1)]
+    md:fixed md:right-0 md:top-[80px] md:h-[calc(100vh-80px)] md:w-96 md:border-t-0 md:border-l-4
+  "
+>      {/* Header */}
       <div className="p-4 bg-main border-b-4 border-border relative">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">

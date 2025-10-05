@@ -125,16 +125,16 @@
     },
     "features": {
       "data": {
-        "title": "Asteroid Data",
-        "desc": "Access detailed NEO information."
+        "title": "Cosmic Risk Unveiled",
+        "desc": "Visualize asteroids like \"Impactor-2025\". NASA data integrated for a clear view of the threat."
       },
       "impact": {
-        "title": "Impact Simulation",
-        "desc": "Predict consequences based on real data."
+        "title": "Critical Impact Scenarios",
+        "desc": "Precise calculations for researchers to study real meteor impacts. Integrated NASA and USGS data."
       },
       "mitigation": {
-        "title": "Damage Mitigation",
-        "desc": "AI-assisted strategies to reduce risks."
+        "title": "Active Planetary Defense",
+        "desc": "Explore asteroid deflection strategies, such as kinetic impactors, to protect Earth."
       }
     },
     "callout": {

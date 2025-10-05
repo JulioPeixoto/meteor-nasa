@@ -119,29 +119,29 @@
   },
   "presentation": {
     "hero": {
-      "title": "Présentation",
-      "subtitle": "",
-      "cta": "Commencer"
+      "title": "Simulateur d'Impact d'Astéroïdes",
+      "subtitle": "Explorez les scénarios d'impact, visualisez les trajectoires et évaluez l'atténuation à l'aide des données de la NASA et de l'USGS.",
+      "cta": "Démarrer la simulation"
     },
     "features": {
       "data": {
-        "title": "Données",
-        "desc": ""
+        "title": "Risque Cosmique Dévoilé",
+        "desc": "Visualisez les astéroïdes comme \"Impactor-2025\". Données de la NASA intégrées pour une vue claire de la menace."
       },
       "impact": {
-        "title": "Impact",
-        "desc": ""
+        "title": "Scénarios d'Impact Critiques",
+        "desc": "Calculs précis pour les chercheurs afin d'étudier les impacts réels des météores. Données de la NASA et de l'USGS intégrées."
       },
       "mitigation": {
-        "title": "Atténuation",
-        "desc": ""
+        "title": "Défense Planétaire Active",
+        "desc": "Explorez les stratégies de déviation d'astéroïdes, telles que les impacteurs cinétiques, pour protéger la Terre."
       }
     },
     "callout": {
-      "title": "",
-      "desc": "",
-      "cta": "Commencer"
+      "title": "Préparez-vous à défendre la Terre !",
+      "desc": "Voyez comment de petits changements de trajectoire peuvent modifier les résultats.",
+      "cta": "Démarrer la simulation"
     },
-    "footer": "© {year} Asteroid Impact Lab."
+    "footer": "© {year} Laboratoire d'Impact d'Astéroïdes. Tous droits réservés."
   }
 }
