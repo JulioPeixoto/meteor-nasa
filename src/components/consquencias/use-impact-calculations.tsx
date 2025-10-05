@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { getPopulationByCoordinates } from "./population-estimation";
 
 export type ImpactCalculationParams = {
   diameter: number; // meters
@@ -8,6 +9,9 @@ export type ImpactCalculationParams = {
   impactAngle: number; // degrees
   location: "land" | "ocean";
   density?: number; // kg/m³ (default: 3000 for rocky asteroids)
+  // Optional coordinates for population estimation
+  latitude?: number;
+  longitude?: number;
 };
 
 export type ImpactResults = {
@@ -19,11 +23,6 @@ export type ImpactResults = {
   blastRadius: number; // meters
   tsunamiHeight?: number; // meters (only for ocean impacts)
   earthquakeMagnitude: number; // Richter scale
-  preventionTime: {
-    detection: number; // days needed for detection
-    deflection: number; // days needed for deflection mission
-    evacuation: number; // days needed for evacuation
-  };
 };
 
 export type DamageZone = {
@@ -33,6 +32,10 @@ export type DamageZone = {
   casualties: number; // estimated percentage
   description: string;
   preventionMeasures: string[];
+  // Real population estimates
+  estimatedPopulation?: number;
+  estimatedDeaths?: number;
+  estimatedInjured?: number;
 };
 
 export function useImpactCalculations({
@@ -41,6 +44,8 @@ export function useImpactCalculations({
   impactAngle = 45,
   location,
   density = 3000,
+  latitude,
+  longitude,
 }: ImpactCalculationParams): ImpactResults & { damageZones: DamageZone[] } {
   return useMemo(() => {
     // Basic physics calculations
@@ -74,30 +79,54 @@ export function useImpactCalculations({
     // Earthquake magnitude
     const earthquakeMagnitude = Math.log10(energy / 1e9) - 5.87;
 
-    // Prevention timeline
-    const asteroidDiameterKm = diameter / 1000;
-    const preventionTime = {
-      detection: Math.max(365, asteroidDiameterKm * 100), // days
-      deflection: Math.max(1800, asteroidDiameterKm * 500), // days (5+ years for large objects)
-      evacuation: Math.max(30, asteroidDiameterKm * 10), // days
-    };
-
     // Damage zones calculation
     const baseRadius = Math.max(0.1, blastRadius / 1000); // convert to km, minimum 100m
 
+    // Helper function to create damage zones with population estimates
+    const createDamageZone = (name: string, radiusKm: number, severity: DamageZone["severity"], casualties: number, description: string, preventionMeasures: string[]): DamageZone => {
+      let estimatedPopulation = 0;
+      let estimatedDeaths = 0;
+      let estimatedInjured = 0;
+
+      // Calculate population if coordinates are provided
+      if (latitude !== undefined && longitude !== undefined) {
+        const populationData = getPopulationByCoordinates(latitude, longitude, radiusKm);
+        estimatedPopulation = populationData.estimatedPopulation;
+        estimatedDeaths = Math.round(estimatedPopulation * (casualties / 100));
+        estimatedInjured = Math.round(estimatedPopulation * ((100 - casualties) * 0.3 / 100));
+      }
+
+      // Cap population to reasonable values per zone
+      estimatedPopulation = Math.min(estimatedPopulation, 10000000); // Max 10M per zone
+      estimatedDeaths = Math.min(estimatedDeaths, estimatedPopulation);
+      estimatedInjured = Math.min(estimatedInjured, estimatedPopulation - estimatedDeaths);
+
+      return {
+        name,
+        radiusKm,
+        severity,
+        casualties,
+        description,
+        preventionMeasures,
+        estimatedPopulation,
+        estimatedDeaths,
+        estimatedInjured,
+      };
+    };
+
     const damageZones: DamageZone[] = [
-      {
-        name: "Zona de Vaporização",
-        radiusKm: Math.max(0.05, baseRadius * 0.3),
-        severity: "catastrophic",
-        casualties: 100,
-        description: "Destruição instantânea e completa",
-        preventionMeasures: [
+      createDamageZone(
+        "Zona de Vaporização",
+        Math.max(0.05, baseRadius * 0.3),
+        "catastrophic",
+        100,
+        "Destruição instantânea e completa",
+        [
           "Evacuação obrigatória",
           "Zona de exclusão permanente",
           "Nenhuma estrutura deve permanecer",
-        ],
-      },
+        ]
+      ),
       {
         name: "Destruição Total",
         radiusKm: Math.max(0.1, baseRadius * 0.8),
@@ -187,71 +216,9 @@ export function useImpactCalculations({
       blastRadius,
       tsunamiHeight,
       earthquakeMagnitude,
-      preventionTime,
-      damageZones: damageZones.sort((a, b) => a.radiusKm - b.radiusKm),
+      damageZones: damageZones.sort((a, b) => b.radiusKm - a.radiusKm),
     };
   }, [diameter, speed, impactAngle, location, density]);
 }
 
-// Utility functions for prevention planning
-export function getPreventionStrategy(
-  yieldKT: number,
-  preventionTime: ImpactResults["preventionTime"]
-) {
-  const strategies = [];
 
-  if (preventionTime.deflection > 1825) {
-    // 5+ years
-    strategies.push({
-      method: "Impacto Cinético (DART-style)",
-      probability: 85,
-      timeRequired: 1825,
-      description: "Nave espacial colide com asteroide para alterar trajetória",
-    });
-
-    strategies.push({
-      method: "Trator Gravitacional",
-      probability: 70,
-      timeRequired: 2555,
-      description: "Nave permanece próxima ao asteroide usando gravidade",
-    });
-  }
-
-  if (preventionTime.deflection > 365) {
-    // 1+ year
-    strategies.push({
-      method: "Explosão Nuclear",
-      probability: 60,
-      timeRequired: 365,
-      description: "Último recurso - detonação próxima ao asteroide",
-    });
-  }
-
-  // Always available
-  strategies.push({
-    method: "Evacuação e Mitigação",
-    probability: 95,
-    timeRequired: 30,
-    description: "Evacuação populacional e preparação de abrigos",
-  });
-
-  return strategies;
-}
-
-export function getEvacuationPlan(damageZones: DamageZone[]) {
-  const totalRadius = Math.max(...damageZones.map((z) => z.radiusKm));
-
-  return {
-    evacuationRadius: totalRadius * 1.2, // safety margin
-    estimatedPopulation: Math.PI * Math.pow(totalRadius, 2) * 50, // rough estimate (50 people/km²)
-    timeRequired: Math.max(7, totalRadius / 10), // days
-    sheltersNeeded: Math.ceil((Math.PI * Math.pow(totalRadius, 2) * 50) / 1000), // capacity for 1000 people each
-    resources: [
-      "Transporte para evacuação em massa",
-      "Abrigos temporários equipados",
-      "Suprimentos médicos e alimentares",
-      "Sistemas de comunicação de emergência",
-      "Combustível e energia de reserva",
-    ],
-  };
-}

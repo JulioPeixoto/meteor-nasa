@@ -196,6 +196,8 @@ export default function TestAuthPage() {
         speed={speed}
         impactAngle={impactAngle}
         location={location}
+        latitude={-23.5505}  // São Paulo as default example
+        longitude={-46.6333}
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
       />
