@@ -5,13 +5,16 @@ import { CSlider } from "@/components/c-slider"
 export default function CFormFields() {
   return (
     <div className="flex flex-col gap-2 w-full">
-      <Input  
+      <Input
+        className="bg-white placeholder:text-gray-500"  
         placeholder="Tipo da superfície"
       />
-      <Input 
+      <Input
+        className="bg-white placeholder:text-gray-500" 
         placeholder="Input 2"
       />
-      <Input 
+      <Input
+        className="bg-white placeholder:text-gray-500" 
         placeholder="Input 3"
       />
 
