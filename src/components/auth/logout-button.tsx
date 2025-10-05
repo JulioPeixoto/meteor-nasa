@@ -2,6 +2,7 @@
 
 import { signOut, useSession } from 'next-auth/react'
 import { Button } from '@/components/ui/temp-button'
+import { ExitIcon } from '@/components/custom/icons'
 
 export function LogoutButton() {
   const { data: session } = useSession()
@@ -21,10 +22,10 @@ export function LogoutButton() {
       </div>
       <Button
         onClick={handleLogout}
-        variant="outline"
-        className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+          variant="ghost"
+          className="hover:bg-white/20"
       >
-        Logout
+        <ExitIcon size={20} />
       </Button>
     </div>
   )

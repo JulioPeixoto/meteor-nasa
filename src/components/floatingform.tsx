@@ -22,7 +22,8 @@ export default function FloatingForm() {
       </CardHeader>
 
       <CardContent className="flex flex-col gap-4">
-        <div className="flex items-start p-2">
+        {/* Calendário */}
+        <div className="flex items-start mx-auto p-2">
           <CCalendar onRangeChange={setDateRange} />
         </div>
 
