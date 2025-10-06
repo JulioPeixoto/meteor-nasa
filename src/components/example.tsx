@@ -5,6 +5,7 @@ import { OrbitControls, Stars, Trail } from '@react-three/drei';
 import { useRef, Suspense, useMemo, useState } from 'react';
 import * as THREE from 'three';
 import { RotatingEarth } from '@/components/EarthComponent';
+import { Text } from '@react-three/drei';
 
 export interface AsteroidData {
   name?: string;
@@ -25,7 +26,7 @@ export interface AsteroidData {
   normalMapUrl?: string;
   roughnessMapUrl?: string;
   displacementMapUrl?: string;
-  aoMapUrl?: string; 
+  aoMapUrl?: string;
   displacementScale?: number;
 }
 
@@ -41,21 +42,21 @@ interface MeteorProps {
   enableImpact?: boolean;
 }
 
-function RotatingAsteroid({ 
-  asteroidData, 
-  isColliding, 
-  onCollisionComplete 
-}: { 
+function RotatingAsteroid({
+  asteroidData,
+  isColliding,
+  onCollisionComplete
+}: {
   asteroidData: AsteroidData;
   isColliding: boolean;
   onCollisionComplete: () => void;
 }) {
   const meshRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
+  const labelRef = useRef<THREE.Mesh>(null);
   const timeRef = useRef(0);
   const collisionTimeRef = useRef(0);
 
-  // Carregar texturas incondicionalmente
   const [texture, normalMap, roughnessMap, displacementMap, aoMap] = useLoader(
     THREE.TextureLoader,
     [
@@ -67,25 +68,23 @@ function RotatingAsteroid({
     ]
   );
 
-  const diameter = asteroidData.estimated_diameter_min ?? 10; 
-  const scaleFactor = 0.001; 
-
+  const diameter = asteroidData.estimated_diameter_min ?? 10;
+  const scaleFactor = 0.001;
   let size = diameter * scaleFactor;
   if (size < 0.15) size = 0.15;
   if (size > 2.5) size = 2.5;
 
   const rotationSpeed = asteroidData.rotationPeriod
     ? {
-        x: (24 / asteroidData.rotationPeriod) * 0.05,
-        y: (24 / asteroidData.rotationPeriod) * 0.08,
-        z: (24 / asteroidData.rotationPeriod) * 0.03,
-      }
+      x: (24 / asteroidData.rotationPeriod) * 0.05,
+      y: (24 / asteroidData.rotationPeriod) * 0.08,
+      z: (24 / asteroidData.rotationPeriod) * 0.03,
+    }
     : { x: 0.05, y: 0.08, z: 0.03 };
 
-  // Órbita específica do asteroide (mais próxima da Terra)
-  const orbitalRadius = 12; // Distância orbital
-  const orbitalSpeed = asteroidData.orbitalPeriod 
-    ? (365 / asteroidData.orbitalPeriod) * 0.05 
+  const orbitalRadius = 12;
+  const orbitalSpeed = asteroidData.orbitalPeriod
+    ? (365 / asteroidData.orbitalPeriod) * 0.05
     : 0.05;
 
   const getMaterialProps = () => {
@@ -103,61 +102,40 @@ function RotatingAsteroid({
   };
   const materialProps = getMaterialProps();
 
-  useFrame((_, delta) => {
+  useFrame(({ camera }, delta) => {
     timeRef.current += delta;
-    
+
     if (isColliding) {
       collisionTimeRef.current += delta;
-      
       if (groupRef.current && meshRef.current) {
-        // Animação de colisão - movimento em direção à Terra
-        const collisionProgress = Math.min(collisionTimeRef.current / 3, 1); // 3 segundos de colisão
-        
-        // Movimento em direção à Terra
-        groupRef.current.position.x = THREE.MathUtils.lerp(orbitalRadius, -8, collisionProgress);
-        groupRef.current.position.z = THREE.MathUtils.lerp(0, 0, collisionProgress);
-        groupRef.current.position.y = THREE.MathUtils.lerp(0, 0, collisionProgress);
-        
-        // Rotação mais rápida durante a colisão
+        const progress = Math.min(collisionTimeRef.current / 3, 1);
+        groupRef.current.position.x = THREE.MathUtils.lerp(orbitalRadius, -8, progress);
+        groupRef.current.position.z = 0;
+        groupRef.current.position.y = 0;
         meshRef.current.rotation.x += delta * rotationSpeed.x * 3;
         meshRef.current.rotation.y += delta * rotationSpeed.y * 3;
         meshRef.current.rotation.z += delta * rotationSpeed.z * 3;
-        
-        // Escala aumenta durante a colisão (efeito de impacto)
-        const scale = 1 + Math.sin(collisionTimeRef.current * 10) * 0.2;
-        meshRef.current.scale.setScalar(scale);
-        
-        // Finalizar colisão
-        if (collisionProgress >= 1) {
-          onCollisionComplete();
-        }
+        meshRef.current.scale.setScalar(1 + Math.sin(collisionTimeRef.current * 10) * 0.2);
+        if (progress >= 1) onCollisionComplete();
       }
     } else {
-      // Movimento orbital normal
       if (meshRef.current) {
-        // Rotação suave do asteroide
         meshRef.current.rotation.x += delta * rotationSpeed.x;
         meshRef.current.rotation.y += delta * rotationSpeed.y;
         meshRef.current.rotation.z += delta * rotationSpeed.z;
-        
-        // Pequena oscilação para simular movimento irregular
-        const wobble = Math.sin(timeRef.current * 2) * 0.1;
-        meshRef.current.rotation.x += wobble * delta;
-        
-        // Reset da escala
-        meshRef.current.scale.setScalar(1);
       }
-
       if (groupRef.current) {
-        // Órbita elíptica ao redor da Terra
         const angle = timeRef.current * orbitalSpeed;
         groupRef.current.position.x = Math.cos(angle) * orbitalRadius;
-        groupRef.current.position.z = Math.sin(angle) * orbitalRadius * 0.3; // Órbita mais elíptica
-        groupRef.current.position.y = Math.sin(angle * 0.5) * 2; // Movimento vertical
-        
-        // Inclinação orbital
+        groupRef.current.position.z = Math.sin(angle) * orbitalRadius * 0.3;
+        groupRef.current.position.y = Math.sin(angle * 0.5) * 2;
         groupRef.current.rotation.y = angle * 0.1;
       }
+    }
+
+    if (labelRef.current && meshRef.current) {
+      labelRef.current.position.set(0, size * 4, 0);
+      labelRef.current.lookAt(camera.position);
     }
   });
 
@@ -182,21 +160,27 @@ function RotatingAsteroid({
             color={texture ? '#ffffff' : materialProps.color}
             roughness={materialProps.roughness}
             metalness={materialProps.metalness}
-            envMapIntensity={0.3}
           />
         </mesh>
       </Trail>
-      
-      {/* Efeito de brilho para asteroides perigosos */}
+
+      {/* 🏷️ Label fixada no topo da textura */}
+      <Text
+        ref={labelRef}
+        fontSize={0.4}
+        color="#FFD700"
+        outlineWidth={0.015}
+        outlineColor="black"
+        anchorX="center"
+        anchorY="middle"
+      >
+        {asteroidData.name ?? 'Meteor'}
+      </Text>
+
       {asteroidData.is_potentially_hazardous_asteroid && (
         <mesh>
           <sphereGeometry args={[size * 1.1, 32, 32]} />
-          <meshBasicMaterial
-            color="#ff4400"
-            transparent
-            opacity={0.1}
-            side={THREE.BackSide}
-          />
+          <meshBasicMaterial color="#ff4400" transparent opacity={0.1} side={THREE.BackSide} />
         </mesh>
       )}
     </group>
@@ -224,12 +208,12 @@ function Scene({ asteroidData, showStars, showEarth, earthData, isColliding, onC
     <>
       {/* Iluminação ambiente suave */}
       <ambientLight intensity={0.9} color="#404040" />
-      
+
       {/* Sol - luz principal */}
-      <directionalLight 
-        position={[10, 5, 5]} 
-        intensity={8} 
-        castShadow 
+      <directionalLight
+        position={[10, 5, 5]}
+        intensity={8}
+        castShadow
         shadow-mapSize-width={2048}
         shadow-mapSize-height={2048}
         shadow-camera-far={50}
@@ -238,33 +222,33 @@ function Scene({ asteroidData, showStars, showEarth, earthData, isColliding, onC
         shadow-camera-top={10}
         shadow-camera-bottom={-10}
       />
-      
+
       {/* Luz de preenchimento */}
       <pointLight position={[-5, 3, -5]} intensity={0.5} color="#4A90E2" />
-      
+
       {/* Luz de destaque para a Terra */}
       {showEarth && (
-        <pointLight 
-          position={[-8, 0, 0]} 
-          intensity={1.2} 
-          color="#87CEEB" 
+        <pointLight
+          position={[-8, 0, 0]}
+          intensity={1.2}
+          color="#87CEEB"
           distance={15}
         />
       )}
 
       {/* Efeito de perigo para asteroides perigosos */}
       {asteroidData.is_potentially_hazardous_asteroid && (
-        <pointLight 
-          position={[0, 0, 0]} 
-          color="#ff4400" 
-          intensity={dangerGlow} 
+        <pointLight
+          position={[0, 0, 0]}
+          color="#ff4400"
+          intensity={dangerGlow}
           distance={8}
         />
       )}
 
       {/* Luz ambiente espacial */}
-      <hemisphereLight 
-        args={["#001122", "#000000", 0.5]} 
+      <hemisphereLight
+        args={["#001122", "#000000", 0.5]}
       />
 
       <Suspense fallback={null}>
@@ -273,31 +257,31 @@ function Scene({ asteroidData, showStars, showEarth, earthData, isColliding, onC
             <RotatingEarth earthData={earthData} />
           </group>
         )}
-        <RotatingAsteroid 
-          asteroidData={asteroidData} 
+        <RotatingAsteroid
+          asteroidData={asteroidData}
           isColliding={isColliding}
           onCollisionComplete={onCollisionComplete}
         />
       </Suspense>
 
       {showStars && (
-        <Stars 
-          radius={100} 
-          depth={50} 
-          count={5000} 
-          factor={4} 
-          saturation={0} 
-          fade 
-          speed={1} 
+        <Stars
+          radius={100}
+          depth={50}
+          count={5000}
+          factor={4}
+          saturation={0}
+          fade
+          speed={1}
         />
       )}
 
-      <OrbitControls 
-        enableZoom={true} 
-        enablePan={true} 
-        minDistance={12} 
+      <OrbitControls
+        enableZoom={true}
+        enablePan={true}
+        minDistance={12}
         maxDistance={50}
-        autoRotate={false} 
+        autoRotate={false}
         autoRotateSpeed={0.4}
         enableDamping={true}
         dampingFactor={0.05}
@@ -318,7 +302,7 @@ export function ThreeJSExample({
   enableImpact = true,
 }: MeteorProps) {
   const [isColliding, setIsColliding] = useState(false);
-  
+
   const defaultAsteroidData: AsteroidData = {
     textureUrl: '/textures/meteor/Rock031_2K-JPG_Color.jpg',
     normalMapUrl: '/textures/meteor/Rock031_2K-JPG_NormalGL.jpg',
@@ -403,9 +387,9 @@ export function ThreeJSExample({
       </div>
       <div className="w-full h-[55vh] border-2 border-gray-500 rounded-lg overflow-hidden bg-black relative">
         <Canvas camera={{ position: [0, 0, cameraDistance], fov: 60 }} shadows>
-          <Scene 
-            asteroidData={asteroidData} 
-            showStars={showStars} 
+          <Scene
+            asteroidData={asteroidData}
+            showStars={showStars}
             showEarth={showEarth}
             earthData={earthData}
             isColliding={isColliding}
@@ -418,4 +402,4 @@ export function ThreeJSExample({
       </div>
     </div>
   );
-}
+}	
