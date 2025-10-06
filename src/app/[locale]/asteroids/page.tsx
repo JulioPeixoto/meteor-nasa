@@ -4,7 +4,6 @@ import { useTranslations } from 'next-intl';
 import { useRouter, useParams } from 'next/navigation'; 
 import { ThreeJSExample } from '@/components/example'; 
 import FloatingForm from '@/components/floatingform'; 
-import { Button } from '@/components/ui/button'; 
 import type { AsteroidData } from '@/components/example'; 
 
 export default function AsteroidsPage() { 
@@ -85,20 +84,15 @@ export default function AsteroidsPage() {
               <h2 className="text-lg font-semibold text-white"> 
                 {t('sections.asteroid')} 
               </h2>
-              {selectedAsteroid && (
-                <Button 
-                  onClick={handleGoToSimulation}
-                  className="p-4 mr-1 shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]"
-                >
-                  {t('sections.goToSimulation')}
-                </Button>
-              )}
             </div>
             <div className="flex-1 min-h-[400px]">
               <ThreeJSExample 
                 asteroidData={selectedAsteroid || undefined} 
                 showStars={true} 
                 cameraDistance={4} 
+                onGoToSimulation={handleGoToSimulation}
+                isSimulationEnabled={!!selectedAsteroid}
+                simulationLabel={t('sections.goToSimulation')}
               /> 
             </div>
             <p className="text-xs text-slate-300 mt-2"> 

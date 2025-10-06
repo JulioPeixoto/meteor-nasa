@@ -6,6 +6,7 @@ import { useRef, Suspense, useMemo, useState } from 'react';
 import * as THREE from 'three';
 import { RotatingEarth } from '@/components/EarthComponent';
 import { Text } from '@react-three/drei';
+import { Button } from '@/components/ui/button';
 
 export interface AsteroidData {
   name?: string;
@@ -40,6 +41,9 @@ interface MeteorProps {
   earthSpecularMapUrl?: string;
   earthCloudsTextureUrl?: string;
   enableImpact?: boolean;
+  onGoToSimulation?: () => void;
+  isSimulationEnabled?: boolean;
+  simulationLabel?: string;
 }
 
 function RotatingAsteroid({
@@ -300,6 +304,9 @@ export function ThreeJSExample({
   earthSpecularMapUrl = '/textures/earth/earth_specular_2048.jpg',
   earthCloudsTextureUrl = '/textures/earth/earth_clouds_1024.png',
   enableImpact = true,
+  onGoToSimulation,
+  isSimulationEnabled = false,
+  simulationLabel = 'Simular',
 }: MeteorProps) {
   const [isColliding, setIsColliding] = useState(false);
 
@@ -383,7 +390,14 @@ export function ThreeJSExample({
           <div className="text-center text-gray-400 py-4">
             <p className="text-sm">Select an asteroid to see more information</p>
           </div>
-        )}
+        )}      <Button
+        onClick={onGoToSimulation}
+        disabled={!isSimulationEnabled}
+        className="mt-4 z-50 p-4 mr-1 shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]"
+      >
+        {simulationLabel}
+      </Button>
+
       </div>
       <div className="w-full h-[55vh] border-2 border-gray-500 rounded-lg overflow-hidden bg-black relative">
         <Canvas camera={{ position: [0, 0, cameraDistance], fov: 60 }} shadows>
@@ -402,4 +416,4 @@ export function ThreeJSExample({
       </div>
     </div>
   );
-}	
+}
