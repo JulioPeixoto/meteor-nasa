@@ -315,9 +315,5 @@
     "networkError": "Connection error",
     "timeoutError": "Timeout exceeded",
     "unauthorizedError": "Unauthorized access"
-  },
-  "app": {
-    "title": "Meteor Mitigate",
-    "subtitle": "Asteroid Impact Visualization and Mitigation System"
   }
 }
