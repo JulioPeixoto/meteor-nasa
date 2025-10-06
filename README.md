@@ -1,118 +1,71 @@
-# Plano de Execução — Meteor Madness (3 pessoas)
+# Meteor NASA - Meteor Madness Challenge
 
-## Equipe (3 papéis)
+This project was developed in less than 2 days for the "Meteor Madness" challenge of the NASA Space Apps Challenge 2025, aiming to create innovative solutions related to meteors.
 
-**1) FE/3D — Front-end & Visualização (líder de UI/UX)**
+Our team developed an interactive web application that simulates asteroid impacts on Earth using real data from NASA’s Near-Earth Object (NEO) API. The system enables users to visualize asteroids orbiting in 3D and analyze collision consequences based on physical parameters such as diameter, velocity, and impact angle. The simulation integrates Three.js for realistic 3D rendering and custom algorithms for calculating impact energy and damage. In addition, an intelligent sidebar provides detailed impact analysis and a mitigation assistant that offers context-aware suggestions. This project aims to enhance scientific education and public awareness about space hazards by combining data science, visualization, and interactivity in an engaging and accessible experience.
 
-* React + Three.js (preferencialmente via React Three Fiber) e Drei.
-* Globo 3D, trajetória, anéis de dano, heatmap simplificado.
-* UI com sliders/presets, acessibilidade (PT/EN), export (PNG/GeoJSON).
+## Project Demonstration
+https://drive.google.com/file/d/18ep-iajogEgcpjiJIN2Cl_dYBx1gOMXe/view
 
-**2) BE/Dados — Back-end & Integrações**
+## Project
+https://meteormitigate.earth/en
 
-* Next.js API Routes (ou Node/FastAPI), cache in-memory e edge.
-* Integração NASA NEO/JPL (parâmetros de asteroides) e USGS (elevação/sismicidade).
-* Normalização de unidades, rate-limit, logs e tratamento de erros.
+## Project Details
+### Project Title: Real-Time Asteroid Impact Simulation on Earth Using Three.js and Physics Engines
 
-**3) Modelagem/Produto — Física simplificada & PM**
+### Overview
+Our project is an interactive 3D simulation that visualizes the collision of an asteroid with Earth in real time. The goal is to provide an engaging and educational experience that demonstrates the physical dynamics of high-energy impacts, including deformation, energy release, and shockwave propagation across the planet’s surface.
 
-* Fórmulas/assunções: massa, energia cinética, anéis de sobrepressão (proxy de dano).
-* Presets (ex.: "Impactor-2025"), copy do app, roteiro de demo, QA.
-* Documento de limitações, tooltips/glossário.
+### How It Works
+The simulation is built using Three.js integrated with React through @react-three/fiber. An asteroid object travels toward Earth using realistic physics provided by @react-three/cannon. When the collision occurs, the impact point is calculated, the Earth’s surface deforms dynamically, and an expanding energy wave visualizes the shock effect. The camera reacts with subtle shaking to enhance realism. The environment includes realistic planetary textures, atmospheric lighting, and space backgrounds with stars for immersion.
 
----
+### Data Integration and User Interaction
+The simulation is powered by NASA’s Near-Earth Object (NEO) API, which provides real-time data on asteroids and comets that approach Earth. The API allows querying NEO datasets within a selectable date range of up to seven days, returning detailed information such as asteroid name, estimated diameter, velocity, approach distance, orbital parameters, and potential hazard classification.
 
-## Entregáveis
+Within our system, users begin by selecting a date range to fetch asteroid data directly from the NASA API. The results are displayed in an interactive list, showing key attributes like size, velocity, and hazard level. Upon selecting a specific asteroid, the application retrieves additional details from the NEO Lookup endpoint, including its trajectory and closest-approach parameters.
 
-* **App web** responsivo (PT/EN):
+Once an asteroid is chosen, the 3D visualization initializes a preview of the simulated impact, where the object’s motion, velocity, and collision point are rendered dynamically using the physical parameters provided by NASA. Users can adjust impact variables such as angle, density, and surface type, observing how these changes influence the outcome — crater size, shockwave intensity, and total energy release.
 
-  * Presets e modo livre (tamanho, densidade, velocidade, ângulo, lat/lon).
-  * Visual 3D: trajetória + ponto de impacto + anéis geodésicos (1/3/5 níveis).
-  * Mapa 2D opcional: zonas de risco/tsunami; comparação antes/depois.
-  * Export: **PNG** (canvas), **GeoJSON** (anéis), **PDF** (relatório resumo).
-* **API** com rotas de dados (proxy/cache) e relatório.
-* **README** com fontes de dados, limitações e transparência científica.
+The experience is enhanced by an integrated AI Assistant, developed using ChromaDB and OpenAI Embeddings, which acts as a contextual guide throughout the simulation. This agent can explain results in natural language, provide comparisons to real-world events, or suggest mitigation strategies based on the asteroid’s characteristics (e.g., deflection methods, early detection strategies, or evacuation scenarios). By combining open scientific data with conversational intelligence, the system transforms raw NASA datasets into an interactive, accessible, and educational experience.
+
+### Benefits and Impact
+This project makes complex astronomical and physical concepts more tangible and accessible. It can be used as a learning tool for students, educators, and enthusiasts to explore real-time physical interactions in space environments. Beyond education, it showcases the potential of browser-based 3D visualization for scientific applications.
 
 ---
 
-## Plano de execução (48h)
+## Technologies Used
 
-**Dia 1 — Fundações**
+The project is built with the following technologies and libraries:
 
-1. **Setup & Deploy**: Next.js + TS; página 3D como Client Component e/ou `dynamic(..., { ssr:false })`; deploy na Vercel.
-2. **Cena 3D mínima (FE/3D)**: globo + luzes + OrbitControls; marcador de impacto; função `latLon→vec3`.
-3. **Modelo mínimo (Modelagem/Produto)**: massa/energia (J), conversão ~kt TNT, 3 raios de proxy de dano; documentar simplificações.
-4. **APIs (BE/Dados)**: rotas `/api/neo` (NeoWs/JPL) e `/api/elevation` (DEM); cache, validação de unidades e tratamento de erros.
+*   **Language**: TypeScript
+*   **Framework**: Next.js (React 19)
+*   **3D Libraries**: Three.js, @react-three/fiber, @react-three/drei
+*   **Styling**: TailwindCSS, Framer Motion
+*   **Backend / Build**: Node.js
+*   **State Management**: Zustand
+*   **UI/UX**: Shadcn UI, Radix UI
+*   **Internationalization**: next-intl
+*   **Authentication**: NextAuth.js
+*   **Vector Database**: ChromaDB
+*   **AI APIs**: OpenAI (for embeddings), DeepSeek (for chat)
+*   **Assets**: Earth textures provided by NASA (color, normal, and specular maps)
 
-**Dia 2 — Valor & Polimento**
-5. **Interatividade & Mitigação**: sliders; presets; Δv/tempo de aviso; comparação antes/depois.
-6. **UX & Acesso**: tooltips, legendas, export PNG/GeoJSON; i18n PT/EN.
-7. **Qualidade & Transparência**: README com fontes, escopo, limitações; tela "About" educativa.
-8. **Demo**: cenário Impactor-2025; variação de velocidade e efeito na área/impacto; vídeo curto.
+## Environment Variables Configuration
 
----
+For the correct functioning of the project, the following environment variables must be configured. It is recommended to use a `.env.local` file for local development and direct configuration in the Vercel dashboard for production.
 
-## Auth, API, Dados e Segurança
+*   `NEXTAUTH_URL`: The base URL of your application (e.g., `http://localhost:3333` for development, `https://www.meteormitigate.earth` for production).
+*   `NEXT_PUBLIC_API_URL`: The base URL of your internal API (usually the same as `NEXTAUTH_URL`).
+*   `NASA_API_KEY`: Your NASA API key to access NEO data.
+*   `INTERNAL_API_KEY`: An internal secret key for authentication between your project's proxy and internal API.
+*   `GOOGLE_CLIENT_ID`: The Google OAuth 2.0 client ID.
+*   `GOOGLE_CLIENT_SECRET`: The Google OAuth 2.0 client secret.
+*   `NEXTAUTH_SECRET`: A random, complex string for signing NextAuth.js session tokens.
 
-**Auth (opcional)**
+## How to Run the Project Locally
 
-* Sem conta: app público e pronto.
-* Com conta: OAuth apenas se for salvar cenários; rate-limit por IP/usuário.
-
-**API**
-
-* `/api/neo`: normaliza NeoWs/SBDB (id, D, ρ estimada, v, data de close approach).
-* `/api/elevation`: amostra DEM 3DEP (lat/lon → alt média; binário terra/água para branch de tsunami simplificado).
-* `/api/report`: gera JSON/Markdown → PDF (serverless).
-* Cache com `s-maxage`, timeouts curtos, logs e validação de entrada.
-
-**Dados**
-
-* NASA NeoWs: feed/lookup com chave pública.
-* JPL SBDB: query para parâmetros orbitais/físicos adicionais.
-* USGS 3DEP: serviços OGC/WMS/WCS para DEM; Earthquake (opcional) para contexto.
-
----
-
-## Modelagem (mínimo viável)
-
-* Massa (D, ρ) → Energia (E = ½ m v²) → 3 anéis de "sobrepressão" (proxy didático de dano).
-* Ramos (opcional): impacto em mar (risco de tsunami por relevo costeiro) vs terra (proxy sísmico leve).
-* Assumir: entrada direta sem fragmentação; sem atmosfera/CFD; caráter educativo (não ferramenta oficial de defesa civil).
-
----
-
-## UI/UX (must-haves)
-
-* Presets: Impactor-2025 + 2 cenários extras.
-* Sliders: diâmetro, densidade, velocidade, ângulo, Δv e tempo de aviso.
-* Mapa 3D: anéis coloridos + legenda; tooltip com valores; foco automático no impacto.
-* Comparar: toggle "mitigado vs não mitigado".
-* Export: PNG e GeoJSON; botão "copiar link" com query params.
-
----
-
-## DevOps & Deploy
-
-* Next.js na Vercel; cena 3D como Client Component e/ou `ssr:false`.
-* CI: lint + typecheck + build; preview por PR.
-* Observabilidade: logs mínimos de API (latência, cache hits/miss).
-* Privacidade: sem PII; se houver contas, política simples no README.
-
----
-
-## Riscos & Armadilhas (e mitigação)
-
-* SSR de WebGL quebrando build → isolar cena 3D como Client/dynamic import.
-* Limites/instabilidade de APIs → cache de 1–6h e presets offline.
-* Dados USGS pesados → amostrar DEM só perto do impacto; fallback sem DEM.
-* Expectativa de "precisão científica" → seção de limitações + linguagem clara + fontes.
-
----
-
-## Critérios de sucesso (demo)
-
-1. Em <10s, preset Impactor-2025 mostra trajetória + anéis.
-2. Alterar velocidade (+5%) muda ponto/área visível.
-3. Mitigar (Δv pequeno, antecedência) atualiza cenário e compara antes/depois.
-4. Export de PNG e GeoJSON; README com fontes e limitações.
+1.  Clone the repository.
+2.  Install dependencies with `pnpm install` (or `npm install`/`yarn install`).
+3.  Create a `.env.local` file in the project root and configure the necessary environment variables.
+4.  Run the development server with `pnpm dev`.
+5.  Access `http://localhost:3333` in your browser.
