@@ -11,6 +11,7 @@
     "chine": "Chino",
     "switch": "Cambiar a {lang}",
     "logout": "Cerrar sesión",
+    "home": "Inicio",
     "italian": "Italiano"
   },
   "sections": {
@@ -21,7 +22,8 @@
     "impactTitle": "Simulación de Impacto",
     "impactText": "Calcula zonas de impacto y estimaciones de daños",
     "visualizationTitle": "Visualización 3D",
-    "visualizationText": "Representación 3D interactiva de asteroides y trayectorias"
+    "visualizationText": "Representación 3D interactiva de asteroides y trayectorias",
+    "goToSimulation": "Simular →"
   },
   "impact": {
     "title": "ANÁLISIS DE IMPACTO",

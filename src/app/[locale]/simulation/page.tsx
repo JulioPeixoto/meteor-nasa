@@ -1,17 +1,38 @@
 'use client'
 import React from 'react'
+import { useSearchParams } from 'next/navigation'
 import { ImpactConsequencesSidebar } from '@/components/consquencias'
 import ScenePage from '../scene/page'
 
 export default function TestAuthPage() {
-  const [diameter, setDiameter] = React.useState(100)
-  const [speed, setSpeed] = React.useState(17000)
+  const searchParams = useSearchParams()
+  
+  const asteroidName = searchParams.get('name')
+  const asteroidDiameter = searchParams.get('diameter')
+  const asteroidSpeed = searchParams.get('speed')
+  const isHazardous = searchParams.get('hazardous') === 'true'
+  const composition = searchParams.get('composition')
+  
+  const [diameter, setDiameter] = React.useState(asteroidDiameter ? parseFloat(asteroidDiameter) : 100)
+  const [speed, setSpeed] = React.useState(asteroidSpeed ? parseFloat(asteroidSpeed) : 17000)
   const [impactAngle, setImpactAngle] = React.useState(45)
   const [location, setLocation] = React.useState<'land' | 'ocean'>('land')
   const [sidebarOpen, setSidebarOpen] = React.useState(true)
-
   return (
     <main className="flex flex-col bg-black min-h-screen overflow-hidden">
+      {/* Informações do meteoro, se disponível */}
+      {asteroidName && (
+        <div className="bg-gray-900 text-white p-4 border-b border-gray-800">
+          <h1 className="text-xl font-bold">Simulação de Impacto: {asteroidName}</h1>
+          <div className="flex gap-4 mt-2 text-sm text-gray-300">
+            <span>Diâmetro: {diameter.toFixed(1)}m</span>
+            <span>Velocidade: {speed.toLocaleString()}m/s</span>
+            {composition && <span>Composição: {composition}</span>}
+            {isHazardous && <span className="text-red-400">Potencialmente Perigoso</span>}
+          </div>
+        </div>
+      )}
+      
       {/* Canvas ocupa a tela inteira, não encolhe */}
       <div className="w-full h-screen flex-shrink-0">
         <ScenePage />

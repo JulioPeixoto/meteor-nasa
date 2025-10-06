@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { LogoutButton } from '@/components/auth/logout-button';
+import { Home } from 'lucide-react';
 
 export default function Header({ locale }: { locale: string }) {
   const pathname = usePathname();
@@ -32,6 +33,11 @@ export default function Header({ locale }: { locale: string }) {
       {/* Botão de logout e dropdown de idiomas */}
       <div className="flex items-center gap-4">
         <LogoutButton className="px-3 py-2 bg-main border-2 border-border rounded-base shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all" />
+        
+        <Link href={`/${locale}`} className="px-3 py-2 bg-main border-2 border-border rounded-base shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all flex items-center gap-2">
+          <Home className="w-4 h-4 text-main-foreground" />
+          <span className="text-main-foreground font-base">{t('home')}</span>
+        </Link>
         
         <div className="relative z-50">
         <button

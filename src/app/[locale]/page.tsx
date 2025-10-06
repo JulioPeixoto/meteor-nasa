@@ -1,12 +1,17 @@
 'use client'; 
 import { useState } from 'react'; 
 import { useTranslations } from 'next-intl'; 
+import { useRouter, useParams } from 'next/navigation'; 
 import { ThreeJSExample } from '@/components/example'; 
 import FloatingForm from '@/components/floatingform'; 
+import { Button } from '@/components/ui/button'; 
 import type { AsteroidData } from '@/components/example'; 
  
 export default function HomePage() { 
   const t = useTranslations(); 
+  const router = useRouter(); 
+  const params = useParams(); 
+  const locale = params.locale as string; 
   const [selectedAsteroid, setSelectedAsteroid] = useState<AsteroidData | null>(null); 
   const [dateRange, setDateRange] = useState<{ start: string; end: string } | null>(null); 
  
@@ -43,6 +48,24 @@ export default function HomePage() {
      
     setSelectedAsteroid(mappedData); 
   }; 
+  
+  const handleGoToSimulation = () => {
+    if (!selectedAsteroid) return;
+    
+    const kmPerSec = selectedAsteroid.relative_velocity?.kilometers_per_second
+      ? parseFloat(selectedAsteroid.relative_velocity.kilometers_per_second)
+      : undefined;
+
+    const asteroidParams = new URLSearchParams({
+      name: selectedAsteroid.name || '',
+      diameter: selectedAsteroid.estimated_diameter_min?.toString() || selectedAsteroid.estimated_diameter_max?.toString() || '100',
+      speed: kmPerSec?.toString() || '17000',
+      hazardous: selectedAsteroid.is_potentially_hazardous_asteroid?.toString() || 'false',
+      composition: selectedAsteroid.composition || 'rocky'
+    });
+    
+    router.push(`/${locale}/simulation?${asteroidParams.toString()}`);
+  }; 
  
   return ( 
     <main className="bg-background relative overflow-hidden min-h-screen"> 
@@ -60,9 +83,19 @@ export default function HomePage() {
            
           {/* Visualização 3D - ocupa espaço restante */}
           <div className="flex-1 backdrop-blur-sm rounded-xl p-4 min-h-[50vh] lg:min-h-0 flex flex-col"> 
-            <h2 className="text-lg font-semibold text-white mb-2"> 
-              {t('sections.asteroid')} 
-            </h2> 
+            <div className="flex justify-between items-center mb-2">
+              <h2 className="text-lg font-semibold text-white"> 
+                {t('sections.asteroid')} 
+              </h2>
+              {selectedAsteroid && (
+                <Button 
+                  onClick={handleGoToSimulation}
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  {t('goToSimulation')}
+                </Button>
+              )}
+            </div>
             <div className="flex-1 min-h-[400px]">
               <ThreeJSExample 
                 asteroidData={selectedAsteroid || undefined} 

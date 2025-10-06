@@ -54,7 +54,14 @@ export function ImpactConsequencesSidebar({
 
   const results = computeImpactPhysics({ diameter, speed, impactAngle, location, density });
   const damageZones = buildDamageZones({ diameter, speed, impactAngle, location, density, latitude, longitude }, results, translate);
-
+  console.log('speed', speed)
+  console.log('diameter', diameter)
+  console.log('impactAngle', impactAngle)
+  console.log('location', location)
+  console.log('density', density)
+  console.log('latitude', latitude)
+  console.log('longitude', longitude)
+  console.log('results', results)
   const buildConsequencesPayload = useCallback(() => {
     return (damageZones || []).map((z) => ({
       name: z.name,
@@ -315,7 +322,7 @@ export function ImpactConsequencesSidebar({
             </div>
             <div className="p-2 bg-gray-100 border-2 border-border">
               <div className="text-xs text-gray-600">{tImpact("speed")}</div>
-              <div className="font-bold text-black">{(speed / 1000).toFixed(1)} km/s</div>
+              <div className="font-bold text-black">{(speed).toFixed(1)} km/s</div>
             </div>
             <div className="p-2 bg-gray-100 border-2 border-border">
               <div className="text-xs text-gray-600">{tImpact("energy")}</div>

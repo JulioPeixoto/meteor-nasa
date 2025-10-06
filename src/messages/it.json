@@ -10,6 +10,7 @@
     "france": "Francese",
     "chine": "Cinese",
     "italian": "Italiano",
+    "home": "Home",
     "switch": "Cambia a {lang}"
   },
   "sections": {
@@ -20,7 +21,8 @@
     "impactTitle": "Simulazione di Impatto",
     "impactText": "Calcola zone di impatto e stime dei danni",
     "visualizationTitle": "Visualizzazione 3D",
-    "visualizationText": "Rappresentazione 3D interattiva di asteroidi e traiettorie"
+    "visualizationText": "Rappresentazione 3D interattiva di asteroidi e traiettorie",
+    "goToSimulation": "Simula →"
   },
   "impact": {
     "title": "ANALISI DI IMPATTO",

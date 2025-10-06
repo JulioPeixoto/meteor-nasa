@@ -11,6 +11,7 @@
     "chine": "Chinois",
     "switch": "Changer pour {lang}",
     "logout": "Se déconnecter",
+    "home": "Accueil",
     "italian": "Italien"
   },
   "sections": {
@@ -21,7 +22,8 @@
     "impactTitle": "Simulation d’Impact",
     "impactText": "Calculez les zones d’impact et les estimations des dommages",
     "visualizationTitle": "Visualisation 3D",
-    "visualizationText": "Représentation 3D interactive des astéroïdes et de leurs trajectoires"
+    "visualizationText": "Représentation 3D interactive des astéroïdes et de leurs trajectoires",
+    "goToSimulation": "Simuler →"
   },
   "impact": {
     "title": "ANALYSE D'IMPACT",

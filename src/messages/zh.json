@@ -11,6 +11,7 @@
     "chine": "中文",
     "switch": "切换到 {lang}",
     "logout": "退出",
+    "home": "首页",
     "italian": "意大利语"
   },  
   "sections": {
@@ -21,7 +22,8 @@
     "impactTitle": "撞击模拟",
     "impactText": "计算撞击区域和损害估计",
     "visualizationTitle": "3D 可视化",
-    "visualizationText": "小行星和轨迹的交互式 3D 表示"
+    "visualizationText": "小行星和轨迹的交互式 3D 表示",
+    "goToSimulation": "模拟 →"
   },
   "impact": {
     "title": "撞击分析",
