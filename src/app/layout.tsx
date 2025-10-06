@@ -15,10 +15,10 @@ export default async function RootLayout({
   params: Promise<{ locale?: string }>;
 }) {
   const { locale } = await params;
-  const currentLocale = locale ?? 'en';
+  const lang = locale ?? 'en';
 
   return (
-    <html lang={currentLocale} className="dark">
+    <html lang={lang} className="dark">
       <body className="bg-background text-foreground font-base" suppressHydrationWarning={true}>{children}</body>
     </html>
   );
