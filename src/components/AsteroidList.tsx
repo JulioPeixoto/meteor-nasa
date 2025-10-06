@@ -90,7 +90,7 @@ export default function AsteroidList({
     }
 
     fetchAsteroids();
-  }, [startDate, endDate, minDiameter, minVelocity]);
+  }, [startDate, endDate, minDiameter, minVelocity, t]);
 
   const filteredAsteroids = useMemo(() => {
     return allAsteroids.filter((ast) => {

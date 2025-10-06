@@ -16,26 +16,32 @@ export function AuthGuard({ children }: AuthGuardProps) {
   const t = useTranslations('auth')
 
   const publicRoutes = [
-    '/login', '/en/login', '/pt/login',
-    '/presentation', '/en/presentation', '/pt/presentation', '/es/presentation', '/fr/presentation', '/zh/presentation'
+    '/login', '/en/login', '/pt/login', '/es/login', '/fr/login', '/zh/login', '/it/login',
+    '/presentation', '/en/presentation', '/pt/presentation', '/es/presentation', '/fr/presentation', '/zh/presentation', '/it/presentation'
   ]
+  
+  // Check if current route is a public route
   const isPublicRoute = publicRoutes.some(route => pathname === route)
+  
+  // Check if current route is a locale-specific home page (like /en, /pt, etc.)
+  const isLocaleHomeRoute = pathname.match(/^\/[a-z]{2}$/)
 
   useEffect(() => {
     if (status === 'loading') return 
 
-    if (!session && !isPublicRoute) {
+    if (!session && !isPublicRoute && !isLocaleHomeRoute) {
       console.log('🔒', t('unauthorized'))
       router.push('/login')
       return
     }
 
-    if (session && isPublicRoute) {
+    // Only redirect logged-in users away from login page, not from locale home pages
+    if (session && isPublicRoute && pathname.includes('/login')) {
       console.log('✅', t('redirecting'))
-      router.push('/')
+      router.push('/asteroids')
       return
     }
-  }, [session, status, isPublicRoute, router, t])
+  }, [session, status, isPublicRoute, isLocaleHomeRoute, router, t, pathname])
 
   if (status === 'loading') {
     return (
@@ -48,7 +54,7 @@ export function AuthGuard({ children }: AuthGuardProps) {
     )
   }
 
-  if (!session && !isPublicRoute) {
+  if (!session && !isPublicRoute && !isLocaleHomeRoute) {
     return null
   }
 

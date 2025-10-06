@@ -5,9 +5,9 @@ const NASA_API_KEY = process.env.NASA_API_KEY || 'DEMO_KEY'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { flag: string } }
+  { params }: { params: Promise<{ flag: string }> }
 ) {
-  const { flag } = params
+  const { flag } = await params
   const filterFlag = flag === 'true'
 
   try {

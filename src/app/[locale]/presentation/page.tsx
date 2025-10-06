@@ -26,7 +26,7 @@ export default function Presentation() {
             {t('hero.subtitle')}
           </motion.p>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6, duration: 0.8 }}>
-            <Link href="/">
+            <Link href="/asteroids">
               <Button className=" text-lg px-8 py-6 rounded-2xl flex items-center gap-3 shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:shadow-[0px_0px_0px_0px_rgba(255,255,255,1)]">
                 {t('hero.cta')}
                 <ArrowRight className="w-6 h-6" />
@@ -50,7 +50,7 @@ export default function Presentation() {
         </motion.h2>
         <p className="text-gray-400 mb-8">{t('callout.desc')}</p>
         <Button asChild className="w-1/3 mx-auto text-lg px-8 py-6 rounded-2xl flex items-center gap-3 shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:shadow-[0px_0px_0px_0px_rgba(255,255,255,1)]">
-          <Link href="/">
+          <Link href="/asteroids">
             {t('callout.cta')}
             <ArrowRight className="w-6 h-6" />
           </Link>

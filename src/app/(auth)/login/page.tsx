@@ -12,7 +12,7 @@ function LoginForm() {
 
   const handleGoogleLogin = () => {
     setGoogleLoading(true);
-    signIn("google", { callbackUrl: "/", prompt: "select_account" });
+    signIn("google", { callbackUrl: "/en/asteroids", prompt: "select_account" });
   };
 
   return (
