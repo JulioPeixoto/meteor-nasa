@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const NASA_API_URL = 'https://api.nasa.gov/neo/rest/v1/feed';
 const NASA_API_KEY = process.env.NASA_API_KEY!;
-const INTERNAL_API_KEY = process.env.INTERNAL_API_KEY!;
 
 // 🧠 Mapa para limitar requisições
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
@@ -26,15 +25,6 @@ function checkRateLimit(ip: string, limit = 20, windowMs = 60000) {
 // 🧱 Handler principal
 export async function GET(req: NextRequest) {
   const ip = req.headers.get('x-forwarded-for') ?? 'unknown';
-  const authHeader = req.headers.get('x-internal-key');
-
-  // 🚫 Bloqueia se não tiver a chave interna correta
-  if (authHeader !== INTERNAL_API_KEY) {
-    return NextResponse.json(
-      { error: 'Unauthorized access to internal API' },
-      { status: 401 }
-    );
-  }
 
   // 🔒 Rate limit opcional
   const limit = checkRateLimit(ip);

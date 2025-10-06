@@ -51,7 +51,7 @@ export default function AsteroidList({
       try {
         // ✅ Usa o proxy seguro (não chama diretamente /api/neo)
         const res = await fetch(
-          `/api/proxy/neo?start_date=${startDate}&end_date=${endDate}` +
+          `/api/neo?start_date=${startDate}&end_date=${endDate}` +
             (minDiameter ? `&min_diameter=${minDiameter}` : '') +
             (minVelocity ? `&min_velocity=${minVelocity}` : '')
         );
@@ -115,7 +115,7 @@ export default function AsteroidList({
 
   async function handleAsteroidClick(id: string) {
     try {
-      const res = await fetch(`/api/proxy/neo/lookup/${id}`);
+      const res = await fetch(`/api/neo/lookup/${id}`);
       const data = await res.json();
       if (onSelectAsteroid) onSelectAsteroid(data);
     } catch (err) {
