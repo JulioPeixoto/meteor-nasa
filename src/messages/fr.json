@@ -23,7 +23,7 @@
     "impactText": "Calculez les zones d’impact et les estimations des dommages",
     "visualizationTitle": "Visualisation 3D",
     "visualizationText": "Représentation 3D interactive des astéroïdes et de leurs trajectoires",
-    "goToSimulation": "Simuler →",
+    "goToSimulation": "Simuler",
     "selectAsteroid": "Sélectionnez un astéroïde pour voir plus d'informations"
   },
   "impact": {
