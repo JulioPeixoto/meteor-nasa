@@ -29,7 +29,7 @@ export class ChromaHttpClient {
   private baseUrl: string
 
   constructor(baseUrl?: string) {
-    this.baseUrl = (baseUrl || process.env.CHROMA_URL || 'http://localhost:8000').replace(/\/$/, '')
+    this.baseUrl = (baseUrl || process.env.NEXTAUTH_URL || 'http://localhost:8000').replace(/\/$/, '')
   }
 
   private async json<T>(res: Response): Promise<T> {
