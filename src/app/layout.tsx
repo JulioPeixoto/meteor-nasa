@@ -7,17 +7,18 @@ export const metadata: Metadata = {
   description: 'Next.js App with React, Tailwind and i18n'
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
   params
 }: {
   children: React.ReactNode;
-  params: { locale?: string };
+  params: Promise<{ locale?: string }>;
 }) {
-  const locale = params?.locale ?? 'en';
+  const { locale } = await params;
+  const lang = locale ?? 'en';
 
   return (
-    <html lang={locale} className="dark">
+    <html lang={lang} className="dark">
       <body className="bg-background text-foreground font-base" suppressHydrationWarning={true}>{children}</body>
     </html>
   );
