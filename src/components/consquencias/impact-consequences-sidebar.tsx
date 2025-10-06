@@ -318,7 +318,7 @@ export function ImpactConsequencesSidebar({
           <div className="grid grid-cols-2 gap-2 text-sm">
             <div className="p-2 bg-gray-100 border-2 border-border">
               <div className="text-xs text-gray-600">{tImpact("diameter")}</div>
-              <div className="font-bold text-black">{diameter}m</div>
+              <div className="font-bold text-black">{diameter.toFixed(2)}m</div>
             </div>
             <div className="p-2 bg-gray-100 border-2 border-border">
               <div className="text-xs text-gray-600">{tImpact("speed")}</div>

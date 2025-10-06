@@ -33,7 +33,6 @@ export default function HomePage() {
     }; 
      
     const approachData = findApproachInRange(); 
-     
     const mappedData: AsteroidData = { 
       name: neo.name, 
       estimated_diameter_min: neo.estimated_diameter?.meters?.estimated_diameter_min, 
@@ -55,10 +54,9 @@ export default function HomePage() {
     const kmPerSec = selectedAsteroid.relative_velocity?.kilometers_per_second
       ? parseFloat(selectedAsteroid.relative_velocity.kilometers_per_second)
       : undefined;
-
     const asteroidParams = new URLSearchParams({
       name: selectedAsteroid.name || '',
-      diameter: selectedAsteroid.estimated_diameter_min?.toString() || selectedAsteroid.estimated_diameter_max?.toString() || '100',
+      diameter: selectedAsteroid.estimated_diameter_min?.toString() || '100',
       speed: kmPerSec?.toString() || '17000',
       hazardous: selectedAsteroid.is_potentially_hazardous_asteroid?.toString() || 'false',
       composition: selectedAsteroid.composition || 'rocky'
