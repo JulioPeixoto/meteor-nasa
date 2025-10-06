@@ -19,7 +19,7 @@ export default function TestAuthPage() {
   const [location, setLocation] = React.useState<'land' | 'ocean'>('land')
   const [sidebarOpen, setSidebarOpen] = React.useState(true)
   return (
-    <main className="flex flex-col bg-black min-h-screen overflow-hidden">
+    <main className="flex flex-col bg-black">
       {/* Informações do meteoro, se disponível */}
       {asteroidName && (
         <div className="bg-gray-900 text-white p-4 border-b border-gray-800">
@@ -34,7 +34,7 @@ export default function TestAuthPage() {
       )}
       
       {/* Canvas ocupa a tela inteira, não encolhe */}
-      <div className="w-full h-screen flex-shrink-0">
+      <div className="h-screen">
         <ScenePage />
       </div>
 

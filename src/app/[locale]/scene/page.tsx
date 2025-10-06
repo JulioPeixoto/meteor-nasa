@@ -37,7 +37,7 @@ export default function ScenePage() {
     <div className="bg-black relative overflow-hidden w-full h-full">
       {/* Canvas em tela cheia */}
       <Canvas 
-        camera={{ position: [0, 0, 8], fov: 60 }} 
+        camera={{ position: [0, 0, 9], fov: 60 }} 
         shadows
         className="w-full h-full"
       >

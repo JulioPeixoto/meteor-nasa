@@ -371,8 +371,8 @@ export function ImpactConsequencesSidebar({
         {/* Consequences Section */}
         {activeSection === "consequences" && (
           <div className="p-4 bg-gray-800">
-            <h3 className="font-heading text-black mb-4 flex items-center gap-2">
-              <Zap className="w-5 h-5 text-red-500" />
+            <h3 className="font-heading text-white mb-4 flex items-center gap-2">
+              <Zap className="w-5 h-5 text-white" />
               {tImpact("consequenceZones")}
             </h3>
 
