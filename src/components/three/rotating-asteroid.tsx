@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { useLoader, useFrame } from '@react-three/fiber';
-import { Trail } from '@react-three/drei';
+import { Trail, Text } from '@react-three/drei';
 import * as THREE from 'three';
 
 export interface AsteroidData {
@@ -118,7 +118,8 @@ export function RotatingAsteroid({ asteroidData, onImpact }: RotatingAsteroidPro
       }
     }
 
-     if (labelRef.current && meshRef.current) {
+    // Label sempre acima do asteroide e virada para a câmera
+    if (labelRef.current && meshRef.current) {
       labelRef.current.position.set(0, size * 4, 0);
       labelRef.current.lookAt(camera.position);
     }
@@ -151,6 +152,19 @@ export function RotatingAsteroid({ asteroidData, onImpact }: RotatingAsteroidPro
           />
         </mesh>
       </Trail>
+      
+      {/* Label com o nome do asteroide */}
+      <Text
+        ref={labelRef}
+        fontSize={0.4}
+        color="#FFD700"
+        outlineWidth={0.015}
+        outlineColor="black"
+        anchorX="center"
+        anchorY="middle"
+      >
+        {asteroidData.name ?? 'Asteroid'}
+      </Text>
     </group>
   );
 }
