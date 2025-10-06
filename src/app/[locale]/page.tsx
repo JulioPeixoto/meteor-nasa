@@ -92,7 +92,7 @@ export default function HomePage() {
                   onClick={handleGoToSimulation}
                   className="bg-blue-600 hover:bg-blue-700 text-white"
                 >
-                  {t('goToSimulation')}
+                  {t('sections.goToSimulation')}
                 </Button>
               )}
             </div>

@@ -23,7 +23,8 @@
     "impactText": "Calculate impact zones and damage estimates",
     "visualizationTitle": "3D Visualization",
     "visualizationText": "Interactive 3D representation of asteroids and trajectories",
-    "goToSimulation": "Simulate →"
+    "goToSimulation": "Simulate →",
+    "selectAsteroid": "Select an asteroid to see more information"
   },
   "impact": {
     "title": "IMPACT ANALYSIS",
