@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'Sora';
+  src: url('/fonts/Sora-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+}
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -38,7 +45,8 @@
   --chart-active-dot: #fff;
 }
 
-@theme inline {
+@theme {
+  --font-sans: 'Sora', sans-serif;
   --color-main: var(--main);
   --color-background: var(--background);
   --color-secondary-background: var(--secondary-background);
@@ -61,8 +69,8 @@
   --shadow-shadow: var(--shadow);
   --font-weight-base: 500;
   --font-weight-heading: 700;
-}
-  
+}  
+
 @layer base {
   body {
     @apply text-foreground font-base bg-background;

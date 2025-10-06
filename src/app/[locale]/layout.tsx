@@ -24,8 +24,10 @@ export default async function LocaleLayout(props: {
     <AuthProvider>
       <NextIntlClientProvider locale={locale} messages={messages}>
         <AuthGuard>
-          <Header locale={locale} />
-          {children}
+          <body className={`font-sans`}>
+            <Header locale={locale} />
+            {children}
+          </body>
         </AuthGuard>
       </NextIntlClientProvider>
     </AuthProvider>
