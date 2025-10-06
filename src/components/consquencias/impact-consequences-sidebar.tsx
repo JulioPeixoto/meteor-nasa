@@ -253,19 +253,19 @@ export function ImpactConsequencesSidebar({
     md:fixed md:right-0 md:top-[80px] md:h-[calc(100vh-80px)] md:w-96 md:border-t-0 md:border-l-4
   "
 >      {/* Header */}
-      <div className="p-4 bg-main border-b-4 border-border relative">
+      <div className="p-4 bg-gray-800 border-b-4 border-border relative">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-red-500 border-2 border-border rounded-none flex items-center justify-center">
               <AlertTriangle className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h2 className="text-lg font-heading text-main-foreground">
+              <h2 className="text-lg text-white font-heading text-main-foreground">
                 {activeSection === "consequences"
                   ? tImpact("title")
                   : tMitigationChat("title")}
               </h2>
-              <p className="text-sm text-main-foreground/80">
+              <p className="text-sm text-text-white/80">
                 {activeSection === "consequences"
                   ? tImpact("subtitle")
                   : tMitigationChat("subtitle")}
@@ -276,13 +276,13 @@ export function ImpactConsequencesSidebar({
       </div>
 
       {/* Tabs */}
-      <div className="p-2 bg-white border-b-4 border-border flex gap-2">
+      <div className="p-2 bg-gray-800 border-b-4 border-border flex gap-2">
         <button
           onClick={() => setActiveSection("consequences")}
           className={`flex-1 h-9 text-sm border-2 border-border shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all ${
             activeSection === "consequences"
               ? "bg-main text-main-foreground"
-              : "bg-secondary-background text-foreground hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+              : "bg-white text-black hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           }`}
         >
           {tImpact("analysisTab")}
@@ -292,7 +292,7 @@ export function ImpactConsequencesSidebar({
           className={`flex-1 h-9 text-sm border-2 border-border shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all ${
             activeSection === "chat"
               ? "bg-main text-main-foreground"
-              : "bg-secondary-background text-foreground hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+              : "bg-white text-black hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           }`}
         >
           {tMitigationChat("chatTab")}
@@ -302,9 +302,9 @@ export function ImpactConsequencesSidebar({
 
       {/* Impact Summary - visible only on Análise */}
       {activeSection === "consequences" && (
-        <div className="p-4 bg-white border-b-4 border-border">
-          <h3 className="font-heading text-black mb-3 flex items-center gap-2">
-            <Target className="w-4 h-4 text-black" />
+        <div className="p-4 bg-gray-800 border-b-4 border-border">
+          <h3 className="font-heading text-white mb-3 flex items-center gap-2">
+            <Target className="w-4 h-4 text-white" />
             {tImpact("paramsTitle")}
           </h3>
 
@@ -363,8 +363,8 @@ export function ImpactConsequencesSidebar({
       <div className="flex-1">
         {/* Consequences Section */}
         {activeSection === "consequences" && (
-          <div className="p-4">
-            <h3 className="font-heading text-foreground mb-4 flex items-center gap-2">
+          <div className="p-4 bg-gray-800">
+            <h3 className="font-heading text-black mb-4 flex items-center gap-2">
               <Zap className="w-5 h-5 text-red-500" />
               {tImpact("consequenceZones")}
             </h3>
