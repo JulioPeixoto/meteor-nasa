@@ -26,13 +26,13 @@ export default function Header({ locale }: { locale: string }) {
 
   return (
     <header className="z-50 flex justify-between items-center px-6 py-4 bg-gradient-to-r from-slate-900 to-slate-800 text-white border-b-2 border-border">
-      <h1 className="flex items-center gap-2 text-xl font-heading text-white">
+      <h1 className="flex items-center gap-2 text-xl font-heading text-white cursor-pointer">
         NASA METEOR MITIGATE
       </h1>
 
       {/* Botão de logout e dropdown de idiomas */}
       <div className="flex items-center gap-4">
-        <LogoutButton className="px-3 py-2 bg-main border-2 border-border rounded-base shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all" />
+        <LogoutButton className="px-3 py-2 bg-main border-2 border-border rounded-base shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all cursor-pointer" />
         
         <Link href={`/${locale}`} className="px-3 py-2 bg-main border-2 border-border rounded-base shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all flex items-center gap-2">
           <Home className="w-4 h-4 text-main-foreground" />
@@ -42,7 +42,7 @@ export default function Header({ locale }: { locale: string }) {
         <div className="relative z-50">
         <button
           onClick={() => setOpen(!open)}
-          className="flex items-center gap-2 px-3 py-2 bg-main border-2 border-border rounded-base shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
+          className="flex items-center gap-2 px-3 py-2 bg-main border-2 border-border rounded-base shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all cursor-pointer"
         >
           <Image src={currentLocale?.flag || '/flags/united-states.png'} alt={currentLocale?.label || 'lang'} width={20} height={20} />
           <span className="text-main-foreground font-base">{currentLocale?.label}</span>
@@ -79,3 +79,4 @@ export default function Header({ locale }: { locale: string }) {
     </header>
   );
 }
+
