@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { LogoutButton } from '@/components/auth/logout-button';
@@ -10,6 +10,7 @@ import { Home } from 'lucide-react';
 
 export default function Header({ locale }: { locale: string }) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const t = useTranslations('header');
   const [open, setOpen] = useState(false);
 
@@ -61,7 +62,7 @@ export default function Header({ locale }: { locale: string }) {
             {locales.map(({ code, label, flag }) => (
               <li key={code}>
                 <Link
-                  href={`/${code}${pathname.replace(`/${locale}`, '')}`}
+                  href={`/${code}${pathname.replace(`/${locale}`, '')}?${searchParams.toString()}`}
                   className={`flex items-center gap-2 px-3 py-2 hover:bg-main hover:text-main-foreground transition-all ${
                     code === locale ? 'bg-main text-main-foreground' : 'text-foreground'
                   }`}
