@@ -23,7 +23,7 @@
     "impactText": "计算撞击区域和损害估计",
     "visualizationTitle": "3D 可视化",
     "visualizationText": "小行星和轨迹的交互式 3D 表示",
-    "goToSimulation": "模拟 →",
+    "goToSimulation": "模拟",
     "selectAsteroid": "选择一颗小行星查看更多信息"
   },
   "impact": {

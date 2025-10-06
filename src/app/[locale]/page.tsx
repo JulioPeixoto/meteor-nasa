@@ -88,7 +88,7 @@ export default function HomePage() {
               {selectedAsteroid && (
                 <Button 
                   onClick={handleGoToSimulation}
-                  className="px-4 py-2"
+                  className="p-4 mr-1 shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]"
                 >
                   {t('sections.goToSimulation')}
                 </Button>
