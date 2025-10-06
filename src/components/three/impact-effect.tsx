@@ -89,10 +89,18 @@ export function ImpactEffect({ position, isActive, onComplete }: ImpactEffectPro
     }
   }, [isActive]);
 
-  useFrame((_, delta) => {
+  useFrame(({ camera }, delta) => {
     if (!isActive || !isVisible) return;
 
     timeRef.current += delta;
+
+    // Efeito de tremor da câmera
+    if (timeRef.current < 2) {
+      const shakeIntensity = Math.max(0, 0.3 - timeRef.current * 0.15);
+      camera.position.x += (Math.random() - 0.5) * shakeIntensity;
+      camera.position.y += (Math.random() - 0.5) * shakeIntensity;
+      camera.position.z += (Math.random() - 0.5) * shakeIntensity;
+    }
 
     // Animação da explosão inicial
     if (explosionRef.current) {
@@ -249,17 +257,8 @@ export function ImpactEffect({ position, isActive, onComplete }: ImpactEffectPro
           key={`fire-${i}`} 
           ref={(el) => { if (el) fireRefs.current[i] = el; }}
           position={data.position as any}
-          rotation={[
-            Math.random() * Math.PI * 0.5,
-            Math.random() * Math.PI * 0.5,
-            Math.random() * Math.PI * 0.5
-          ]}
         >
-          <coneGeometry args={[
-            data.size * (0.7 + Math.random() * 0.3),
-            data.size * (1.2 + Math.random() * 0.8),
-            6 + Math.floor(Math.random() * 4)
-          ]} />
+          <sphereGeometry args={[data.size * (0.4 + Math.random() * 0.3), 8, 8]} />
           <meshBasicMaterial
             color={
               i % 4 === 0 ? "#ff0000" : 
@@ -294,17 +293,8 @@ export function ImpactEffect({ position, isActive, onComplete }: ImpactEffectPro
           key={`spark-${i}`} 
           ref={(el) => { if (el) sparkRefs.current[i] = el; }}
           position={data.position as any}
-          rotation={[
-            Math.random() * Math.PI,
-            Math.random() * Math.PI,
-            Math.random() * Math.PI
-          ]}
         >
-          <boxGeometry args={[
-            data.size * (0.5 + Math.random() * 0.5),
-            data.size * (0.3 + Math.random() * 0.7),
-            data.size * (0.2 + Math.random() * 0.8)
-          ]} />
+          <sphereGeometry args={[data.size * (1.5 + Math.random() * 0.5), 8, 8]} />
           <meshBasicMaterial
             color={i % 3 === 0 ? "#ffff00" : i % 3 === 1 ? "#ffaa00" : "#ff6600"}
             transparent

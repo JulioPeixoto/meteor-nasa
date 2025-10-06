@@ -29,6 +29,7 @@ interface RotatingAsteroidProps {
 export function RotatingAsteroid({ asteroidData, onImpact }: RotatingAsteroidProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
+  const labelRef = useRef<THREE.Mesh>(null);
   const timeRef = useRef(0);
   const [isDestroyed, setIsDestroyed] = useState(false);
 
@@ -81,7 +82,7 @@ export function RotatingAsteroid({ asteroidData, onImpact }: RotatingAsteroidPro
 
   const materialProps = getMaterialProps();
 
-  useFrame((_, delta) => {
+  useFrame(({ camera }, delta) => {
     timeRef.current += delta;
     
     // Rotação do asteroide
@@ -115,6 +116,11 @@ export function RotatingAsteroid({ asteroidData, onImpact }: RotatingAsteroidPro
         onImpact(impactPosition);
         setIsDestroyed(true);
       }
+    }
+
+     if (labelRef.current && meshRef.current) {
+      labelRef.current.position.set(0, size * 4, 0);
+      labelRef.current.lookAt(camera.position);
     }
   });
 

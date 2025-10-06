@@ -14,11 +14,10 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: Promise<{ locale?: string }>;
 }) {
-  const { locale } = await params;
-  const currentLocale = locale ?? 'en';
+  const locale = params?.locale ?? 'en';
 
   return (
-    <html lang={currentLocale} className="dark">
+    <html lang={locale} className="dark">
       <body className="bg-background text-foreground font-base" suppressHydrationWarning={true}>{children}</body>
     </html>
   );
